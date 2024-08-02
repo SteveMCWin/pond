@@ -2,10 +2,12 @@
 precision highp float;
 
 in vec2 localCoords;
+in float radius;
 out vec4 outputColor;
 
 void main(){
-    vec4 color = vec4(step(0.95, length(localCoords)) * (1 - step(1.0, length(localCoords))));
+    float line_width = 0.05;
+    vec4 color = vec4(step(radius - line_width, length(localCoords)) * (1 - step(radius, length(localCoords))));
 
     outputColor = color;
 }

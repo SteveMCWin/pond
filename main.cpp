@@ -17,10 +17,8 @@ unsigned int loadTexture(const char *path);
 unsigned int loadCubemap(std::vector<std::string> faces);
 void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color);
 
-const unsigned int SCR_WIDTH    = 1600;
+const unsigned int SCR_WIDTH    = 900;
 const unsigned int SCR_HEIGHT   = 900;
-unsigned int current_scr_width  = SCR_WIDTH;
-unsigned int current_scr_height = SCR_HEIGHT;
 
 glm::vec2 zoom   = glm::vec2(2.0f, 2.0f);
 glm::vec2 offset = glm::vec2(0.75f, 0.5f);
@@ -88,6 +86,9 @@ int main(int, char**){
     shader.use();
 
     glm::vec2 c1 = glm::vec2(0.0f, 0.0f);
+    glm::vec2 c2 = glm::vec2(0.0f, 0.0f);
+
+    float radius = 0.2f;
 
     while(!glfwWindowShouldClose(window)){
 
@@ -96,14 +97,28 @@ int main(int, char**){
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
+        c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(2.0) - glm::vec2(1.0f, 1.0f);
+
         shader.use();
-        shader.setFloat("screen_resolution", (float)current_scr_height/current_scr_width);
-        shader.setVec2("center", 0.0f, 0.0f);
+        shader.setFloat("screen_resolution", (float)SCR_HEIGHT/SCR_WIDTH);
+        shader.setFloat("r", 1.0);
+        shader.setVec2("center", c1.x, c1.y);
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        shader.setVec2("center", 0.4f, -0.2f);
+        if(glm::distance(c1, c2) - radius > 1e-2 || glm::distance(c1, c1) - radius < 1e-3){
+            c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - radius);
+        }
+
+        std::cout << "Distance: " << glm::distance(c1, c2) << std::endl;
+        std::cout << "c1: <" << c1.x << ", " << c1.y << ">\tc2: <" << c2.x << ", " << c2.y << ">" << std::endl;
+
+        shader.setFloat("r", 2.0);
+        shader.setVec2("center", c2.x, c2.y);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
@@ -124,8 +139,6 @@ int main(int, char**){
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
-    current_scr_height = height;
-    current_scr_width  = width;
 }
 
 void processInput(GLFWwindow* window){
