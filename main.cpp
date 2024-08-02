@@ -17,8 +17,9 @@ unsigned int loadTexture(const char *path);
 unsigned int loadCubemap(std::vector<std::string> faces);
 void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color);
 
-const unsigned int SCR_WIDTH    = 900;
+const unsigned int SCR_WIDTH    = 1600;
 const unsigned int SCR_HEIGHT   = 900;
+const float ASPECT_RATIO      = (float)SCR_HEIGHT/SCR_WIDTH;
 
 glm::vec2 zoom   = glm::vec2(2.0f, 2.0f);
 glm::vec2 offset = glm::vec2(0.75f, 0.5f);
@@ -54,13 +55,13 @@ int main(int, char**){
     glEnable(GL_MULTISAMPLE);
 
     float box_vertices[] = {
-        -0.1, -0.1, 0.0,    -1.0, -1.0,
-         0.1, -0.1, 0.0,     1.0, -1.0,
-        -0.1,  0.1, 0.0,    -1.0,  1.0,
+        -0.1, -0.1,     -1.0, -1.0,
+         0.1, -0.1,      1.0, -1.0,
+        -0.1,  0.1,     -1.0,  1.0,
 
-         0.1, -0.1, 0.0,     1.0, -1.0,
-         0.1,  0.1, 0.0,     1.0,  1.0,
-        -0.1,  0.1, 0.0,    -1.0,  1.0
+         0.1, -0.1,      1.0, -1.0,
+         0.1,  0.1,      1.0,  1.0,
+        -0.1,  0.1,     -1.0,  1.0
     };
 
     unsigned int VBO;
@@ -72,9 +73,9 @@ int main(int, char**){
     glBindVertexArray(VAO);
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(box_vertices), box_vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -86,9 +87,9 @@ int main(int, char**){
     shader.use();
 
     glm::vec2 c1 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 c2 = glm::vec2(0.0f, 0.0f);
+    glm::vec2 c2 = glm::vec2(0.5f, 0.0f);
 
-    float radius = 0.2f;
+    float radius = 0.1f;
 
     while(!glfwWindowShouldClose(window)){
 
@@ -102,8 +103,14 @@ int main(int, char**){
         // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
         c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(2.0) - glm::vec2(1.0f, 1.0f);
 
+        glm::mat4 projection = glm::ortho(-1.0f, 1.0f, -1.0f * ASPECT_RATIO, 1.0f * ASPECT_RATIO, -1.0f, 1.0f);
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(c1, 0.0));
+
         shader.use();
-        shader.setFloat("screen_resolution", (float)SCR_HEIGHT/SCR_WIDTH);
+        shader.setMat4("projection", projection);
+        shader.setMat4("model", model);
+        shader.setFloat("aspect_ratio", ASPECT_RATIO);
         shader.setFloat("r", 1.0);
         shader.setVec2("center", c1.x, c1.y);
 
@@ -117,7 +124,12 @@ int main(int, char**){
         std::cout << "Distance: " << glm::distance(c1, c2) << std::endl;
         std::cout << "c1: <" << c1.x << ", " << c1.y << ">\tc2: <" << c2.x << ", " << c2.y << ">" << std::endl;
 
-        shader.setFloat("r", 2.0);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(c2, 0.0));
+        // model = glm::scale(model, glm::vec3(radius, radius, 1.0f));
+
+        shader.setFloat("r", 1.0);
+        shader.setMat4("model", model);
         shader.setVec2("center", c2.x, c2.y);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
