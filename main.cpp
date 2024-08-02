@@ -55,13 +55,13 @@ int main(int, char**){
     glEnable(GL_MULTISAMPLE);
 
     float box_vertices[] = {
-        -0.1, -0.1,     -1.0, -1.0,
-         0.1, -0.1,      1.0, -1.0,
-        -0.1,  0.1,     -1.0,  1.0,
+        -1.0, -1.0,     -1.0, -1.0,
+         1.0, -1.0,      1.0, -1.0,
+        -1.0,  1.0,     -1.0,  1.0,
 
-         0.1, -0.1,      1.0, -1.0,
-         0.1,  0.1,      1.0,  1.0,
-        -0.1,  0.1,     -1.0,  1.0
+         1.0, -1.0,      1.0, -1.0,
+         1.0,  1.0,      1.0,  1.0,
+        -1.0,  1.0,     -1.0,  1.0
     };
 
     unsigned int VBO;
@@ -87,9 +87,10 @@ int main(int, char**){
     shader.use();
 
     glm::vec2 c1 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 c2 = glm::vec2(0.5f, 0.0f);
+    glm::vec2 c2 = glm::vec2(5.0f, 0.0f);
 
-    float radius = 0.1f;
+    float radius = 1.0f;
+    float desired_distance = 2.0f;
 
     while(!glfwWindowShouldClose(window)){
 
@@ -101,9 +102,10 @@ int main(int, char**){
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
-        c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(2.0) - glm::vec2(1.0f, 1.0f);
+        c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(20.0) - glm::vec2(10.0f, 10.0f);
+        c1.y *= ASPECT_RATIO;
 
-        glm::mat4 projection = glm::ortho(-1.0f, 1.0f, -1.0f * ASPECT_RATIO, 1.0f * ASPECT_RATIO, -1.0f, 1.0f);
+        glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f * ASPECT_RATIO, 10.0f * ASPECT_RATIO, -1.0f, 1.0f);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(c1, 0.0));
 
@@ -117,18 +119,15 @@ int main(int, char**){
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        if(glm::distance(c1, c2) - radius > 1e-2 || glm::distance(c1, c1) - radius < 1e-3){
-            c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - radius);
+        if(glm::distance(c1, c2) - desired_distance > 1e-2 || glm::distance(c1, c1) - desired_distance < 1e-3){
+            c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - desired_distance);
         }
-
-        std::cout << "Distance: " << glm::distance(c1, c2) << std::endl;
-        std::cout << "c1: <" << c1.x << ", " << c1.y << ">\tc2: <" << c2.x << ", " << c2.y << ">" << std::endl;
 
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(c2, 0.0));
-        // model = glm::scale(model, glm::vec3(radius, radius, 1.0f));
+        model = glm::scale(model, glm::vec3(radius, radius, 1.0f));
 
-        shader.setFloat("r", 1.0);
+        shader.setFloat("r", radius);
         shader.setMat4("model", model);
         shader.setVec2("center", c2.x, c2.y);
 
