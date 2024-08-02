@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/stevica/openGL_projects/pond/build",
+  "command": "/usr/bin/c++  -I/urs/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/local/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/include/libpng16  -o CMakeFiles/my_opengl_project.dir/main.cpp.o -c /home/stevica/openGL_projects/pond/main.cpp",
+  "file": "/home/stevica/openGL_projects/pond/main.cpp"
+},
+{
+  "directory": "/home/stevica/openGL_projects/pond/build",
+  "command": "/usr/bin/cc  -I/urs/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/local/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/include/libpng16  -o CMakeFiles/my_opengl_project.dir/glad.c.o -c /home/stevica/openGL_projects/pond/glad.c",
+  "file": "/home/stevica/openGL_projects/pond/glad.c"
+}
+]
