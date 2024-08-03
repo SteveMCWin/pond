@@ -16,7 +16,8 @@ find_package(Freetype REQUIRED)
 add_executable(my_opengl_project 
     main.cpp
     glad.c
-    fish.cpp)
+    fish.cpp
+    fishRenderer.cpp)
 
 include_directories(/urs/include/freetype2 -I/usr/local/include/freetype2 -I/usr/include/libpng16)
 

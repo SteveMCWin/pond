@@ -153,6 +153,30 @@ fish.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fish.cpp.s
 .PHONY : fish.cpp.s
 
+fishRenderer.o: fishRenderer.cpp.o
+.PHONY : fishRenderer.o
+
+# target to build an object file
+fishRenderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o
+.PHONY : fishRenderer.cpp.o
+
+fishRenderer.i: fishRenderer.cpp.i
+.PHONY : fishRenderer.i
+
+# target to preprocess a source file
+fishRenderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.i
+.PHONY : fishRenderer.cpp.i
+
+fishRenderer.s: fishRenderer.cpp.s
+.PHONY : fishRenderer.s
+
+# target to generate assembly for a file
+fishRenderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.s
+.PHONY : fishRenderer.cpp.s
+
 glad.o: glad.c.o
 .PHONY : glad.o
 
@@ -213,6 +237,9 @@ help:
 	@echo "... fish.o"
 	@echo "... fish.i"
 	@echo "... fish.s"
+	@echo "... fishRenderer.o"
+	@echo "... fishRenderer.i"
+	@echo "... fishRenderer.s"
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"

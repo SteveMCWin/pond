@@ -30,12 +30,12 @@ public:
 
     // Still have to test this but first I need to fix the include problem
 
-    Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 2.0f);
+    Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 0.1f);
 
-    void Move(glm::vec2& direction);
+    void Move(glm::vec2 direction);
 
 private:
-    const float ratio = 16.0f/9.0f;
+    const float aspect_ratio = 9.0f/16.0f;
 
     void updateJoints();
     // rendering will be handled by a separate class

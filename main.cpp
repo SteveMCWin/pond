@@ -9,6 +9,7 @@
 
 #include "shader.h"
 #include "fish.h"
+#include "fishRenderer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -68,19 +69,19 @@ int main(int, char**){
     unsigned int VBO;
     unsigned int VAO;
 
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(box_vertices), box_vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-    
+    // glGenBuffers(1, &VBO);
+    // glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    // glGenVertexArrays(1, &VAO);
+    // glBindVertexArray(VAO);
+    //
+    // glBufferData(GL_ARRAY_BUFFER, sizeof(box_vertices), box_vertices, GL_STATIC_DRAW);
+    // glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    // glEnableVertexAttribArray(0);
+    // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    // glEnableVertexAttribArray(1);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // glBindVertexArray(0);
+    // 
 
     Shader shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
@@ -93,11 +94,12 @@ int main(int, char**){
     float radius = 1.0f;
     float desired_distance = 2.0f;
 
-    float distances[] = {1.0f, 1.2f, 1.0f};
-    float radii[]     = {1.2f, 1.0f, 1.0f};
-    glm::vec2 centers[] = {glm::vec2(1.0f, 1.0f), glm::vec2(-0.1f, -0.1f), glm::vec2(-0.1f, -1.5f)};
+    float distances[] = {1.0f, 2.2f, 1.5f, 2.0f, 1.6f};
+    float radii[]     = {1.2f, 1.5f, 1.0f, 0.8f, 0.5f};
+    glm::vec2 centers[] = {glm::vec2(1.0f, 1.0f), glm::vec2(-0.1f, -0.1f), glm::vec2(-0.1f, -1.5f), glm::vec2(-0.1f, -1.7f), glm::vec2(-1.0f, -1.9f)};
 
-    Fish f = Fish(3, centers, distances, radii);
+    Fish f = Fish(5, centers, distances, radii);
+    FishRenderer renderer;
 
     while(!glfwWindowShouldClose(window)){
 
@@ -106,48 +108,54 @@ int main(int, char**){
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
+
+        // c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(20.0) - glm::vec2(10.0f, 10.0f);   // DONE
+        // c1.y *= ASPECT_RATIO;   // DONE
+        //
+        // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f * ASPECT_RATIO, 10.0f * ASPECT_RATIO, -1.0f, 1.0f);
+        // glm::mat4 model = glm::mat4(1.0f);
+        // model = glm::translate(model, glm::vec3(c1, 0.0));
+        //
+        // shader.use();
+        // shader.setMat4("projection", projection);
+        // shader.setMat4("model", model);
+        // // shader.setFloat("aspect_ratio", ASPECT_RATIO);
+        // shader.setFloat("r", 1.0);
+        // // shader.setVec2("center", c1.x, c1.y);
+        //
+        // glBindVertexArray(VAO);
+        // glDrawArrays(GL_TRIANGLES, 0, 6);
+        //
+        // if(glm::distance(c1, c2) - desired_distance > 1e-2 || glm::distance(c1, c1) - desired_distance < 1e-3){ // DONE
+        //     c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - desired_distance);
+        // }
+        //
+        // model = glm::mat4(1.0f);
+        // model = glm::translate(model, glm::vec3(c2, 0.0));
+        // model = glm::scale(model, glm::vec3(radius, radius, 1.0f));
+        //
+        // shader.setFloat("r", radius);
+        // shader.setMat4("model", model);
+        // shader.setVec2("center", c2.x, c2.y);
+        //
+        // glDrawArrays(GL_TRIANGLES, 0, 6);
+        // glBindVertexArray(0);
+
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
-        // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
-        c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(20.0) - glm::vec2(10.0f, 10.0f);   // DONE
-        c1.y *= ASPECT_RATIO;   // DONE
 
-        glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f * ASPECT_RATIO, 10.0f * ASPECT_RATIO, -1.0f, 1.0f);
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(c1, 0.0));
+        glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(40.0) - glm::vec2(20.0f, 20.0f);
+        move_point.y *= ASPECT_RATIO;
 
-        shader.use();
-        shader.setMat4("projection", projection);
-        shader.setMat4("model", model);
-        shader.setFloat("aspect_ratio", ASPECT_RATIO);
-        shader.setFloat("r", 1.0);
-        shader.setVec2("center", c1.x, c1.y);
+        f.Move(move_point - f.joints[0].Center);
 
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        if(glm::distance(c1, c2) - desired_distance > 1e-2 || glm::distance(c1, c1) - desired_distance < 1e-3){ // DONE
-            c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - desired_distance);
-        }
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(c2, 0.0));
-        model = glm::scale(model, glm::vec3(radius, radius, 1.0f));
-
-        shader.setFloat("r", radius);
-        shader.setMat4("model", model);
-        shader.setVec2("center", c2.x, c2.y);
-
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
+        renderer.renderFish(f, shader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
 
     }
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
 
     glfwTerminate();
     return 0;

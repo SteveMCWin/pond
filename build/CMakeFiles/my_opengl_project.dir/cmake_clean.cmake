@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/my_opengl_project.dir/fish.cpp.o"
   "CMakeFiles/my_opengl_project.dir/fish.cpp.o.d"
+  "CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o"
+  "CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o.d"
   "CMakeFiles/my_opengl_project.dir/glad.c.o"
   "CMakeFiles/my_opengl_project.dir/glad.c.o.d"
   "CMakeFiles/my_opengl_project.dir/main.cpp.o"
