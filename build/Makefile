@@ -129,6 +129,30 @@ my_opengl_project/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/build
 .PHONY : my_opengl_project/fast
 
+fish.o: fish.cpp.o
+.PHONY : fish.o
+
+# target to build an object file
+fish.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fish.cpp.o
+.PHONY : fish.cpp.o
+
+fish.i: fish.cpp.i
+.PHONY : fish.i
+
+# target to preprocess a source file
+fish.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fish.cpp.i
+.PHONY : fish.cpp.i
+
+fish.s: fish.cpp.s
+.PHONY : fish.s
+
+# target to generate assembly for a file
+fish.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fish.cpp.s
+.PHONY : fish.cpp.s
+
 glad.o: glad.c.o
 .PHONY : glad.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... my_opengl_project"
+	@echo "... fish.o"
+	@echo "... fish.i"
+	@echo "... fish.s"
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"

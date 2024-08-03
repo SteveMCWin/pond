@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "shader.h"
+#include "fish.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -92,6 +93,12 @@ int main(int, char**){
     float radius = 1.0f;
     float desired_distance = 2.0f;
 
+    float distances[] = {1.0f, 1.2f, 1.0f};
+    float radii[]     = {1.2f, 1.0f, 1.0f};
+    glm::vec2 centers[] = {glm::vec2(1.0f, 1.0f), glm::vec2(-0.1f, -0.1f), glm::vec2(-0.1f, -1.5f)};
+
+    Fish f = Fish(3, centers, distances, radii);
+
     while(!glfwWindowShouldClose(window)){
 
         processInput(window);
@@ -102,8 +109,8 @@ int main(int, char**){
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
-        c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(20.0) - glm::vec2(10.0f, 10.0f);
-        c1.y *= ASPECT_RATIO;
+        c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(20.0) - glm::vec2(10.0f, 10.0f);   // DONE
+        c1.y *= ASPECT_RATIO;   // DONE
 
         glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f * ASPECT_RATIO, 10.0f * ASPECT_RATIO, -1.0f, 1.0f);
         glm::mat4 model = glm::mat4(1.0f);
@@ -119,7 +126,7 @@ int main(int, char**){
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        if(glm::distance(c1, c2) - desired_distance > 1e-2 || glm::distance(c1, c1) - desired_distance < 1e-3){
+        if(glm::distance(c1, c2) - desired_distance > 1e-2 || glm::distance(c1, c1) - desired_distance < 1e-3){ // DONE
             c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - desired_distance);
         }
 

@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/stevica/openGL_projects/pond/glad.c" "CMakeFiles/my_opengl_project.dir/glad.c.o" "gcc" "CMakeFiles/my_opengl_project.dir/glad.c.o.d"
+  "/home/stevica/openGL_projects/pond/fish.cpp" "CMakeFiles/my_opengl_project.dir/fish.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/fish.cpp.o.d"
   "/home/stevica/openGL_projects/pond/main.cpp" "CMakeFiles/my_opengl_project.dir/main.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/main.cpp.o.d"
   )
 
