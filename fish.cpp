@@ -12,7 +12,7 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, flo
 }
 
 void Fish::Move(glm::vec2 direction){
-    this->joints[0].moveDirection = direction;
+    this->joints[0].moveDirection = glm::normalize(direction);
     this->joints[0].Center += direction * this->moveSpeed;
     // this->joints[0].Center.y *= this->aspect_ratio;
     this->updateJoints();

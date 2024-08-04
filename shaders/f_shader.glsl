@@ -6,8 +6,10 @@ in float radius;
 out vec4 outputColor;
 
 void main(){
-    float line_width = 0.05;
-    vec4 color = vec4(step(radius - line_width, length(localCoords)) * (1 - step(radius, length(localCoords))));
+    float line_width = 0.08;
+    float inner_edge = smoothstep(radius - line_width * 1.5, radius - line_width, length(localCoords));
+    float outer_edge = 1.0 - smoothstep(radius - line_width * 0.5, radius, length(localCoords));
+    vec4 color = vec4(inner_edge * outer_edge);
 
     outputColor = color;
 }

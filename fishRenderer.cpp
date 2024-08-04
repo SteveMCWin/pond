@@ -31,8 +31,11 @@ void FishRenderer::renderFish(const Fish& fish, Shader& shader){
 
     glBindVertexArray(this->VAO);
 
+    model = glm::translate(model, glm::vec3(fish.joints[0].Center + fish.joints[0].moveDirection, 0.0f));
+    
+
     for(Joint joint : fish.joints){
-        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(joint.Center, 0.0f));
         model = glm::scale(model, glm::vec3(joint.circleRadius, joint.circleRadius, 1.0f));
 

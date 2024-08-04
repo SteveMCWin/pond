@@ -32,7 +32,7 @@ int main(int, char**){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_SAMPLES, 8);
 
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
@@ -51,48 +51,16 @@ int main(int, char**){
         return -1;
     }
 
+    glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glEnable(GL_MULTISAMPLE);
 
-    float box_vertices[] = {
-        -1.0, -1.0,     -1.0, -1.0,
-         1.0, -1.0,      1.0, -1.0,
-        -1.0,  1.0,     -1.0,  1.0,
-
-         1.0, -1.0,      1.0, -1.0,
-         1.0,  1.0,      1.0,  1.0,
-        -1.0,  1.0,     -1.0,  1.0
-    };
-
-    unsigned int VBO;
-    unsigned int VAO;
-
-    // glGenBuffers(1, &VBO);
-    // glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // glGenVertexArrays(1, &VAO);
-    // glBindVertexArray(VAO);
-    //
-    // glBufferData(GL_ARRAY_BUFFER, sizeof(box_vertices), box_vertices, GL_STATIC_DRAW);
-    // glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    // glEnableVertexAttribArray(0);
-    // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-    // glEnableVertexAttribArray(1);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // glBindVertexArray(0);
-    // 
-
     Shader shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
 
     shader.use();
-
-    glm::vec2 c1 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 c2 = glm::vec2(5.0f, 0.0f);
-
-    float radius = 1.0f;
-    float desired_distance = 2.0f;
 
     float distances[] = {1.0f, 2.2f, 1.5f, 2.0f, 1.6f};
     float radii[]     = {1.2f, 1.5f, 1.0f, 0.8f, 0.5f};
@@ -101,46 +69,14 @@ int main(int, char**){
     Fish f = Fish(5, centers, distances, radii);
     FishRenderer renderer;
 
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     while(!glfwWindowShouldClose(window)){
 
         processInput(window);
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        // std::cout << "xpos: " << xpos << std::endl << "ypos: " << ypos << std::endl << "\r";
-
-        // c1 = glm::vec2(xpos/SCR_WIDTH, 1.0f-ypos/SCR_HEIGHT) * glm::vec2(20.0) - glm::vec2(10.0f, 10.0f);   // DONE
-        // c1.y *= ASPECT_RATIO;   // DONE
-        //
-        // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f * ASPECT_RATIO, 10.0f * ASPECT_RATIO, -1.0f, 1.0f);
-        // glm::mat4 model = glm::mat4(1.0f);
-        // model = glm::translate(model, glm::vec3(c1, 0.0));
-        //
-        // shader.use();
-        // shader.setMat4("projection", projection);
-        // shader.setMat4("model", model);
-        // // shader.setFloat("aspect_ratio", ASPECT_RATIO);
-        // shader.setFloat("r", 1.0);
-        // // shader.setVec2("center", c1.x, c1.y);
-        //
-        // glBindVertexArray(VAO);
-        // glDrawArrays(GL_TRIANGLES, 0, 6);
-        //
-        // if(glm::distance(c1, c2) - desired_distance > 1e-2 || glm::distance(c1, c1) - desired_distance < 1e-3){ // DONE
-        //     c2 += glm::normalize(c1 - c2) * (glm::distance(c1, c2) - desired_distance);
-        // }
-        //
-        // model = glm::mat4(1.0f);
-        // model = glm::translate(model, glm::vec3(c2, 0.0));
-        // model = glm::scale(model, glm::vec3(radius, radius, 1.0f));
-        //
-        // shader.setFloat("r", radius);
-        // shader.setMat4("model", model);
-        // shader.setVec2("center", c2.x, c2.y);
-        //
-        // glDrawArrays(GL_TRIANGLES, 0, 6);
-        // glBindVertexArray(0);
 
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
@@ -150,6 +86,14 @@ int main(int, char**){
 
         f.Move(move_point - f.joints[0].Center);
 
+        // glm::mat4 model = glm::mat4(1.0f);
+        // model = glm::translate(model, glm::vec3(f.joints[0].Center + f.joints[0].moveDirection, 0.0f));
+        // I wanted to experiment by drawing the tip of the nose of the fish but I realized it's too much for tonight
+        // The idead I got for connecting the dots is basically just making a vertices array in each fish that will change each MoveFish call and which will be used by the
+        // fish renderer
+        // the problem is that I have to figure out what data do i write into the buffer so I'll need to experiment
+        // (by 'what data' I mean if it should range from -1 to 1, which it definitely shouldn't (I think???))
+    
         renderer.renderFish(f, shader);
 
         glfwSwapBuffers(window);
