@@ -59,6 +59,8 @@ int main(int, char**){
 
     Shader shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
+    Shader outlineShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_solid.glsl",
+                                  "/home/stevica/openGL_projects/pond/shaders/f_solid.glsl");
 
     shader.use();
 
@@ -96,7 +98,7 @@ int main(int, char**){
         // the problem is that I have to figure out what data do i write into the buffer so I'll need to experiment
         // (by 'what data' I mean if it should range from -1 to 1, which it definitely shouldn't (I think???))
     
-        renderer.renderFish(f, shader);
+        renderer.renderFish(f, shader, outlineShader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -14,7 +14,7 @@ class FishRenderer{
 public:
      FishRenderer();
     ~FishRenderer();
-    void renderFish(const Fish& fish, Shader& shader);
+    void renderFish(const Fish& fish, Shader& circleShader, Shader& outlineShader);
 
 private:
 
@@ -30,6 +30,7 @@ private:
         -1.0,  1.0
     };
 
-    unsigned int VBO, VAO;
+    unsigned int circleVBO, circleVAO;
+    unsigned int outlineVBO, outlineVAO;
 
 };

@@ -1,4 +1,5 @@
 #include "fish.h"
+#include <glm/detail/func_geometric.hpp>
 
 Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, float speed){
     this->numOfJoints = jointNum;
@@ -14,7 +15,12 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, flo
 void Fish::Move(glm::vec2 direction){
     this->joints[0].moveDirection = glm::normalize(direction);
     this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed;
-    // this->joints[0].Center.y *= this->aspect_ratio;
+    glm::vec3 point = glm::normalize(glm::cross(glm::vec3(this->joints[0].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+    this->outline_vertices[0] = point.x * this->joints[0].circleRadius;
+    this->outline_vertices[1] = point.y * this->joints[0].circleRadius;
+    point = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(this->joints[0].moveDirection, 0.0f)));
+    this->outline_vertices[2] = point.x * this->joints[0].circleRadius;
+    this->outline_vertices[3] = point.y * this->joints[0].circleRadius;
     this->updateJoints();
 }
 
@@ -27,6 +33,14 @@ void Fish::updateJoints(){
         if(distance_between_joints - desired_distance > 1e-2 || distance_between_joints - desired_distance< 1e-3){
             this->joints[i].Center += this->joints[i].moveDirection * (distance_between_joints - desired_distance);
         }
+
+        glm::vec3 point = glm::normalize(glm::cross(glm::vec3(this->joints[i].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+        this->outline_vertices[4*i]   = point.x * this->joints[i].circleRadius;
+        this->outline_vertices[4*i+1] = point.y * this->joints[i].circleRadius;
+        point = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(this->joints[i].moveDirection, 0.0f)));
+        this->outline_vertices[4*i+2] = point.x * this->joints[i].circleRadius;
+        this->outline_vertices[4*i+3] = point.y * this->joints[i].circleRadius;
+       
     }
 
 }
