@@ -84,7 +84,9 @@ int main(int, char**){
         glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(40.0) - glm::vec2(20.0f, 20.0f);
         move_point.y *= ASPECT_RATIO;
 
-        f.Move(move_point - f.joints[0].Center);
+        if(glm::length(move_point - f.joints[0].Center) > 0.1){
+            f.Move(move_point - f.joints[0].Center);
+        }
 
         // glm::mat4 model = glm::mat4(1.0f);
         // model = glm::translate(model, glm::vec3(f.joints[0].Center + f.joints[0].moveDirection, 0.0f));

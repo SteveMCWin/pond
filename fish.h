@@ -30,7 +30,7 @@ public:
 
     // Still have to test this but first I need to fix the include problem
 
-    Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 0.1f);
+    Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 0.2f);
 
     void Move(glm::vec2 direction);
 
