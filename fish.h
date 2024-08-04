@@ -27,11 +27,10 @@ public:
     std::vector<Joint> joints;
     float moveSpeed;
     unsigned int numOfJoints;
-    float outline_vertices[20] = {0};
+    float outline_vertices[48];
 
-    // Still have to test this but first I need to fix the include problem
-
-    Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 0.2f);
+     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 0.2f);
+    ~Fish();
 
     void Move(glm::vec2 direction);
 

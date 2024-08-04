@@ -19,7 +19,7 @@ FishRenderer::FishRenderer(){
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
     glBindVertexArray(this->outlineVAO);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 20, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 48, NULL, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);
@@ -43,40 +43,55 @@ void FishRenderer::renderFish(const Fish& fish, Shader& circleShader, Shader& ou
     // render the circles
 
     glBindVertexArray(this->circleVAO);
+    //
+    // for(Joint joint : fish.joints){
+    //     model = glm::mat4(1.0f);
+    //     model = glm::translate(model, glm::vec3(joint.Center, 0.0f));
+    //     model = glm::scale(model, glm::vec3(joint.circleRadius, joint.circleRadius, 1.0f));
+    //
+    //     circleShader.use();
+    //     circleShader.setMat4("projection", projection);
+    //     circleShader.setMat4("model", model);
+    //     circleShader.setFloat("r", joint.circleRadius);
+    //
+    //     glDrawArrays(GL_TRIANGLES, 0, 6);
+    // }
 
-    for(Joint joint : fish.joints){
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(joint.Center, 0.0f));
-        model = glm::scale(model, glm::vec3(joint.circleRadius, joint.circleRadius, 1.0f));
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));
+    model = glm::scale(model, glm::vec3(fish.joints[0].circleRadius, fish.joints[0].circleRadius, 1.0f));
 
-        circleShader.use();
-        circleShader.setMat4("projection", projection);
-        circleShader.setMat4("model", model);
-        circleShader.setFloat("r", joint.circleRadius);
+    circleShader.use();
+    circleShader.setMat4("projection", projection);
+    circleShader.setMat4("model", model);
+    circleShader.setFloat("r", fish.joints[0].circleRadius);
 
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-    }
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(fish.joints[fish.numOfJoints-1].Center, 0.0f));
+    model = glm::scale(model, glm::vec3(fish.joints[fish.numOfJoints-1].circleRadius, fish.joints[fish.numOfJoints-1].circleRadius, 1.0f));
+
+    circleShader.use();
+    circleShader.setMat4("projection", projection);
+    circleShader.setMat4("model", model);
+    circleShader.setFloat("r", fish.joints[fish.numOfJoints-1].circleRadius);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     // render the outline
 
     glBindVertexArray(this->outlineVAO);
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(fish.outline_vertices), &fish.outline_vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * fish.numOfJoints * sizeof(float), &fish.outline_vertices);
+
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));
 
     outlineShader.use();
     outlineShader.setMat4("projection", projection);
+    outlineShader.setMat4("model", model);
 
-    for(int i = 0; i < 5; i++){
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(fish.joints[i].Center, 0.0f));
-
-        outlineShader.setMat4("model", model);
-
-        glDrawArrays(GL_LINES, i*2, i*2+1);
-    }
-
-    // glDrawArrays(GL_TRIANGLE_STRIP, 0, 10);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * fish.numOfJoints);
 
     glBindVertexArray(0);
 

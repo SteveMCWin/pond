@@ -64,11 +64,28 @@ int main(int, char**){
 
     shader.use();
 
-    float distances[] = {1.0f, 2.2f, 1.5f, 2.0f, 1.6f};
-    float radii[]     = {1.2f, 1.5f, 1.0f, 0.8f, 0.5f};
-    glm::vec2 centers[] = {glm::vec2(1.0f, 1.0f), glm::vec2(-0.1f, -0.1f), glm::vec2(-0.1f, -1.5f), glm::vec2(-0.1f, -1.7f), glm::vec2(-1.0f, -1.9f)};
+    float distances[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+    float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.3f, 0.2f, 0.2f};
+    glm::vec2 centers[] = {
+        glm::vec2(1.0f, 1.0f),
+        glm::vec2(-0.1f, -0.1f),
+        glm::vec2(-0.1f, -1.5f),
+        glm::vec2(-0.1f, -1.7f),
+        glm::vec2(-1.0f, -1.9f),
+        glm::vec2(-1.0f, -1.8f),
+        glm::vec2(-1.0f, -1.7f),
+        glm::vec2(-1.0f, -1.6f),
+        glm::vec2(-1.1f, -1.9f),
+        glm::vec2(-1.2f, -1.9f),
+        glm::vec2(-1.3f, -1.9f),
+        glm::vec2(-1.4f, -1.9f),
+    };
 
-    Fish f = Fish(5, centers, distances, radii);
+    // std::cout << "Size of distances " << sizeof(distances)/sizeof(float) << std::endl;
+    // std::cout << "Size of radii " << sizeof(radii)/sizeof(float) << std::endl;
+    // std::cout << "Size of centers " << sizeof(centers)/sizeof(glm::vec2) << std::endl;
+
+    Fish f = Fish(12, centers, distances, radii);
     FishRenderer renderer;
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
