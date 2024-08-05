@@ -17,7 +17,8 @@ add_executable(my_opengl_project
     main.cpp
     glad.c
     fish.cpp
-    fishRenderer.cpp)
+    fishRenderer.cpp
+    bezier_filled.cpp)
 
 include_directories(/urs/include/freetype2 -I/usr/local/include/freetype2 -I/usr/include/libpng16)
 

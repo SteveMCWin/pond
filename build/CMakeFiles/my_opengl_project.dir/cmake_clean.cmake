@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o"
+  "CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o.d"
   "CMakeFiles/my_opengl_project.dir/fish.cpp.o"
   "CMakeFiles/my_opengl_project.dir/fish.cpp.o.d"
   "CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o"

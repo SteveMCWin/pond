@@ -129,6 +129,30 @@ my_opengl_project/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/build
 .PHONY : my_opengl_project/fast
 
+bezier_filled.o: bezier_filled.cpp.o
+.PHONY : bezier_filled.o
+
+# target to build an object file
+bezier_filled.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o
+.PHONY : bezier_filled.cpp.o
+
+bezier_filled.i: bezier_filled.cpp.i
+.PHONY : bezier_filled.i
+
+# target to preprocess a source file
+bezier_filled.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.i
+.PHONY : bezier_filled.cpp.i
+
+bezier_filled.s: bezier_filled.cpp.s
+.PHONY : bezier_filled.s
+
+# target to generate assembly for a file
+bezier_filled.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.s
+.PHONY : bezier_filled.cpp.s
+
 fish.o: fish.cpp.o
 .PHONY : fish.o
 
@@ -234,6 +258,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... my_opengl_project"
+	@echo "... bezier_filled.o"
+	@echo "... bezier_filled.i"
+	@echo "... bezier_filled.s"
 	@echo "... fish.o"
 	@echo "... fish.i"
 	@echo "... fish.s"

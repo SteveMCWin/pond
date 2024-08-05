@@ -3,7 +3,7 @@
 
 Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, float speed){
     this->numOfJoints = jointNum;
-    // this->outline_vertices = new float[4*jointNum];
+    this->outline_vertices = new float[4*jointNum];
     for(int i = 0; i < jointNum; i++){
         Joint j = Joint(centers[i], distances[i], radii[i]);
         this->joints.push_back(j);

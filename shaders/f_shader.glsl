@@ -12,5 +12,5 @@ void main(){
     // vec4 color = vec4(inner_edge * outer_edge);
     vec4 color = vec4(outer_edge);
 
-    outputColor = color * vec4(0.1, 0.9, 0.3, 1.0);
+    outputColor = color * vec4(0.2, 0.5, 0.7, 1.0);
 }

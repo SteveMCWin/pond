@@ -10,6 +10,7 @@
 #include "shader.h"
 #include "fish.h"
 #include "fishRenderer.h"
+#include "bezier_filled.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -61,11 +62,13 @@ int main(int, char**){
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
     Shader outlineShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_solid.glsl",
                                   "/home/stevica/openGL_projects/pond/shaders/f_solid.glsl");
+    Shader bezier_shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_bezier.glsl",
+                                  "/home/stevica/openGL_projects/pond/shaders/f_bezier.glsl");
 
     shader.use();
 
     float distances[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-    float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.3f, 0.2f, 0.2f};
+    float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.4f, 0.4f};
     glm::vec2 centers[] = {
         glm::vec2(1.0f, 1.0f),
         glm::vec2(-0.1f, -0.1f),
@@ -88,6 +91,8 @@ int main(int, char**){
     Fish f = Fish(12, centers, distances, radii);
     FishRenderer renderer;
 
+    BezierCurve b;
+
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while(!glfwWindowShouldClose(window)){
@@ -107,15 +112,16 @@ int main(int, char**){
             f.Move(move_point - f.joints[0].Center);
         }
 
-        // glm::mat4 model = glm::mat4(1.0f);
-        // model = glm::translate(model, glm::vec3(f.joints[0].Center + f.joints[0].moveDirection, 0.0f));
-        // I wanted to experiment by drawing the tip of the nose of the fish but I realized it's too much for tonight
-        // The idead I got for connecting the dots is basically just making a vertices array in each fish that will change each MoveFish call and which will be used by the
-        // fish renderer
-        // the problem is that I have to figure out what data do i write into the buffer so I'll need to experiment
-        // (by 'what data' I mean if it should range from -1 to 1, which it definitely shouldn't (I think???))
-    
+        // for(int i = 0; i < f.numOfJoints; i++){
+        //     std::cout << "pos[" << 2*i   << "]: <" << f.outline_vertices[4*i]   << ", " << f.outline_vertices[4*i+1] << ">" << std::endl;
+        //     std::cout << "pos[" << 2*i+1 << "]: <" << f.outline_vertices[4*i+2] << ", " << f.outline_vertices[4*i+3] << ">" << std::endl;
+        // }
+
         renderer.renderFish(f, shader, outlineShader);
+
+        b.DrawBezierFilled(10, glm::vec2(0.0f), glm::vec2(-5.0f, 0.0f), glm::vec2(5.0f, 0.0f), glm::vec2(0.0f, 10.0f), bezier_shader);
+
+        // So drawing bezier curves works, now I just need to implement it into the fish renderer class, but the problem with that is the bezier needs a shader
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -1,5 +1,7 @@
-CMakeFiles/my_opengl_project.dir/main.cpp.o: \
- /home/stevica/openGL_projects/pond/main.cpp /usr/include/stdc-predef.h \
+CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o: \
+ /home/stevica/openGL_projects/pond/bezier_filled.cpp \
+ /usr/include/stdc-predef.h \
+ /home/stevica/openGL_projects/pond/bezier_filled.h \
  /home/stevica/openGL_projects/pond/glad.h /usr/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -15,26 +17,30 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/time64.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/GL/gl.h \
- /usr/include/GLFW/glfw3.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
- /usr/local/include/glm/detail/type_vec.hpp \
- /usr/local/include/glm/detail/precision.hpp \
- /usr/local/include/glm/detail/setup.hpp /usr/include/c++/11/cassert \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+ /usr/local/include/glm/glm.hpp /usr/local/include/glm/detail/_fixes.hpp \
+ /usr/include/c++/11/cmath \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h \
- /usr/include/c++/11/pstl/pstl_config.h /usr/include/assert.h \
- /usr/include/c++/11/cstddef /usr/local/include/glm/simd/platform.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/emmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/xmmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/mmintrin.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/mm_malloc.h \
- /usr/include/c++/11/stdlib.h /usr/include/c++/11/cstdlib \
- /usr/include/stdlib.h /usr/include/x86_64-linux-gnu/bits/waitflags.h \
- /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
+ /usr/include/c++/11/pstl/pstl_config.h \
+ /usr/include/c++/11/bits/cpp_type_traits.h \
+ /usr/include/c++/11/ext/type_traits.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
+ /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+ /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+ /usr/include/c++/11/bits/std_abs.h /usr/include/stdlib.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/x86_64-linux-gnu/sys/types.h \
@@ -59,27 +65,13 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/c++/11/bits/std_abs.h \
- /usr/local/include/glm/detail/type_int.hpp \
- /usr/include/c++/11/type_traits /usr/include/c++/11/cstdint \
- /usr/local/include/glm/glm.hpp /usr/local/include/glm/detail/_fixes.hpp \
- /usr/include/c++/11/cmath /usr/include/c++/11/bits/cpp_type_traits.h \
- /usr/include/c++/11/ext/type_traits.h /usr/include/math.h \
- /usr/include/x86_64-linux-gnu/bits/math-vector.h \
- /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
- /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
- /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
- /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
- /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
  /usr/include/c++/11/bits/specfun.h \
  /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/c++/11/bits/functexcept.h \
  /usr/include/c++/11/bits/exception_defines.h \
  /usr/include/c++/11/ext/numeric_traits.h \
  /usr/include/c++/11/bits/stl_pair.h /usr/include/c++/11/bits/move.h \
+ /usr/include/c++/11/type_traits \
  /usr/include/c++/11/bits/stl_iterator_base_types.h \
  /usr/include/c++/11/bits/stl_iterator_base_funcs.h \
  /usr/include/c++/11/bits/concept_check.h \
@@ -109,8 +101,19 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/c++/11/cfloat \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/float.h \
+ /usr/include/c++/11/cassert /usr/include/assert.h \
  /usr/local/include/glm/fwd.hpp \
- /usr/local/include/glm/detail/type_float.hpp \
+ /usr/local/include/glm/detail/type_int.hpp \
+ /usr/local/include/glm/detail/setup.hpp /usr/include/c++/11/cstddef \
+ /usr/local/include/glm/simd/platform.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/mm_malloc.h \
+ /usr/include/c++/11/stdlib.h /usr/include/c++/11/cstdlib \
+ /usr/include/c++/11/cstdint /usr/local/include/glm/detail/type_float.hpp \
+ /usr/local/include/glm/detail/type_vec.hpp \
+ /usr/local/include/glm/detail/precision.hpp \
  /usr/local/include/glm/detail/type_mat.hpp \
  /usr/local/include/glm/vec2.hpp \
  /usr/local/include/glm/detail/type_vec2.hpp \
@@ -276,24 +279,9 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/local/include/glm/gtc/constants.hpp \
  /usr/local/include/glm/gtc/constants.inl \
  /usr/local/include/glm/gtc/matrix_transform.inl \
- /usr/include/c++/11/vector /usr/include/c++/11/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h \
- /usr/include/c++/11/ext/new_allocator.h /usr/include/c++/11/new \
- /usr/include/c++/11/bits/exception.h \
- /usr/include/c++/11/bits/memoryfwd.h \
- /usr/include/c++/11/bits/stl_construct.h \
- /usr/include/c++/11/bits/stl_uninitialized.h \
- /usr/include/c++/11/ext/alloc_traits.h \
- /usr/include/c++/11/bits/alloc_traits.h \
- /usr/include/c++/11/bits/stl_vector.h \
- /usr/include/c++/11/initializer_list \
- /usr/include/c++/11/bits/stl_bvector.h \
- /usr/include/c++/11/bits/functional_hash.h \
- /usr/include/c++/11/bits/hash_bytes.h \
- /usr/include/c++/11/bits/range_access.h \
- /usr/include/c++/11/bits/vector.tcc \
  /home/stevica/openGL_projects/pond/shader.h /usr/include/c++/11/string \
  /usr/include/c++/11/bits/stringfwd.h \
+ /usr/include/c++/11/bits/memoryfwd.h \
  /usr/include/c++/11/bits/char_traits.h \
  /usr/include/c++/11/bits/postypes.h /usr/include/c++/11/cwchar \
  /usr/include/wchar.h /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
@@ -302,6 +290,10 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
  /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+ /usr/include/c++/11/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++allocator.h \
+ /usr/include/c++/11/ext/new_allocator.h /usr/include/c++/11/new \
+ /usr/include/c++/11/bits/exception.h \
  /usr/include/c++/11/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h \
  /usr/include/c++/11/clocale /usr/include/locale.h \
@@ -311,6 +303,8 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/c++/11/bits/cxxabi_forced.h \
  /usr/include/c++/11/bits/stl_function.h \
  /usr/include/c++/11/backward/binders.h \
+ /usr/include/c++/11/bits/range_access.h \
+ /usr/include/c++/11/initializer_list \
  /usr/include/c++/11/bits/basic_string.h \
  /usr/include/c++/11/ext/atomicity.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h \
@@ -327,7 +321,12 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/atomic_word.h \
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
- /usr/include/c++/11/string_view /usr/include/c++/11/bits/string_view.tcc \
+ /usr/include/c++/11/ext/alloc_traits.h \
+ /usr/include/c++/11/bits/alloc_traits.h \
+ /usr/include/c++/11/bits/stl_construct.h /usr/include/c++/11/string_view \
+ /usr/include/c++/11/bits/functional_hash.h \
+ /usr/include/c++/11/bits/hash_bytes.h \
+ /usr/include/c++/11/bits/string_view.tcc \
  /usr/include/c++/11/ext/string_conversions.h /usr/include/c++/11/cstdio \
  /usr/include/stdio.h /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
@@ -365,7 +364,4 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/sstream \
- /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream \
- /home/stevica/openGL_projects/pond/fish.h \
- /home/stevica/openGL_projects/pond/fishRenderer.h \
- /home/stevica/openGL_projects/pond/bezier_filled.h
+ /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream

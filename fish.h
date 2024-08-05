@@ -27,7 +27,9 @@ public:
     std::vector<Joint> joints;
     float moveSpeed;
     unsigned int numOfJoints;
-    float outline_vertices[48];
+
+    float* outline_vertices;
+    // std::vector<float> outline_vertices;
 
      Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, float speed = 0.2f);
     ~Fish();

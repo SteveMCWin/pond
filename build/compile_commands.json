@@ -18,5 +18,10 @@
   "directory": "/home/stevica/openGL_projects/pond/build",
   "command": "/usr/bin/c++  -I/urs/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/local/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/include/libpng16  -o CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o -c /home/stevica/openGL_projects/pond/fishRenderer.cpp",
   "file": "/home/stevica/openGL_projects/pond/fishRenderer.cpp"
+},
+{
+  "directory": "/home/stevica/openGL_projects/pond/build",
+  "command": "/usr/bin/c++  -I/urs/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/local/include/freetype2 -I/home/stevica/openGL_projects/pond/-I/usr/include/libpng16  -o CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o -c /home/stevica/openGL_projects/pond/bezier_filled.cpp",
+  "file": "/home/stevica/openGL_projects/pond/bezier_filled.cpp"
 }
 ]
