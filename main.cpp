@@ -27,6 +27,9 @@ const float ASPECT_RATIO      = (float)SCR_HEIGHT/SCR_WIDTH;
 glm::vec2 zoom   = glm::vec2(2.0f, 2.0f);
 glm::vec2 offset = glm::vec2(0.75f, 0.5f);
 
+float delta_time = 0.0f;
+float last_frame = 0.0f;
+
 int main(int, char**){
 
     glfwInit();
@@ -58,14 +61,14 @@ int main(int, char**){
 
     glEnable(GL_MULTISAMPLE);
 
-    Shader shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
+    Shader circleShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
     Shader outlineShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_solid.glsl",
                                   "/home/stevica/openGL_projects/pond/shaders/f_solid.glsl");
     Shader bezier_shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_bezier.glsl",
                                   "/home/stevica/openGL_projects/pond/shaders/f_bezier.glsl");
 
-    shader.use();
+    circleShader.use();
 
     float distances[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
     float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.4f, 0.4f};
@@ -91,11 +94,15 @@ int main(int, char**){
     Fish f = Fish(12, centers, distances, radii);
     FishRenderer renderer;
 
-    BezierCurve b;
-
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     while(!glfwWindowShouldClose(window)){
+
+        float current_frame = glfwGetTime();
+        delta_time = current_frame - last_frame;
+        last_frame = current_frame;
+
+        std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
 
         processInput(window);
 
@@ -117,11 +124,8 @@ int main(int, char**){
         //     std::cout << "pos[" << 2*i+1 << "]: <" << f.outline_vertices[4*i+2] << ", " << f.outline_vertices[4*i+3] << ">" << std::endl;
         // }
 
-        renderer.renderFish(f, shader, outlineShader);
-
-        b.DrawBezierFilled(10, glm::vec2(0.0f), glm::vec2(-5.0f, 0.0f), glm::vec2(5.0f, 0.0f), glm::vec2(0.0f, 10.0f), bezier_shader);
-
-        // So drawing bezier curves works, now I just need to implement it into the fish renderer class, but the problem with that is the bezier needs a shader
+        renderer.renderFishBody(f, circleShader, outlineShader);
+        renderer.renderFishBackFin(f, bezier_shader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

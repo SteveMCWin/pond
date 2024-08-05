@@ -1236,7 +1236,8 @@ CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o: ../fishRenderer.cpp \
   /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
   /usr/include/c++/11/bits/fstream.tcc \
   /usr/include/c++/11/sstream \
-  /usr/include/c++/11/bits/sstream.tcc
+  /usr/include/c++/11/bits/sstream.tcc \
+  ../bezier_filled.h
 
 CMakeFiles/my_opengl_project.dir/glad.c.o: ../glad.c \
   /usr/include/stdc-predef.h \

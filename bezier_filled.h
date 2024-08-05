@@ -1,3 +1,5 @@
+#ifndef BEZIER_FILLED_H
+#define BEZIER_FILLED_H
 #include "glad.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,3 +23,5 @@ private:
     float triangle_vertices[6];
 
 };
+
+#endif

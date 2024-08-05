@@ -8,13 +8,16 @@
 
 #include "fish.h"
 #include "shader.h"
+#include "bezier_filled.h"
 
 class FishRenderer{
 
 public:
      FishRenderer();
     ~FishRenderer();
-    void renderFish(const Fish& fish, Shader& circleShader, Shader& outlineShader);
+    void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
+    void renderFishBackFin(const Fish& fish, Shader& finShader);
+    BezierCurve back_fin_bezier;
 
 private:
 

@@ -35,7 +35,7 @@ FishRenderer::~FishRenderer(){
     glDeleteVertexArrays(1, &this->circleVAO);
 }
 
-void FishRenderer::renderFish(const Fish& fish, Shader& circleShader, Shader& outlineShader){
+void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
 
     glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
     glm::mat4 model = glm::mat4(1.0f);
@@ -98,3 +98,32 @@ void FishRenderer::renderFish(const Fish& fish, Shader& circleShader, Shader& ou
     glBindVertexArray(0);
 
 }
+
+void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){
+
+    Joint j1 = fish.joints[fish.numOfJoints/4];
+    Joint j2 = fish.joints[fish.numOfJoints/2 + 1];
+
+    this->back_fin_bezier.DrawBezierFilled(8, j1.Center, glm::vec2(0.0f), 
+                                           j2.Center - j1.Center, -2.5f * j1.moveDirection, finShader);
+    // this->back_fin_bezier.DrawBezierFilled(10, j1.Center, glm::vec2(0.0f), 
+    //                                        j2.Center - j1.Center, -2.5f * j1.moveDirection * glm::vec2(-0.3f), finShader);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

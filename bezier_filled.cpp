@@ -31,6 +31,10 @@ void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec
     glm::vec2 second_moveable = p2 - attractor;
 
     glBindVertexArray(this->VAO);
+    
+    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(worldPos, 0.0));
 
     for(int i = 0; i < numOfPoints; i++){
 
@@ -48,10 +52,6 @@ void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec
         glBufferSubData(GL_ARRAY_BUFFER, 0, 6 * sizeof(float), this->triangle_vertices);
 
         shader.use();
-        glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(worldPos, 0.0));
-
         shader.setMat4("projection", projection);
         shader.setMat4("model", model);
 
