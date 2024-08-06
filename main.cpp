@@ -102,7 +102,7 @@ int main(int, char**){
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
+        // std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
 
         processInput(window);
 

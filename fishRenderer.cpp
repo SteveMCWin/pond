@@ -104,11 +104,20 @@ void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){
     Joint j1 = fish.joints[fish.numOfJoints/4];
     Joint j2 = fish.joints[fish.numOfJoints/2 + 1];
 
-    this->back_fin_bezier.DrawBezierFilled(8, j1.Center, glm::vec2(0.0f), 
-                                           j2.Center - j1.Center, -2.5f * j1.moveDirection, finShader);
+    // this->back_fin_bezier.DrawBezierFilled(8, j1.Center, glm::vec2(0.0f), 
+    //                                        j2.Center - j1.Center, -2.5f * j1.moveDirection, finShader);
     // this->back_fin_bezier.DrawBezierFilled(10, j1.Center, glm::vec2(0.0f), 
     //                                        j2.Center - j1.Center, -2.5f * j1.moveDirection * glm::vec2(-0.3f), finShader);
 
+    glm::vec2 controlPoint = -2.5f * j1.moveDirection;
+
+    glm::vec2 controlDirection = glm::normalize(controlPoint - (j1.Center+j2.Center)/2.0f);
+
+    glm::vec2 controlPoint2 = controlPoint + 2.5f * controlDirection;
+
+    // Cannot figur out how to get a good controlPoint2 value
+
+    this->back_fin_bezier.DrawCrescentBezierFilled(3, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader);
 }
 
 
