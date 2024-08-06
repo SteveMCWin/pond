@@ -1,5 +1,6 @@
 #include "fishRenderer.h"
 #include <GLFW/glfw3.h>
+#include <glm/detail/func_geometric.hpp>
 #include <glm/detail/type_mat.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -80,6 +81,16 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     circleShader.setFloat("r", fish.joints[fish.numOfJoints-1].circleRadius);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
+    // model = glm::mat4(1.0f);
+    // model = glm::translate(model, glm::vec3(fish.tail_fin_joint.Center, 0.0f));
+    // model = glm::scale(model, glm::vec3(fish.tail_fin_joint.circleRadius, fish.tail_fin_joint.circleRadius, 1.0f));
+    //
+    // circleShader.use();
+    // circleShader.setMat4("projection", projection);
+    // circleShader.setMat4("model", model);
+    // circleShader.setFloat("r", fish.tail_fin_joint.circleRadius);
+    // glDrawArrays(GL_TRIANGLES, 0, 6);
+
     // render the outline
 
     glBindVertexArray(this->outlineVAO);
@@ -104,20 +115,21 @@ void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){
     Joint j1 = fish.joints[fish.numOfJoints/4];
     Joint j2 = fish.joints[fish.numOfJoints/2 + 1];
 
-    // this->back_fin_bezier.DrawBezierFilled(8, j1.Center, glm::vec2(0.0f), 
-    //                                        j2.Center - j1.Center, -2.5f * j1.moveDirection, finShader);
-    // this->back_fin_bezier.DrawBezierFilled(10, j1.Center, glm::vec2(0.0f), 
-    //                                        j2.Center - j1.Center, -2.5f * j1.moveDirection * glm::vec2(-0.3f), finShader);
-
     glm::vec2 controlPoint = -2.5f * j1.moveDirection;
 
-    glm::vec2 controlDirection = glm::normalize(controlPoint - (j1.Center+j2.Center)/2.0f);
+    glm::vec2 controlDirection = glm::normalize(controlPoint + j1.Center - (j1.Center+j2.Center)/2.0f);
 
-    glm::vec2 controlPoint2 = controlPoint + 2.5f * controlDirection;
+    glm::vec2 controlPoint2 = controlPoint + 1.0f * controlDirection;
 
-    // Cannot figur out how to get a good controlPoint2 value
+    this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader);
 
-    this->back_fin_bezier.DrawCrescentBezierFilled(3, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader);
+    glm::vec2 point_on_circle = glm::vec2(glm::normalize(glm::cross(glm::vec3(fish.joints[fish.numOfJoints-1].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)))) * fish.joints[fish.numOfJoints-1].circleRadius;
+    glm::vec2 tail_fin_start = fish.joints[fish.numOfJoints-1].Center + point_on_circle;
+        
+    glm::vec2 tail_fin_end = fish.joints[fish.numOfJoints-1].Center - point_on_circle;
+    // this->fin_bezier.DrawBezierFilled(8, fish.joints[fish.numOfJoints-1] + , glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, Shader &shader)
+    glm::vec2 tail_fin_control = fish.tail_fin_joint.Center - fish.joints[fish.numOfJoints-1].Center;
+    this->fin_bezier.DrawBezierFilled(8, tail_fin_start, glm::vec2(0.0f), tail_fin_end - tail_fin_start, tail_fin_control * 2.0f, finShader);
 }
 
 

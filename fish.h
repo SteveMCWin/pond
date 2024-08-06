@@ -25,6 +25,7 @@ struct Joint{
 class Fish{
 public:
     std::vector<Joint> joints;
+    Joint tail_fin_joint;
     float moveSpeed;
     unsigned int numOfJoints;
 

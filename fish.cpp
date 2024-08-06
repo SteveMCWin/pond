@@ -15,11 +15,13 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, flo
         // std::cout << "Made joint number " << i+1 << std::endl;
         // std::cout << "joint " << i+1 << ":\t<" << centers[i].x << ", " << centers[i].y << ">" << std::endl;
     }
+    this->tail_fin_joint = this->joints[jointNum-1];
+    this->tail_fin_joint.desiredDistance *= 2.0f;
     this->moveSpeed = speed;
 }
 
 Fish::~Fish(){
-    // delete[] this->outline_vertices;
+    delete[] this->outline_vertices;
 }
 
 void Fish::Move(glm::vec2 direction){
@@ -30,7 +32,8 @@ void Fish::Move(glm::vec2 direction){
     this->outline_vertices[0] = point.x * this->joints[0].circleRadius;
     this->outline_vertices[1] = point.y * this->joints[0].circleRadius;
 
-    point = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(this->joints[0].moveDirection, 0.0f)));    // i think here I can just do point = -point;
+    // point = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(this->joints[0].moveDirection, 0.0f)));    // i think here I can just do point = -point;
+    point = -point;
     this->outline_vertices[2] = point.x * this->joints[0].circleRadius;
     this->outline_vertices[3] = point.y * this->joints[0].circleRadius;
 
@@ -58,6 +61,11 @@ void Fish::updateJoints(){
         this->outline_vertices[4*i+2] = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
         this->outline_vertices[4*i+3] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
        
+    }
+
+    if(this->tail_fin_joint.desiredDistance - glm::distance(this->tail_fin_joint.Center, this->joints[this->numOfJoints-1].Center) < 1e-2){
+        tail_fin_joint.moveDirection = glm::normalize(joints[numOfJoints-1].Center - tail_fin_joint.Center);
+        tail_fin_joint.Center += tail_fin_joint.moveDirection * (glm::distance(tail_fin_joint.Center, joints[numOfJoints-1].Center) - tail_fin_joint.desiredDistance);
     }
 
 }

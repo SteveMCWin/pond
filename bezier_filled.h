@@ -28,6 +28,8 @@ private:
     float triangle_vertices[6];
     std::vector<float> crescent_vertices;
 
+    int max_crescent_vertices = 15;
+
 };
 
 #endif

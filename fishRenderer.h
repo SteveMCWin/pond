@@ -17,7 +17,7 @@ public:
     ~FishRenderer();
     void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
     void renderFishBackFin(const Fish& fish, Shader& finShader);
-    BezierCurve back_fin_bezier;
+    BezierCurve fin_bezier;
 
 private:
 
