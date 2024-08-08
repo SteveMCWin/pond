@@ -71,7 +71,7 @@ int main(int, char**){
     circleShader.use();
 
     float distances[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-    float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.4f, 0.4f};
+    float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};
     glm::vec2 centers[] = {
         glm::vec2(1.0f, 1.0f),
         glm::vec2(-0.1f, -0.1f),

@@ -15,8 +15,10 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, flo
         // std::cout << "Made joint number " << i+1 << std::endl;
         // std::cout << "joint " << i+1 << ":\t<" << centers[i].x << ", " << centers[i].y << ">" << std::endl;
     }
-    this->tail_fin_joint = this->joints[jointNum-1];
-    this->tail_fin_joint.desiredDistance *= 2.0f;
+    this->tail_fin_joints[0] = this->joints[jointNum-1];
+    this->tail_fin_joints[0].desiredDistance = 1.5f;
+    this->tail_fin_joints[1] = this->tail_fin_joints[0];
+    this->tail_fin_joints[1].desiredDistance = 1.5f;
     this->moveSpeed = speed;
 }
 
@@ -63,11 +65,15 @@ void Fish::updateJoints(){
        
     }
 
-    if(this->tail_fin_joint.desiredDistance - glm::distance(this->tail_fin_joint.Center, this->joints[this->numOfJoints-1].Center) < 1e-2){
-        tail_fin_joint.moveDirection = glm::normalize(joints[numOfJoints-1].Center - tail_fin_joint.Center);
-        tail_fin_joint.Center += tail_fin_joint.moveDirection * (glm::distance(tail_fin_joint.Center, joints[numOfJoints-1].Center) - tail_fin_joint.desiredDistance);
+    if(this->tail_fin_joints[0].desiredDistance - glm::distance(this->tail_fin_joints[0].Center, this->joints[this->numOfJoints-1].Center) < 1e-2){
+        tail_fin_joints[0].moveDirection = glm::normalize(joints[numOfJoints-1].Center - tail_fin_joints[0].Center);
+        tail_fin_joints[0].Center += tail_fin_joints[0].moveDirection * (glm::distance(tail_fin_joints[0].Center, joints[numOfJoints-1].Center) - tail_fin_joints[0].desiredDistance);
     }
 
+    if(this->tail_fin_joints[1].desiredDistance - glm::distance(this->tail_fin_joints[0].Center, this->tail_fin_joints[1].Center) < 1e-2){
+        tail_fin_joints[1].moveDirection = glm::normalize(tail_fin_joints[0].Center - tail_fin_joints[1].Center);
+        tail_fin_joints[1].Center += tail_fin_joints[1].moveDirection * (glm::distance(tail_fin_joints[1].Center, tail_fin_joints[0].Center) - tail_fin_joints[1].desiredDistance);
+    }
 }
 
 
