@@ -124,6 +124,7 @@ int main(int, char**){
         //     std::cout << "pos[" << 2*i+1 << "]: <" << f.outline_vertices[4*i+2] << ", " << f.outline_vertices[4*i+3] << ">" << std::endl;
         // }
 
+        renderer.renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
         renderer.renderFishBody(f, circleShader, outlineShader);
         renderer.renderFishBackFin(f, bezier_shader);
 
