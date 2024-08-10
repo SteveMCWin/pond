@@ -91,17 +91,6 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     circleShader.setFloat("r", fish.joints[fish.numOfJoints-1].circleRadius);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    // model = glm::mat4(1.0f);
-    // model = glm::translate(model, glm::vec3(fish.tail_fin_joint.Center, 0.0f));
-    // model = glm::scale(model, glm::vec3(fish.tail_fin_joint.circleRadius, fish.tail_fin_joint.circleRadius, 1.0f));
-    //
-    // circleShader.use();
-    // circleShader.setMat4("projection", projection);
-    // circleShader.setMat4("model", model);
-    // circleShader.setVec3("color", 0.2f, 0.5f, 0.7f);
-    // circleShader.setFloat("r", fish.tail_fin_joint.circleRadius);
-    // glDrawArrays(GL_TRIANGLES, 0, 6);
-
     // render the outline
 
     glBindVertexArray(this->outlineVAO);
@@ -207,7 +196,26 @@ void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, gl
     glBindVertexArray(0);
 }
 
+void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader){
 
+    Joint headJoint = fish.joints[0];
+
+    glm::vec2 offset = jointSidePoint(headJoint) * 0.85f;
+
+    float rightEyeAngle = angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - pi/2.0f + pi/20.0f;
+    float leftEyeAngle  = angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) + pi/2.0f - pi/20.0f;
+
+    glBindVertexArray(this->circleVAO);
+
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale * 1.4f, circleShader, glm::vec3(0.2f, 0.5f, 0.7f));   // right eye
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale, circleShader, glm::vec3(0.05f, 0.1f, 0.1f)*2.0f);   // right eye
+
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale * 1.4f, circleShader, glm::vec3(0.2f, 0.5f, 0.7f));   // left eye
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale, circleShader, glm::vec3(0.05f, 0.1f, 0.1f)*2.0f);   // left  eye
+
+    glBindVertexArray(0);
+
+}
 
 
 

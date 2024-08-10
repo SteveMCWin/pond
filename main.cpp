@@ -126,6 +126,7 @@ int main(int, char**){
 
         renderer.renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
         renderer.renderFishBody(f, circleShader, outlineShader);
+        renderer.renderFishEyes(f, glm::vec2(0.15f, 0.4f), circleShader);
         renderer.renderFishBackFin(f, bezier_shader);
 
         glfwSwapBuffers(window);

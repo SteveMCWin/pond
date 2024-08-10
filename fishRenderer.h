@@ -18,6 +18,7 @@ public:
     void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
     void renderFishBackFin(const Fish& fish, Shader& finShader);
     void renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader);
+    void renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader);
     BezierCurve fin_bezier;
 
 private:
