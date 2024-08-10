@@ -22,6 +22,8 @@ public:
 
 private:
 
+    void renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color, float r);
+
     const float aspect_ratio = 9.0f/16.0f;
     const float pi = 3.14159f;
 

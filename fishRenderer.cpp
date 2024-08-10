@@ -161,6 +161,24 @@ float angleBetweenVectors(glm::vec2 v1, glm::vec2 v2){
     return angle;
 }
 
+void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color = glm::vec3(0.1f, 0.9f, 0.3f), float r = 0.5f){
+
+    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+
+    model = glm::translate(model, glm::vec3(position + offset, 0.0f));
+    model = glm::rotate(model, rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::scale(model, glm::vec3(scale, 1.0f));
+
+    shader.use();
+    shader.setMat4("projection", projection);
+    shader.setMat4("model", model);
+    shader.setVec3("color", color);
+    shader.setFloat("r", r);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
 void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader){
 
     Joint frontFinsJoint = fish.joints[fish.numOfJoints/6];   
@@ -172,56 +190,19 @@ void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, gl
     glm::vec2 frontOffset = jointSidePoint(frontFinsJoint);
     glm::vec2 backOffset  = jointSidePoint(backFinsJoint);
 
-    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
-    glm::mat4 model;
-
     float rightFinAngle = angleBetweenVectors(frontFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 3.0f*pi/4.0f;
     float leftFinAngle  = rightFinAngle + 6.0f*pi/4.0f;
 
     glBindVertexArray(this->circleVAO);
 
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(frontFinsJoint.Center + frontOffset, 0.0f));
-    model = glm::rotate(model, rightFinAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, glm::vec3(frontScale, 1.0f));
-
-    finShader.use();
-    finShader.setMat4("projection", projection);
-    finShader.setMat4("model", model);
-    finShader.setVec3("color", 0.1f, 0.9f, 0.3f);
-    finShader.setFloat("r", 0.5f);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(frontFinsJoint.Center - frontOffset, 0.0f));
-    model = glm::rotate(model, leftFinAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, glm::vec3(frontScale, 1.0f));
-
-    finShader.setMat4("model", model);
-      
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, frontScale, finShader);
+    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, frontScale, finShader);
 
     rightFinAngle = angleBetweenVectors(backFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 7.0f*pi/8.0f;
     leftFinAngle  = rightFinAngle + 14.0f*pi/8.0f;
 
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(backFinsJoint.Center + backOffset, 0.0f));
-    model = glm::rotate(model, rightFinAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, glm::vec3(backScale, 1.0f));
-
-    finShader.setMat4("model", model);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(backFinsJoint.Center - backOffset, 0.0f));
-    model = glm::rotate(model, leftFinAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, glm::vec3(backScale, 1.0f));
-
-    finShader.setMat4("model", model);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, backScale, finShader);
+    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, backScale, finShader);
 
     glBindVertexArray(0);
 }
