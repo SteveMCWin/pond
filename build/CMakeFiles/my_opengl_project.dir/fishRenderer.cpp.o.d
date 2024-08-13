@@ -280,9 +280,9 @@ CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o: \
  /usr/local/include/glm/gtc/constants.inl \
  /usr/local/include/glm/gtc/matrix_transform.inl /usr/include/GL/gl.h \
  /usr/include/GLFW/glfw3.h /home/stevica/openGL_projects/pond/fish.h \
- /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
- /usr/include/c++/11/ios /usr/include/c++/11/iosfwd \
- /usr/include/c++/11/bits/stringfwd.h \
+ /home/stevica/openGL_projects/pond/global.h /usr/include/c++/11/iostream \
+ /usr/include/c++/11/ostream /usr/include/c++/11/ios \
+ /usr/include/c++/11/iosfwd /usr/include/c++/11/bits/stringfwd.h \
  /usr/include/c++/11/bits/memoryfwd.h /usr/include/c++/11/bits/postypes.h \
  /usr/include/c++/11/cwchar /usr/include/wchar.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \

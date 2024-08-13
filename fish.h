@@ -2,6 +2,7 @@
 #define FISH_H
 
 #include "glad.h"
+#include "global.h"
 #include <glm/detail/type_vec.hpp>
 #include <glm/glm.hpp>
 #include <iostream>
@@ -38,7 +39,7 @@ public:
     void Move(glm::vec2 direction);
 
 private:
-    const float aspect_ratio = 9.0f/16.0f;
+    const float aspect_ratio = Global::aspectRatio;
 
     void updateJoints();
     // rendering will be handled by a separate class

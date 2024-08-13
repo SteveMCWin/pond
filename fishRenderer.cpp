@@ -1,4 +1,5 @@
 #include "fishRenderer.h"
+#include "global.h"
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <glm/detail/func_geometric.hpp>
@@ -45,7 +46,7 @@ glm::vec2 jointSidePoint(Joint& j){
 
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
 
-    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
+    glm::mat4 projection = Global::projectionMatrix;
     glm::mat4 model = glm::mat4(1.0f);
 
     // render the circles
@@ -123,8 +124,9 @@ void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){  // T
 
     // Draw back fin
     this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader);
+}
 
-    glm::vec2 point_on_circle = glm::vec2(glm::normalize(glm::cross(glm::vec3(fish.joints[fish.numOfJoints-1].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)))) * fish.joints[fish.numOfJoints-1].circleRadius;
+void FishRenderer::renderFishTailFin(const Fish& fish, Shader& finShader){
 
     glm::vec2 tail_fin_start = fish.joints[fish.numOfJoints-1].Center;
     glm::vec2 tail_fin_end = fish.tail_fin_joints[1].Center;
@@ -136,7 +138,7 @@ void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){  // T
     // tail_fin_control_offset_dir *= sin_offset;
 
     tail_fin_control1 = tail_fin_control1 + tail_fin_control_offset_dir * 1.5f; 
-    glm::vec2 tail_fin_control2 = tail_fin_control1 + tail_fin_control_offset_dir * 3.0f;
+    glm::vec2 tail_fin_control2 = tail_fin_control1 + tail_fin_control_offset_dir * 5.0f;
 
     this->fin_bezier.DrawCrescentBezierFilled(8, tail_fin_start, glm::vec2(0.0f), tail_fin_end - tail_fin_start,
                                               tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, finShader);
@@ -152,7 +154,7 @@ float angleBetweenVectors(glm::vec2 v1, glm::vec2 v2){
 
 void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color = glm::vec3(0.1f, 0.9f, 0.3f), float r = 0.5f){
 
-    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
+    glm::mat4 projection = Global::projectionMatrix;
     glm::mat4 model = glm::mat4(1.0f);
 
     model = glm::translate(model, glm::vec3(position + offset, 0.0f));

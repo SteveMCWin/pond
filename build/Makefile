@@ -177,6 +177,30 @@ fish.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fish.cpp.s
 .PHONY : fish.cpp.s
 
+fishHandler.o: fishHandler.cpp.o
+.PHONY : fishHandler.o
+
+# target to build an object file
+fishHandler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o
+.PHONY : fishHandler.cpp.o
+
+fishHandler.i: fishHandler.cpp.i
+.PHONY : fishHandler.i
+
+# target to preprocess a source file
+fishHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fishHandler.cpp.i
+.PHONY : fishHandler.cpp.i
+
+fishHandler.s: fishHandler.cpp.s
+.PHONY : fishHandler.s
+
+# target to generate assembly for a file
+fishHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/fishHandler.cpp.s
+.PHONY : fishHandler.cpp.s
+
 fishRenderer.o: fishRenderer.cpp.o
 .PHONY : fishRenderer.o
 
@@ -225,6 +249,30 @@ glad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/glad.c.s
 .PHONY : glad.c.s
 
+global.o: global.cpp.o
+.PHONY : global.o
+
+# target to build an object file
+global.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/global.cpp.o
+.PHONY : global.cpp.o
+
+global.i: global.cpp.i
+.PHONY : global.i
+
+# target to preprocess a source file
+global.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/global.cpp.i
+.PHONY : global.cpp.i
+
+global.s: global.cpp.s
+.PHONY : global.s
+
+# target to generate assembly for a file
+global.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/global.cpp.s
+.PHONY : global.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -264,12 +312,18 @@ help:
 	@echo "... fish.o"
 	@echo "... fish.i"
 	@echo "... fish.s"
+	@echo "... fishHandler.o"
+	@echo "... fishHandler.i"
+	@echo "... fishHandler.s"
 	@echo "... fishRenderer.o"
 	@echo "... fishRenderer.i"
 	@echo "... fishRenderer.s"
 	@echo "... glad.o"
 	@echo "... glad.i"
 	@echo "... glad.s"
+	@echo "... global.o"
+	@echo "... global.i"
+	@echo "... global.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

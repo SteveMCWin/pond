@@ -368,4 +368,5 @@ CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/sstream \
- /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream
+ /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream \
+ /home/stevica/openGL_projects/pond/global.h

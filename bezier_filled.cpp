@@ -1,4 +1,5 @@
 #include "bezier_filled.h"
+#include "global.h"
 #include <glm/detail/func_geometric.hpp>
 #include <iostream>
 
@@ -46,7 +47,7 @@ void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec
 
     glBindVertexArray(this->VAO);
     
-    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
+    glm::mat4 projection = Global::projectionMatrix;
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(worldPos, 0.0));
 
@@ -93,7 +94,7 @@ void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, 
     glm::vec2 first_moveable  = controlPoint - p1;
     glm::vec2 second_moveable = p2 - controlPoint;
 
-    glm::mat4 projection = glm::ortho(-20.0f, 20.0f, -20.0f * this->aspect_ratio, 20.0f * this->aspect_ratio, -1.0f, 1.0f);
+    glm::mat4 projection = Global::projectionMatrix;
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(worldPos, 0.0));
 
