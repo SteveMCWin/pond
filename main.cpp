@@ -109,7 +109,7 @@ int main(int, char**){
         last_frame = current_frame;
 
         if(frameCounter > 50){
-            std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
+            // std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
             frameCounter = -1;
         }
         frameCounter++;

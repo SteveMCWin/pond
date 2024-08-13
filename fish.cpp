@@ -1,7 +1,7 @@
 #include "fish.h"
 #include <glm/detail/func_geometric.hpp>
 
-Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, float speed){
+Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks, float speed){
     this->numOfJoints = jointNum;
     this->outline_vertices = new float[4*jointNum];
     for(int i = 0; i < jointNum; i++){
@@ -20,6 +20,13 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, flo
     this->tail_fin_joints[1] = this->tail_fin_joints[0];
     this->tail_fin_joints[1].desiredDistance = 1.5f;
     this->moveSpeed = speed;
+
+    numOfHitChecks += (numOfHitChecks % 2) ? 0 : 1;
+
+    this->hit_checks.resize(numOfHitChecks);
+    this->hit_check_distance = 7.0f * radii[0];
+    this->updateHitChecks();
+
 }
 
 Fish::~Fish(){
@@ -39,6 +46,7 @@ void Fish::Move(glm::vec2 direction){
     this->outline_vertices[2] = point.x * this->joints[0].circleRadius;
     this->outline_vertices[3] = point.y * this->joints[0].circleRadius;
 
+    this->updateHitChecks();
     this->updateJoints();
 }
 
@@ -76,4 +84,36 @@ void Fish::updateJoints(){
     }
 }
 
+void Fish::updateHitChecks(){
+
+    float degreeChange = hit_check_angle/(this->hit_checks.size()-1);
+
+    // std::cout << "hit_check[1].y: " << -(this->joints[1].Center.y + this->hit_checks[1].y * hit_check_distance) << ">\n";
+    // std::cout << "hit_check_itself <" << this->hit_checks[1].x << ", " << -this->hit_checks[1].y << ">\n";
+
+    for(int i = -(this->hit_checks.size()/2), j = 0; j < this->hit_checks.size(); j++, i++){
+
+        this->hit_checks[j] = rotateVector(this->joints[0].moveDirection, -degreeChange * i);
+        
+
+    }
+
+    if(-(this->joints[0].Center.y + this->hit_checks[0].y * hit_check_distance) > Global::bottomLeftCorner.y){
+        std::cout << "Hit_Check[0]" << std::endl;
+    }
+    else{
+        std::cout << "Nope" << std::endl;
+    }
+
+}
+
+glm::vec2 Fish::rotateVector(glm::vec2& vector, float angle){
+
+    angle = Global::deg_to_rad(angle);
+
+    float new_x = std::cos(angle)*vector.x - std::sin(angle)*vector.y;
+    float new_y = std::sin(angle)*vector.x + std::cos(angle)*vector.y;
+
+    return glm::normalize(glm::vec2(new_x, new_y));
+}
 
