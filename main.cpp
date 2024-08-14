@@ -99,7 +99,11 @@ int main(int, char**){
 
     FishHandler fishHandler;
 
-    fishHandler.addFish(12, centers, distances, radii, 7);
+    fishHandler.addFish(12, centers, distances, radii, 12);
+
+    centers[0] = glm::vec2(-20.0f, -12.0f);
+
+    // fishHandler.addFish(12, centers, distances, radii, 7);
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -135,8 +139,10 @@ int main(int, char**){
         
         for(Fish& f : fishHandler.allFish){
 
-            if(glm::length(move_point - f.joints[0].Center) > 0.1)
-                f.Move(move_point - f.joints[0].Center);
+            // if(glm::length(move_point - f.joints[0].Center) > 0.1)
+                // f.Move(move_point - f.joints[0].Center);
+
+            f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
 
             renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
             renderer->renderFishBody(f, circleShader, outlineShader);

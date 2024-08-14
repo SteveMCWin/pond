@@ -1,5 +1,6 @@
 #include "fish.h"
 #include <glm/detail/func_geometric.hpp>
+#include <ostream>
 
 Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks, float speed){
     this->numOfJoints = jointNum;
@@ -21,11 +22,11 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     this->tail_fin_joints[1] = this->tail_fin_joints[0];
     this->tail_fin_joints[1].desiredDistance = 1.5f;
     this->moveSpeed = speed;
+    this->hit_checks_result = 0;
 
     numOfHitChecks += (numOfHitChecks % 2) ? 0 : 1;
 
     this->hit_checks.resize(numOfHitChecks);
-    std::cout << numOfHitChecks << std::endl;
     this->hit_check_distance = 7.0f * radii[0];
     this->updateHitChecks();
 
@@ -90,6 +91,8 @@ void Fish::updateJoints(){
 
 void Fish::updateHitChecks(){
 
+    hit_checks_result = 0;
+
     float degreeChange = hit_check_angle/(this->hit_checks.size()-1);
 
     // std::cout << "hit_check[1].y: " << -(this->joints[1].Center.y + this->hit_checks[1].y * hit_check_distance) << ">\n";
@@ -99,15 +102,25 @@ void Fish::updateHitChecks(){
 
         this->hit_checks[j] = rotateVector(this->joints[0].moveDirection, -degreeChange * i);
         
+        glm::vec2 hit_check_world_pos = this->joints[0].Center + this->hit_checks[j] * hit_check_distance;
+        if(  hit_check_world_pos.x > -Global::bottomLeftCorner.x ||
+             hit_check_world_pos.x <  Global::bottomLeftCorner.x ||
+            -hit_check_world_pos.y >  Global::bottomLeftCorner.y ||
+            -hit_check_world_pos.y < -Global::bottomLeftCorner.y){
+
+                hit_checks_result += (i < 0) ? 1 : -1;
+                // std::cout << "hi" << std::endl;
+        }
 
     }
 
-    if(-(this->joints[0].Center.y + this->hit_checks[this->hit_checks.size()/2].y * hit_check_distance) > Global::bottomLeftCorner.y){
-        std::cout << "Hit_Check[" << this->hit_checks.size()/2 << "]" << std::endl;
-    }
-    else{
-        std::cout << "Nope" << std::endl;
-    }
+    // if(-(this->joints[0].Center.y + this->hit_checks[this->hit_checks.size()/2].y * hit_check_distance) < Global::bottomLeftCorner.y + Global::screenHalfSize*2){
+    //     std::cout << "Hit_Check[" << this->hit_checks.size()/2 << "]" << std::endl;
+    // }
+    // else{
+    //     std::cout << "Nope" << std::endl;
+    // }
+    std::cout << "\rhit_check_result: " << hit_checks_result << std::flush;
 
 }
 

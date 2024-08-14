@@ -15,7 +15,7 @@ struct Joint{
     float circleRadius;
     
     // Joint* jointConnectedTo;
-    Joint(glm::vec2 c = glm::vec2(0.0f), float d = 1.0f, float r = 1.0f, glm::vec2 m = glm::vec2(0.0f, 1.0f)){
+    Joint(glm::vec2 c = glm::vec2(0.0f), float d = 1.0f, float r = 1.0f, glm::vec2 m = glm::normalize(glm::vec2(0.5f, 1.0f))){
         Center = c;
         desiredDistance = d;
         circleRadius = r;
@@ -28,8 +28,10 @@ public:
     std::vector<Joint> joints;
     std::vector<glm::vec2> hit_checks;
     Joint tail_fin_joints[2];
-    float moveSpeed;
     unsigned int numOfJoints;
+    float moveSpeed;
+
+    int hit_checks_result;
 
     // float* outline_vertices;
     std::vector<float> outline_vertices;
