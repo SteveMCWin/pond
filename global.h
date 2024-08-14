@@ -17,6 +17,7 @@ public:
 
     static float DegToRad(float degrees);
     static glm::vec2 CalculateNormal(glm::vec2 vec);
+    static float GetRandomFloat();
 };
 
 #endif // !GLOBAL_H

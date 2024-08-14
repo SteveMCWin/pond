@@ -3,7 +3,9 @@
 
 #include "glad.h"
 #include "global.h"
+#include <cstdlib>
 #include <glm/detail/type_vec.hpp>
+#include <glm/gtc/random.hpp>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
@@ -15,7 +17,7 @@ struct Joint{
     float circleRadius;
     
     // Joint* jointConnectedTo;
-    Joint(glm::vec2 c = glm::vec2(0.0f), float d = 1.0f, float r = 1.0f, glm::vec2 m = glm::normalize(glm::vec2(0.5f, 1.0f))){
+    Joint(glm::vec2 c = glm::vec2(0.0f), float d = 1.0f, float r = 1.0f, glm::vec2 m = glm::normalize(glm::circularRand(1.0f))){
         Center = c;
         desiredDistance = d;
         circleRadius = r;

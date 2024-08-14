@@ -96,9 +96,6 @@ void Fish::updateHitChecks(){
 
     float degreeChange = hit_check_angle/(this->hit_checks.size()-1);
 
-    // std::cout << "hit_check[1].y: " << -(this->joints[1].Center.y + this->hit_checks[1].y * hit_check_distance) << ">\n";
-    // std::cout << "hit_check_itself <" << this->hit_checks[1].x << ", " << -this->hit_checks[1].y << ">\n";
-
     for(int i = -(this->hit_checks.size()/2), j = 0; j < this->hit_checks.size(); j++, i++){
 
         this->hit_checks[j] = rotateVector(this->joints[0].moveDirection, -degreeChange * i);
@@ -115,17 +112,9 @@ void Fish::updateHitChecks(){
 
     }
 
-    // if(-(this->joints[0].Center.y + this->hit_checks[this->hit_checks.size()/2].y * hit_check_distance) < Global::bottomLeftCorner.y + Global::screenHalfSize*2){
-    //     std::cout << "Hit_Check[" << this->hit_checks.size()/2 << "]" << std::endl;
-    // }
-    // else{
-    //     std::cout << "Nope" << std::endl;
-    // }
-    // std::cout << "\rhit_check_result: " << hit_checks_result << std::flush;
-
 }
 
-glm::vec2 Fish::rotateVector(glm::vec2& vector, float angle){
+glm::vec2 Fish::rotateVector(glm::vec2& vector, float angle){   // TODO: make this a global func
 
     angle = Global::DegToRad(angle);
 

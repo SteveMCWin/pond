@@ -368,6 +368,8 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/sstream \
  /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream \
  /home/stevica/openGL_projects/pond/fish.h \
+ /usr/local/include/glm/gtc/random.hpp \
+ /usr/local/include/glm/gtc/random.inl /usr/include/c++/11/ctime \
  /home/stevica/openGL_projects/pond/fishRenderer.h \
  /home/stevica/openGL_projects/pond/bezier_filled.h \
  /home/stevica/openGL_projects/pond/fishHandler.h

@@ -98,13 +98,16 @@ int main(int, char**){
 
     FishHandler fishHandler;
 
-    fishHandler.addFish(12, centers, distances, radii, 12);
+    // fishHandler.addFish(12, centers, distances, radii, 12);
     // Fish fishy = Fish(12, centers, distances, radii, 7);
     // fishHandler.addFish(fishy);
 
-    centers[0] = glm::vec2(-20.0f, -12.0f);
+    // centers[0] = glm::vec2(-20.0f, -12.0f);
+    // fishHandler.addFish(12, centers, distances, radii, 12);
 
-    // fishHandler.addFish(12, centers, distances, radii, 7);
+    for(int i = 0; i < 15; i++){
+        fishHandler.addFish(12, centers, distances, radii, 12);
+    }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
