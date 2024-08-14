@@ -32,7 +32,9 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
 }
 
 Fish::~Fish(){
-    this->outline_vertices.resize(0);
+    // this->outline_vertices.resize(0);
+    this->outline_vertices.clear();
+    this->outline_vertices.shrink_to_fit();
 }
 
 void Fish::Move(glm::vec2 direction){
