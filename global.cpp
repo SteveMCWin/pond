@@ -6,6 +6,12 @@ float Global::screenHalfSize = 60.0f;
 glm::vec2 Global::bottomLeftCorner = glm::vec2(-screenHalfSize, screenHalfSize*aspectRatio);
 glm::mat4 Global::projectionMatrix = glm::ortho(-screenHalfSize, screenHalfSize, -screenHalfSize * aspectRatio, screenHalfSize * aspectRatio, -1.0f, 1.0f);
 
-float Global::deg_to_rad(float degrees){
+float Global::DegToRad(float degrees){
+    // converts degrees to radians
     return degrees*0.01745f;
+}
+
+glm::vec2 Global::CalculateNormal(glm::vec2 vec){
+    // returns a normal vector pointing to the right if the input vec is pointing up
+    return glm::vec2(glm::normalize(glm::cross(glm::vec3(vec, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f))));
 }

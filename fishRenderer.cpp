@@ -41,7 +41,7 @@ FishRenderer::~FishRenderer(){
 }
 
 glm::vec2 jointSidePoint(Joint& j){
-    return glm::vec2(glm::normalize(glm::cross(glm::vec3(j.moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)))) * j.circleRadius;
+    return glm::vec2(glm::normalize(glm::cross(glm::vec3(j.moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)))) * j.circleRadius; // TODO: do this with the global func
 }
 
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){

@@ -30,6 +30,7 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     this->hit_check_distance = 7.0f * radii[0];
     this->updateHitChecks();
 
+    std::cout << "Fish speed: " << this->moveSpeed << std::endl;
 }
 
 Fish::~Fish(){
@@ -38,9 +39,9 @@ Fish::~Fish(){
     this->outline_vertices.shrink_to_fit();
 }
 
-void Fish::Move(glm::vec2 direction){
+void Fish::Move(glm::vec2 direction, float delta_time){
     this->joints[0].moveDirection = glm::normalize(direction);
-    this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed;
+    this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed * delta_time;
 
     glm::vec3 point = glm::normalize(glm::cross(glm::vec3(this->joints[0].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
     this->outline_vertices[0] = point.x * this->joints[0].circleRadius;
@@ -120,13 +121,13 @@ void Fish::updateHitChecks(){
     // else{
     //     std::cout << "Nope" << std::endl;
     // }
-    std::cout << "\rhit_check_result: " << hit_checks_result << std::flush;
+    // std::cout << "\rhit_check_result: " << hit_checks_result << std::flush;
 
 }
 
 glm::vec2 Fish::rotateVector(glm::vec2& vector, float angle){
 
-    angle = Global::deg_to_rad(angle);
+    angle = Global::DegToRad(angle);
 
     float new_x = std::cos(angle)*vector.x - std::sin(angle)*vector.y;
     float new_y = std::sin(angle)*vector.x + std::cos(angle)*vector.y;

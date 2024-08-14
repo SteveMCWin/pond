@@ -36,10 +36,10 @@ public:
     // float* outline_vertices;
     std::vector<float> outline_vertices;
 
-     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks = 3, float speed = 0.2f);
+     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks = 3, float speed = 20.0f);
     ~Fish();
 
-    void Move(glm::vec2 direction);
+    void Move(glm::vec2 direction, float delta_time);
 
 private:
     const float aspect_ratio = Global::aspectRatio;

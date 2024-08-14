@@ -15,7 +15,8 @@ public:
     static glm::vec2 bottomLeftCorner;
     static glm::mat4 projectionMatrix;
 
-    static float deg_to_rad(float degrees);
+    static float DegToRad(float degrees);
+    static glm::vec2 CalculateNormal(glm::vec2 vec);
 };
 
 #endif // !GLOBAL_H

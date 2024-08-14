@@ -94,12 +94,13 @@ int main(int, char**){
     // std::cout << "Size of radii " << sizeof(radii)/sizeof(float) << std::endl;
     // std::cout << "Size of centers " << sizeof(centers)/sizeof(glm::vec2) << std::endl;
 
-    // Fish f = Fish(12, centers, distances, radii, 7);
     FishRenderer* renderer = new FishRenderer();
 
     FishHandler fishHandler;
 
     fishHandler.addFish(12, centers, distances, radii, 12);
+    // Fish fishy = Fish(12, centers, distances, radii, 7);
+    // fishHandler.addFish(fishy);
 
     centers[0] = glm::vec2(-20.0f, -12.0f);
 
@@ -129,8 +130,8 @@ int main(int, char**){
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
 
-        glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(Global::screenHalfSize * 2) - glm::vec2(Global::screenHalfSize);
-        move_point.y *= ASPECT_RATIO;
+        // glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(Global::screenHalfSize * 2) - glm::vec2(Global::screenHalfSize);
+        // move_point.y *= ASPECT_RATIO;
 
         // for(int i = 0; i < f.numOfJoints; i++){
         //     std::cout << "pos[" << 2*i   << "]: <" << f.outline_vertices[4*i]   << ", " << f.outline_vertices[4*i+1] << ">" << std::endl;
@@ -142,7 +143,8 @@ int main(int, char**){
             // if(glm::length(move_point - f.joints[0].Center) > 0.1)
                 // f.Move(move_point - f.joints[0].Center);
 
-            f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
+            // f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
+            f.Move(f.joints[0].moveDirection + Global::CalculateNormal(f.joints[0].moveDirection) * (float)f.hit_checks_result * delta_time, delta_time);
 
             renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
             renderer->renderFishBody(f, circleShader, outlineShader);
