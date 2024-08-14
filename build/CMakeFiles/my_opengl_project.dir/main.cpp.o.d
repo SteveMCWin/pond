@@ -369,4 +369,5 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream \
  /home/stevica/openGL_projects/pond/fish.h \
  /home/stevica/openGL_projects/pond/fishRenderer.h \
- /home/stevica/openGL_projects/pond/bezier_filled.h
+ /home/stevica/openGL_projects/pond/bezier_filled.h \
+ /home/stevica/openGL_projects/pond/fishHandler.h

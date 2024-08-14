@@ -11,7 +11,7 @@
 #include "shader.h"
 #include "fish.h"
 #include "fishRenderer.h"
-#include "bezier_filled.h"
+#include "fishHandler.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -25,7 +25,6 @@ const unsigned int SCR_WIDTH    = 1600;
 const unsigned int SCR_HEIGHT   = 900;
 const float ASPECT_RATIO      = (float)SCR_HEIGHT/SCR_WIDTH;
 
-glm::vec2 zoom   = glm::vec2(2.0f, 2.0f);
 glm::vec2 offset = glm::vec2(0.75f, 0.5f);
 
 float delta_time = 0.0f;
@@ -95,8 +94,12 @@ int main(int, char**){
     // std::cout << "Size of radii " << sizeof(radii)/sizeof(float) << std::endl;
     // std::cout << "Size of centers " << sizeof(centers)/sizeof(glm::vec2) << std::endl;
 
-    Fish f = Fish(12, centers, distances, radii);
+    // Fish f = Fish(12, centers, distances, radii, 7);
     FishRenderer* renderer = new FishRenderer();
+
+    FishHandler fishHandler;
+
+    fishHandler.addFish(12, centers, distances, radii, 7);
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -125,20 +128,22 @@ int main(int, char**){
         glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(Global::screenHalfSize * 2) - glm::vec2(Global::screenHalfSize);
         move_point.y *= ASPECT_RATIO;
 
-        if(glm::length(move_point - f.joints[0].Center) > 0.1){
-            f.Move(move_point - f.joints[0].Center);
-        }
-
         // for(int i = 0; i < f.numOfJoints; i++){
         //     std::cout << "pos[" << 2*i   << "]: <" << f.outline_vertices[4*i]   << ", " << f.outline_vertices[4*i+1] << ">" << std::endl;
         //     std::cout << "pos[" << 2*i+1 << "]: <" << f.outline_vertices[4*i+2] << ", " << f.outline_vertices[4*i+3] << ">" << std::endl;
         // }
+        
+        for(Fish& f : fishHandler.allFish){
 
-        renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
-        renderer->renderFishBody(f, circleShader, outlineShader);
-        renderer->renderFishEyes(f, glm::vec2(0.15f, 0.4f), circleShader);
-        renderer->renderFishTailFin(f, bezier_shader);
-        renderer->renderFishBackFin(f, bezier_shader);
+            if(glm::length(move_point - f.joints[0].Center) > 0.1)
+                f.Move(move_point - f.joints[0].Center);
+
+            renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
+            renderer->renderFishBody(f, circleShader, outlineShader);
+            renderer->renderFishEyes(f, glm::vec2(0.15f, 0.4f), circleShader);
+            renderer->renderFishTailFin(f, bezier_shader);
+            renderer->renderFishBackFin(f, bezier_shader);
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -161,32 +166,6 @@ void processInput(GLFWwindow* window){
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
-
-    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_SPACE)){
-        zoom.x += 0.01 * zoom.x;
-        zoom.y += 0.01 * zoom.y;
-    }
-    else if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS){
-        zoom.x -= 0.01 * zoom.x;
-        zoom.y -= 0.01 * zoom.y;
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        offset.x += 0.001 * offset.x * offset.x / 1.5;
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        offset.x -= 0.001 * offset.x * offset.x / 1.5;
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        offset.y -= 0.001 * offset.y * offset.y;
-    }
-
-    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        offset.y += 0.001 * offset.y * offset.y;
-    }
-
 }
 
 

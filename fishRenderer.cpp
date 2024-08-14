@@ -96,7 +96,7 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
 
     glBindVertexArray(this->outlineVAO);
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * fish.numOfJoints * sizeof(float), fish.outline_vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * fish.numOfJoints * sizeof(float), fish.outline_vertices.data());
 
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));

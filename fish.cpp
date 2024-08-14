@@ -3,7 +3,8 @@
 
 Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks, float speed){
     this->numOfJoints = jointNum;
-    this->outline_vertices = new float[4*jointNum];
+    // this->outline_vertices = new float[4*jointNum];
+    this->outline_vertices.resize(4*jointNum);
     for(int i = 0; i < jointNum; i++){
         Joint j = Joint(centers[i], distances[i], radii[i]);
         this->joints.push_back(j);
@@ -24,13 +25,14 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     numOfHitChecks += (numOfHitChecks % 2) ? 0 : 1;
 
     this->hit_checks.resize(numOfHitChecks);
+    std::cout << numOfHitChecks << std::endl;
     this->hit_check_distance = 7.0f * radii[0];
     this->updateHitChecks();
 
 }
 
 Fish::~Fish(){
-    delete[] this->outline_vertices;
+    this->outline_vertices.resize(0);
 }
 
 void Fish::Move(glm::vec2 direction){
@@ -98,8 +100,8 @@ void Fish::updateHitChecks(){
 
     }
 
-    if(-(this->joints[0].Center.y + this->hit_checks[0].y * hit_check_distance) > Global::bottomLeftCorner.y){
-        std::cout << "Hit_Check[0]" << std::endl;
+    if(-(this->joints[0].Center.y + this->hit_checks[this->hit_checks.size()/2].y * hit_check_distance) > Global::bottomLeftCorner.y){
+        std::cout << "Hit_Check[" << this->hit_checks.size()/2 << "]" << std::endl;
     }
     else{
         std::cout << "Nope" << std::endl;

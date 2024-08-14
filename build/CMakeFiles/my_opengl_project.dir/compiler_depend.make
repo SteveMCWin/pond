@@ -2461,7 +2461,8 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: ../main.cpp \
   /usr/include/c++/11/iostream \
   ../fish.h \
   ../fishRenderer.h \
-  ../bezier_filled.h
+  ../bezier_filled.h \
+  ../fishHandler.h
 
 
 ../main.cpp:

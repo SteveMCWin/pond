@@ -1,3 +1,6 @@
+#ifndef FISH_RENDERER_H
+#define FISH_RENDERER_H
+
 #include "glad.h"
 #include <glm/glm.hpp>
 #include <glm/detail/type_vec.hpp>
@@ -43,3 +46,6 @@ private:
     unsigned int outlineVBO, outlineVAO;
 
 };
+
+#endif // !FISH_RENDERER_H
+
