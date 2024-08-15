@@ -13,8 +13,8 @@ public:
      BezierCurve();
     ~BezierCurve();
 
-    void DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, Shader& shader);
-    void DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, glm::vec2 controlPoint2, Shader& shader);
+    void DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, Shader& shader, glm::vec3 Color);
+    void DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, glm::vec2 controlPoint2, Shader& shader, glm::vec3 color);
 
 private:
     unsigned int VBO;
@@ -28,7 +28,7 @@ private:
     float triangle_vertices[6];
     std::vector<float> crescent_vertices;
 
-    int max_crescent_vertices = 15;
+    int max_crescent_vertices = 20;
 
 };
 

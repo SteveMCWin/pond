@@ -41,56 +41,26 @@ FishRenderer::~FishRenderer(){
 }
 
 glm::vec2 jointSidePoint(Joint& j){
-    return glm::vec2(glm::normalize(glm::cross(glm::vec3(j.moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)))) * j.circleRadius; // TODO: do this with the global func
+    return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees
 }
 
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
 
     glm::mat4 projection = Global::projectionMatrix;
-    glm::mat4 model = glm::mat4(1.0f);
 
-    // render the circles
-
-    glBindVertexArray(this->circleVAO);
+    // this renders all of the circles
 
     // for(Joint joint : fish.joints){
-    //     model = glm::mat4(1.0f);
-    //     model = glm::translate(model, glm::vec3(joint.Center, 0.0f));
-    //     model = glm::scale(model, glm::vec3(joint.circleRadius, joint.circleRadius, 1.0f));
-    //
-    //     circleShader.use();
-    //     circleShader.setMat4("projection", projection);
-    //     circleShader.setMat4("model", model);
-    //     circleShader.setVec3("color", 0.2f, 0.5f, 0.7f);
-    //     circleShader.setFloat("r", joint.circleRadius);
-    //
-    //     glDrawArrays(GL_TRIANGLES, 0, 6);
+    //     this->renderOvals(joint.Center, glm::vec2(0.0f), 0.0f, glm::vec2(joint.circleRadius),
+    //                       circleShader, fish.bodyColor, joint.circleRadius);
     // }
 
-    // rendering just the first and last circle
+    // this renders the first and last circle
+    this->renderOvals(fish.joints[0].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[0].circleRadius),
+                      circleShader, fish.bodyColor, fish.joints[0].circleRadius);
 
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));
-    model = glm::scale(model, glm::vec3(fish.joints[0].circleRadius, fish.joints[0].circleRadius, 1.0f));
-
-    circleShader.use();
-    circleShader.setMat4("projection", projection);
-    circleShader.setMat4("model", model);
-    circleShader.setVec3("color", 0.2f, 0.5f, 0.7f);
-    circleShader.setFloat("r", fish.joints[0].circleRadius);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(fish.joints[fish.numOfJoints-1].Center, 0.0f));
-    model = glm::scale(model, glm::vec3(fish.joints[fish.numOfJoints-1].circleRadius, fish.joints[fish.numOfJoints-1].circleRadius, 1.0f));
-
-    circleShader.use();
-    circleShader.setMat4("projection", projection);
-    circleShader.setMat4("model", model);
-    circleShader.setVec3("color", 0.2f, 0.5f, 0.7f);
-    circleShader.setFloat("r", fish.joints[fish.numOfJoints-1].circleRadius);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    this->renderOvals(fish.joints[fish.numOfJoints-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[fish.numOfJoints-1].circleRadius), 
+                      circleShader, fish.bodyColor, fish.joints[0].circleRadius);
 
     // render the outline
 
@@ -98,7 +68,7 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * fish.numOfJoints * sizeof(float), fish.outline_vertices.data());
 
-    model = glm::mat4(1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));
 
     outlineShader.use();
@@ -111,22 +81,25 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
 
 }
 
-void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){  // This needs a lot of clean up
+void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){
 
-    Joint j1 = fish.joints[fish.numOfJoints/4];
+    Joint j1 = fish.joints[fish.numOfJoints/4];     // joints at which the back fin starts and ends
     Joint j2 = fish.joints[fish.numOfJoints/2 + 1];
 
     glm::vec2 controlPoint = -2.5f * j1.moveDirection;
 
+    // direction from the halfway point of the start and end joint to the control point 
     glm::vec2 controlDirection = glm::normalize(controlPoint + j1.Center - (j1.Center+j2.Center)/2.0f);
 
-    glm::vec2 controlPoint2 = controlPoint + 1.0f * controlDirection;
+    glm::vec2 controlPoint2 = controlPoint + controlDirection;
 
     // Draw back fin
-    this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader);
+    this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader, fish.finColor);
 }
 
 void FishRenderer::renderFishTailFin(const Fish& fish, Shader& finShader){
+
+    // Pretty much the same function as the renderFishBackFin
 
     glm::vec2 tail_fin_start = fish.joints[fish.numOfJoints-1].Center;
     glm::vec2 tail_fin_end = fish.tail_fin_joints[1].Center;
@@ -134,25 +107,17 @@ void FishRenderer::renderFishTailFin(const Fish& fish, Shader& finShader){
     glm::vec2 tail_fin_control1 = fish.tail_fin_joints[0].Center;
     glm::vec2 tail_fin_control_offset_dir = tail_fin_control1 - (tail_fin_start+tail_fin_end)/2.0f; 
 
-    // float sin_offset = (std::sin(glfwGetTime()) * 0.5 + 1.0);
-    // tail_fin_control_offset_dir *= sin_offset;
-
     tail_fin_control1 = tail_fin_control1 + tail_fin_control_offset_dir * 1.5f; 
     glm::vec2 tail_fin_control2 = tail_fin_control1 + tail_fin_control_offset_dir * 5.0f;
 
     this->fin_bezier.DrawCrescentBezierFilled(8, tail_fin_start, glm::vec2(0.0f), tail_fin_end - tail_fin_start,
-                                              tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, finShader);
+                                              tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, finShader, fish.finColor);
 }
 
-float angleBetweenVectors(glm::vec2 v1, glm::vec2 v2){
-    float angle = std::acos(glm::dot(v1, v2));
-    if(v1.y < 0.0f){
-        angle *= -1.0f;
-    }
-    return angle;
-}
+void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader,
+                               glm::vec3 color = glm::vec3(0.1f, 0.9f, 0.3f), float r = 0.5f){
 
-void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color = glm::vec3(0.1f, 0.9f, 0.3f), float r = 0.5f){
+    glBindVertexArray(this->circleVAO);
 
     glm::mat4 projection = Global::projectionMatrix;
     glm::mat4 model = glm::mat4(1.0f);
@@ -168,6 +133,8 @@ void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotat
     shader.setFloat("r", r);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindVertexArray(0);
 }
 
 void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader){
@@ -175,48 +142,42 @@ void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, gl
     Joint frontFinsJoint = fish.joints[fish.numOfJoints/6];   
     Joint backFinsJoint  = fish.joints[fish.numOfJoints/2+1];   
 
-    // glm::vec2 diff = glm::normalize(frontFinsJoint.moveDirection - fish.joints[0].moveDirection);
-    // std::cout << "Difference: <" << diff.x << ", " << diff.y << ">\n";
-
     glm::vec2 frontOffset = jointSidePoint(frontFinsJoint);
     glm::vec2 backOffset  = jointSidePoint(backFinsJoint);
 
-    float rightFinAngle = angleBetweenVectors(frontFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 3.0f*pi/4.0f;
-    float leftFinAngle  = rightFinAngle + 6.0f*pi/4.0f;
-
-    glBindVertexArray(this->circleVAO);
+    // rotates the fin corresponding the move direction of the joint it is attached to, then an offset it applied so the fin isn't sticking straigh out
+    float rightFinAngle = Global::angleBetweenVectors(frontFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 3.0f*Global::pi/4.0f;
+    // same angle between the find and move direction but the offset should be the opposite from the first fin
+    float leftFinAngle  = rightFinAngle + 6.0f*Global::pi/4.0f;
 
     this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, frontScale, finShader);
     this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, frontScale, finShader);
 
-    rightFinAngle = angleBetweenVectors(backFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 7.0f*pi/8.0f;
-    leftFinAngle  = rightFinAngle + 14.0f*pi/8.0f;
+    rightFinAngle = Global::angleBetweenVectors(backFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 7.0f*Global::pi/8.0f;
+    leftFinAngle  = rightFinAngle + 14.0f*Global::pi/8.0f;
 
     this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, backScale, finShader);
     this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, backScale, finShader);
-
-    glBindVertexArray(0);
 }
 
 void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader){
+
+    // pretty much the same stuff as the side fins
 
     Joint headJoint = fish.joints[0];
 
     glm::vec2 offset = jointSidePoint(headJoint) * 0.85f;
 
-    float rightEyeAngle = angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - pi/2.0f + pi/20.0f;
-    float leftEyeAngle  = angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) + pi/2.0f - pi/20.0f;
+    float rightEyeAngle = Global::angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - Global::pi/2.0f + Global::pi/20.0f;
+    float leftEyeAngle  = Global::angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) + Global::pi/2.0f - Global::pi/20.0f;
 
-    glBindVertexArray(this->circleVAO);
+    // the only difference is that we're first rendering an oval of the same color as the fish body so it's not like the eye is sticking out or something
 
-    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale * 1.4f, circleShader, glm::vec3(0.2f, 0.5f, 0.7f));   // right eye
-    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale, circleShader, glm::vec3(0.05f, 0.1f, 0.1f)*2.0f);   // right eye
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);   // right eye
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale, circleShader, fish.eyeColor);   // right eye
 
-    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale * 1.4f, circleShader, glm::vec3(0.2f, 0.5f, 0.7f));   // left eye
-    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale, circleShader, glm::vec3(0.05f, 0.1f, 0.1f)*2.0f);   // left  eye
-
-    glBindVertexArray(0);
-
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);   // left eye
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale, circleShader, fish.eyeColor);   // left  eye
 }
 
 

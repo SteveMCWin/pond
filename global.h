@@ -15,9 +15,11 @@ public:
     static glm::vec2 bottomLeftCorner;
     static glm::mat4 projectionMatrix;
 
-    static float DegToRad(float degrees);
-    static glm::vec2 CalculateNormal(glm::vec2 vec);
-    static float GetRandomFloat();
+    static float DegToRad(float degrees);   // converts degrees to radians
+    static glm::vec2 CalculateNormal(glm::vec2 vec);    // returns a normal vector pointing to the right if the input vec is pointing up
+    static float GetRandomFloat();  // returns float ranging from 0.0 to 1.0
+    static float angleBetweenVectors(glm::vec2 v1, glm::vec2 v2);   // returns the angle in radians between two vectors (return value ranges from -pi to pi)
+    static glm::vec2 rotateVector(glm::vec2& vector, float angle);   // rotates a vector a specified amount of degrees
 };
 
 #endif // !GLOBAL_H

@@ -1,26 +1,23 @@
 #include "fish.h"
+#include "global.h"
 #include <glm/detail/func_geometric.hpp>
 #include <ostream>
 
-Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks, float speed){
+Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks, float speed, glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
+
     this->numOfJoints = jointNum;
-    // this->outline_vertices = new float[4*jointNum];
     this->outline_vertices.resize(4*jointNum);
+
     for(int i = 0; i < jointNum; i++){
         Joint j = Joint(centers[i], distances[i], radii[i]);
         this->joints.push_back(j);
-
-        // this->outline_vertices[4*i] = 0.0f;
-        // this->outline_vertices[4*i+1] = 0.0f;
-        // this->outline_vertices[4*i+2] = 0.0f;
-        // this->outline_vertices[4*i+3] = 0.0f;
-        // std::cout << "Made joint number " << i+1 << std::endl;
-        // std::cout << "joint " << i+1 << ":\t<" << centers[i].x << ", " << centers[i].y << ">" << std::endl;
     }
+
     this->tail_fin_joints[0] = this->joints[jointNum-1];
     this->tail_fin_joints[0].desiredDistance = 1.5f;
     this->tail_fin_joints[1] = this->tail_fin_joints[0];
     this->tail_fin_joints[1].desiredDistance = 1.5f;
+
     this->moveSpeed = speed;
     this->hit_checks_result = 0;
 
@@ -30,33 +27,39 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     this->hit_check_distance = 7.0f * radii[0];
     this->updateHitChecks();
 
-    std::cout << "Fish speed: " << this->moveSpeed << std::endl;
+    this->bodyColor = bColor;
+    this->finColor  = fColor;
+    this->eyeColor  = eColor;
 }
 
 Fish::~Fish(){
     // this->outline_vertices.resize(0);
-    this->outline_vertices.clear();
+    this->outline_vertices.clear();         // this probably isn't neccessary but oh well
     this->outline_vertices.shrink_to_fit();
 }
 
 void Fish::Move(glm::vec2 direction, float delta_time){
+
+    // moves the head of the fish in the direction passed into the function, then updates the position of the rest of the joints
     this->joints[0].moveDirection = glm::normalize(direction);
     this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed * delta_time;
 
-    glm::vec3 point = glm::normalize(glm::cross(glm::vec3(this->joints[0].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+    // also calculates the vertices of the outline
+    glm::vec2 point = Global::CalculateNormal(this->joints[0].moveDirection);
     this->outline_vertices[0] = point.x * this->joints[0].circleRadius;
     this->outline_vertices[1] = point.y * this->joints[0].circleRadius;
 
-    // point = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(this->joints[0].moveDirection, 0.0f)));    // i think here I can just do point = -point;
     point = -point;
     this->outline_vertices[2] = point.x * this->joints[0].circleRadius;
     this->outline_vertices[3] = point.y * this->joints[0].circleRadius;
 
-    this->updateHitChecks();
     this->updateJoints();
+    this->updateHitChecks();
 }
 
 void Fish::updateJoints(){
+
+    // used to update the position of all of the joints (except the first one, which is updated by the move function) and updates the outline vertices
 
     for(int i = 1; i < this->numOfJoints; i++){
         float distance_between_joints = glm::distance(this->joints[i-1].Center, this->joints[i].Center);
@@ -68,12 +71,12 @@ void Fish::updateJoints(){
 
         // The outline vertex data is positioned in relation to the center of the head
 
-        glm::vec3 pointOnCircle = glm::normalize(glm::cross(glm::vec3(this->joints[i].moveDirection, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+        glm::vec2 pointOnCircle = Global::CalculateNormal(this->joints[i].moveDirection);
         glm::vec2 relativePosition = this->joints[i].Center - this->joints[0].Center;
         this->outline_vertices[4*i]   = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
         this->outline_vertices[4*i+1] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
 
-        pointOnCircle = glm::normalize(glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(this->joints[i].moveDirection, 0.0f)));
+        pointOnCircle = -pointOnCircle;
         this->outline_vertices[4*i+2] = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
         this->outline_vertices[4*i+3] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
        
@@ -98,7 +101,7 @@ void Fish::updateHitChecks(){
 
     for(int i = -(this->hit_checks.size()/2), j = 0; j < this->hit_checks.size(); j++, i++){
 
-        this->hit_checks[j] = rotateVector(this->joints[0].moveDirection, -degreeChange * i);
+        this->hit_checks[j] = Global::rotateVector(this->joints[0].moveDirection, -degreeChange * i);
         
         glm::vec2 hit_check_world_pos = this->joints[0].Center + this->hit_checks[j] * hit_check_distance;
         if(  hit_check_world_pos.x > -Global::bottomLeftCorner.x ||
@@ -112,15 +115,5 @@ void Fish::updateHitChecks(){
 
     }
 
-}
-
-glm::vec2 Fish::rotateVector(glm::vec2& vector, float angle){   // TODO: make this a global func
-
-    angle = Global::DegToRad(angle);
-
-    float new_x = std::cos(angle)*vector.x - std::sin(angle)*vector.y;
-    float new_y = std::sin(angle)*vector.x + std::cos(angle)*vector.y;
-
-    return glm::normalize(glm::vec2(new_x, new_y));
 }
 

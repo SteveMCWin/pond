@@ -35,10 +35,15 @@ public:
 
     int hit_checks_result;
 
+    glm::vec3 bodyColor;
+    glm::vec3 finColor;
+    glm::vec3 eyeColor;
+
     // float* outline_vertices;
     std::vector<float> outline_vertices;
 
-     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks = 3, float speed = 20.0f);
+     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks = 3, float speed = 20.0f,
+          glm::vec3 bColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 fColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 
     void Move(glm::vec2 direction, float delta_time);
@@ -50,8 +55,6 @@ private:
 
     void updateJoints();
     void updateHitChecks();
-    glm::vec2 rotateVector(glm::vec2& vector, float degrees);
-    // rendering will be handled by a separate class
 };
 
 

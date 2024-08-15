@@ -16,23 +16,20 @@
 class FishRenderer{
 
 public:
-     FishRenderer();
+     FishRenderer();    // responsible for creating the VBOs and VAOs needed to render the fish
     ~FishRenderer();
     void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
     void renderFishBackFin(const Fish& fish, Shader& finShader);
     void renderFishTailFin(const Fish& fish, Shader& finShader);
     void renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader);
     void renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader);
-    BezierCurve fin_bezier;
+    BezierCurve fin_bezier; // bezier curve class object used for rendering fins
 
 private:
 
     void renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color, float r);
 
-    const float aspect_ratio = 9.0f/16.0f;
-    const float pi = 3.14159f;
-
-    float vertices[12] = {
+    float vertices[12] = {  // quad vertices used for rendering ovals
         -1.0, -1.0,
          1.0, -1.0,
         -1.0,  1.0,

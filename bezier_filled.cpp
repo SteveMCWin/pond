@@ -35,7 +35,7 @@ BezierCurve::~BezierCurve(){
     glDeleteVertexArrays(1, &this->crescentVAO);
 }
 
-void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, Shader& shader){
+void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, Shader& shader, glm::vec3 color){
 
     this->triangle_vertices[0] = p2.x;
     this->triangle_vertices[1] = p2.y;
@@ -67,6 +67,7 @@ void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec
         glBufferSubData(GL_ARRAY_BUFFER, 0, 6 * sizeof(float), this->triangle_vertices);
 
         shader.use();
+        shader.setVec3("Color", color.x, color.y, color.z);
         shader.setMat4("projection", projection);
         shader.setMat4("model", model);
 
@@ -82,7 +83,8 @@ void BezierCurve::DrawBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec
 }
 
 
-void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, glm::vec2 controlPoint2, Shader& shader){
+void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, glm::vec2 p1, glm::vec2 p2, glm::vec2 controlPoint, glm::vec2 controlPoint2,
+                                           Shader& shader, glm::vec3 color){
 
     numOfPoints = std::min(numOfPoints, max_crescent_vertices);
 
@@ -132,6 +134,7 @@ void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, 
     glBufferSubData(GL_ARRAY_BUFFER, 0, this->crescent_vertices.size() * sizeof(float), this->crescent_vertices.data());
 
     shader.use();
+    shader.setVec3("Color", color.x, color.y, color.z);
     shader.setMat4("projection", projection);
     shader.setMat4("model", model);
 
