@@ -45,7 +45,7 @@ public:
     std::vector<float> outline_vertices;
 
      Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks = 3, float speed = 20.0f, float sRange = 9.0f,
-          glm::vec3 bColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 fColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
+          glm::vec3 bColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 fColor = glm::vec3(0.1f, 0.9f, 0.3f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 
     void Move(glm::vec2 direction, float delta_time);

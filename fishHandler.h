@@ -22,14 +22,10 @@ public:
 
 private:
 
-    float cohesionIntensity = 5.0f;
-    float alignmentIntensity = 5.0f;
+    float cohesionIntensity = 2.0f;
+    float alignmentIntensity = 4.0f;
     float separationIntensity = 5.0f;
-
-    glm::vec2 calcCohesion(Fish& fish);
-    glm::vec2 calcAlignment(Fish& fish);
-    glm::vec2 calcSeparation(Fish& fish);
-
+    float edgeEvasionIntensity = 4.0f;
 };
 
 #endif // !FISH_HANDLER_H

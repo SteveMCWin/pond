@@ -148,7 +148,7 @@ int main(int, char**){
                 // f.Move(move_point - f.joints[0].Center);
 
             // f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
-            glm::vec2 newMoveDir = f.joints[0].moveDirection + Global::CalculateNormal(f.joints[0].moveDirection) * (float)f.hit_checks_result * delta_time;
+            glm::vec2 newMoveDir = f.joints[0].moveDirection;
             newMoveDir += fishHandler.calcFishMoveDir(f) * delta_time;
             f.Move(newMoveDir, delta_time);
 
