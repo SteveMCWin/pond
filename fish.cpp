@@ -3,7 +3,8 @@
 #include <glm/detail/func_geometric.hpp>
 #include <ostream>
 
-Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks, float speed, glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
+Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks, float speed, float sRange,
+           glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
 
     this->numOfJoints = jointNum;
     this->outline_vertices.resize(4*jointNum);
@@ -18,7 +19,9 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     this->tail_fin_joints[1] = this->tail_fin_joints[0];
     this->tail_fin_joints[1].desiredDistance = 1.5f;
 
+    this->fishID = id;
     this->moveSpeed = speed;
+    this->sightRange = sRange;
     this->hit_checks_result = 0;
 
     numOfHitChecks += (numOfHitChecks % 2) ? 0 : 1;

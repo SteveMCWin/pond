@@ -106,7 +106,8 @@ int main(int, char**){
     // fishHandler.addFish(12, centers, distances, radii, 12);
 
     for(int i = 0; i < 15; i++){
-        fishHandler.addFish(12, centers, distances, radii, 12);
+        centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
+        fishHandler.addFish(12, centers, distances, radii, i, 12);
     }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -147,7 +148,9 @@ int main(int, char**){
                 // f.Move(move_point - f.joints[0].Center);
 
             // f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
-            f.Move(f.joints[0].moveDirection + Global::CalculateNormal(f.joints[0].moveDirection) * (float)f.hit_checks_result * delta_time, delta_time);
+            glm::vec2 newMoveDir = f.joints[0].moveDirection + Global::CalculateNormal(f.joints[0].moveDirection) * (float)f.hit_checks_result * delta_time;
+            newMoveDir += fishHandler.calcFishMoveDir(f) * delta_time;
+            f.Move(newMoveDir, delta_time);
 
             renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
             renderer->renderFishBody(f, circleShader, outlineShader);

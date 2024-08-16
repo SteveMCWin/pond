@@ -27,13 +27,15 @@ struct Joint{
 
 class Fish{
 public:
-    std::vector<Joint> joints;
     std::vector<glm::vec2> hit_checks;
+    std::vector<Joint> joints;
     Joint tail_fin_joints[2];
     unsigned int numOfJoints;
     float moveSpeed;
 
     int hit_checks_result;
+    float sightRange;
+    int fishID;
 
     glm::vec3 bodyColor;
     glm::vec3 finColor;
@@ -42,7 +44,7 @@ public:
     // float* outline_vertices;
     std::vector<float> outline_vertices;
 
-     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int numOfHitChecks = 3, float speed = 20.0f,
+     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks = 3, float speed = 20.0f, float sRange = 9.0f,
           glm::vec3 bColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 fColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 
