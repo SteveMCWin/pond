@@ -22,10 +22,10 @@ public:
 
 private:
 
-    float cohesionIntensity = 2.0f;
-    float alignmentIntensity = 4.0f;
-    float separationIntensity = 5.0f;
-    float edgeEvasionIntensity = 4.0f;
+    float cohesionIntensity = 0.1f;
+    float alignmentIntensity = 0.5f;
+    float separationIntensity = 0.1f;
+    float edgeEvasionIntensity = 2.0f;
 };
 
 #endif // !FISH_HANDLER_H
