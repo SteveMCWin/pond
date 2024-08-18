@@ -112,7 +112,7 @@ void Fish::updateHitChecks(){
             -hit_check_world_pos.y >  Global::bottomLeftCorner.y ||
             -hit_check_world_pos.y < -Global::bottomLeftCorner.y){
 
-                hit_checks_result += (i < 0) ? 1 : -1;
+                hit_checks_result += (i < 0) ? -1 : 1;
                 // std::cout << "hi" << std::endl;
         }
 

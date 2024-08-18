@@ -18,61 +18,59 @@ void FishHandler::addFish(int numOfJoints, glm::vec2* centers, float* distances,
 
 glm::vec2 FishHandler::calcFishMoveDir(Fish& fish){
 
-    glm::vec2 resultDir = glm::vec2(0.0f);
+    glm::vec2 resultDir = fish.joints[0].moveDirection;
 
-    glm::vec2 edgeEvasionDir = Global::CalculateNormal(fish.joints[0].moveDirection) * (float)fish.hit_checks_result;
-
-    glm::vec2 separationDir = glm::vec2(0.0f);
-    glm::vec2 alignmentDir = glm::vec2(0.0f);
-    glm::vec2 cohesionDir = glm::vec2(0.0f);
+    glm::vec2 separationVec = glm::vec2(0.0f);
+    glm::vec2 alignmentVec = glm::vec2(0.0f);
+    glm::vec2 cohesionVec = glm::vec2(0.0f);
 
     int counter = 0;
 
     for(Fish& f : allFish){
         if(fish.fishID != f.fishID){
-            if(glm::length(fish.joints[0].Center - f.joints[0].Center) < fish.sightRange){
-                separationDir += fish.joints[0].Center - f.joints[0].Center;
-                alignmentDir  += f.joints[0].moveDirection;
-                cohesionDir   += f.joints[0].Center;
+            if(glm::length(fish.joints[0].Center - f.joints[0].Center) < fish.sightRange && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) < -0.8){
+                separationVec += fish.joints[0].Center - f.joints[0].Center;
+                alignmentVec  += f.joints[0].moveDirection;
+                cohesionVec   += f.joints[0].Center;
                 counter++;
             }
         }
     }
 
+    resultDir = Global::rotateVector(resultDir, fish.hit_checks_result * edgeEvasionIntensity);
+
     if(counter){
-        separationDir = separationDir/(float)counter;
-        alignmentDir  = alignmentDir/(float)counter - fish.joints[0].moveDirection;
-        cohesionDir   = cohesionDir/(float)counter  - fish.joints[0].moveDirection;
+        separationVec = separationVec/(float)counter;
+        alignmentVec  = alignmentVec/(float)counter;
+        cohesionVec   = cohesionVec/(float)counter;
 
-        glm::vec2 offsetDir = Global::CalculateNormal(fish.joints[0].moveDirection);
+        float rotationDir;
 
-        if(glm::cross(glm::vec3(fish.joints[0].moveDirection, 0.0f), glm::vec3(separationDir, 0.0f)).z > 0)
-            offsetDir *= -1.0f;
+        if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(separationVec, 0.0f)).z > 0)
+            rotationDir =  1.0f;
+        else
+            rotationDir = -1.0f;
 
-        resultDir += offsetDir * glm::length(separationDir) * separationIntensity;
+        resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(separationVec) * separationIntensity);
 
-        offsetDir = Global::CalculateNormal(fish.joints[0].moveDirection);
+        if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(alignmentVec, 0.0f)).z > 0)
+            rotationDir =  1.0f;
+        else
+            rotationDir = -1.0f;
 
-        if(glm::cross(glm::vec3(fish.joints[0].moveDirection, 0.0f), glm::vec3(alignmentDir, 0.0f)).z > 0)
-            offsetDir *= -1.0f;
+        resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(alignmentVec) * alignmentIntensity);
 
-        resultDir += offsetDir * glm::length(alignmentDir) * alignmentIntensity;
+        if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(cohesionVec, 0.0f)).z > 0)
+            rotationDir =  1.0f;
+        else
+            rotationDir = -1.0f;
 
-        offsetDir = Global::CalculateNormal(fish.joints[0].moveDirection);
-
-        if(glm::cross(glm::vec3(fish.joints[0].moveDirection, 0.0f), glm::vec3(cohesionDir, 0.0f)).z > 0)
-            offsetDir *= -1.0f;
-
-        resultDir += offsetDir * glm::length(cohesionDir) * cohesionIntensity;
+        // resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(cohesionVec) * cohesionIntensity);
 
     }
 
-    // glm::vec2 separationDir = calcSeparation(fish);
-    // glm::vec2 separationOffset = glm::normalize(separationDir - (separationDir == glm::vec2(0.0f) ? glm::vec2(0.0f) : fish.joints[0].moveDirection));
-
-    resultDir += edgeEvasionDir * edgeEvasionIntensity;
-
-    resultDir += Global::CalculateNormal(fish.joints[0].moveDirection) * (float)std::sin(glfwGetTime() * 2.5f);
+    // resultDir += Global::CalculateNormal(fish.joints[0].moveDirection) * (float)std::sin(glfwGetTime() * 2.5f);
+    resultDir = Global::rotateVector(resultDir, (float)std::sin(glfwGetTime() * 2.0f));
 
     return resultDir;
 }

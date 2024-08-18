@@ -23,9 +23,6 @@ void RenderText(Shader &shader, std::string text, float x, float y, float scale,
 
 const unsigned int SCR_WIDTH    = 1600;
 const unsigned int SCR_HEIGHT   = 900;
-const float ASPECT_RATIO      = (float)SCR_HEIGHT/SCR_WIDTH;
-
-glm::vec2 offset = glm::vec2(0.75f, 0.5f);
 
 float delta_time = 0.0f;
 float last_frame = 0.0f;
@@ -105,7 +102,7 @@ int main(int, char**){
     // centers[0] = glm::vec2(-20.0f, -12.0f);
     // fishHandler.addFish(12, centers, distances, radii, 12);
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 15; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
         fishHandler.addFish(12, centers, distances, radii, i, 12);
     }
@@ -135,7 +132,7 @@ int main(int, char**){
         glfwGetCursorPos(window, &xpos, &ypos);
 
         // glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(Global::screenHalfSize * 2) - glm::vec2(Global::screenHalfSize);
-        // move_point.y *= ASPECT_RATIO;
+        // move_point.y *= Global::aspect_ratio;
 
         // for(int i = 0; i < f.numOfJoints; i++){
         //     std::cout << "pos[" << 2*i   << "]: <" << f.outline_vertices[4*i]   << ", " << f.outline_vertices[4*i+1] << ">" << std::endl;
@@ -148,8 +145,7 @@ int main(int, char**){
                 // f.Move(move_point - f.joints[0].Center);
 
             // f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
-            glm::vec2 newMoveDir = f.joints[0].moveDirection;
-            newMoveDir += fishHandler.calcFishMoveDir(f) * delta_time;
+            glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f);
             f.Move(newMoveDir, delta_time);
 
             renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
