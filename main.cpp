@@ -21,8 +21,10 @@ unsigned int loadTexture(const char *path);
 unsigned int loadCubemap(std::vector<std::string> faces);
 void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color);
 
+// const unsigned int SCR_WIDTH    = 1920;
+// const unsigned int SCR_HEIGHT   = 1080;
 const unsigned int SCR_WIDTH    = 1600;
-const unsigned int SCR_HEIGHT   = 900;
+const unsigned int SCR_HEIGHT   =  900;
 
 float delta_time = 0.0f;
 float last_frame = 0.0f;
@@ -40,6 +42,9 @@ int main(int, char**){
 
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
+    // glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, true);
+
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Stevica :D", NULL, NULL);
     if(window == NULL){
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -53,6 +58,10 @@ int main(int, char**){
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
+    }
+
+    if(glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER)){
+        std::cout << "The framebuffer is transparrent!" << std::endl;
     }
 
     glEnable(GL_LINE_SMOOTH);
@@ -125,27 +134,15 @@ int main(int, char**){
 
         processInput(window);
 
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
-
-        // glm::vec2 move_point = glm::vec2(xpos/SCR_WIDTH, 1.0f - ypos/SCR_HEIGHT) * glm::vec2(Global::screenHalfSize * 2) - glm::vec2(Global::screenHalfSize);
-        // move_point.y *= Global::aspect_ratio;
-
-        // for(int i = 0; i < f.numOfJoints; i++){
-        //     std::cout << "pos[" << 2*i   << "]: <" << f.outline_vertices[4*i]   << ", " << f.outline_vertices[4*i+1] << ">" << std::endl;
-        //     std::cout << "pos[" << 2*i+1 << "]: <" << f.outline_vertices[4*i+2] << ", " << f.outline_vertices[4*i+3] << ">" << std::endl;
-        // }
         
         for(Fish& f : fishHandler.allFish){
 
-            // if(glm::length(move_point - f.joints[0].Center) > 0.1)
-                // f.Move(move_point - f.joints[0].Center);
-
-            // f.Move(f.hit_checks[f.hit_checks.size()/2 + f.hit_checks_result]);
-            glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f);
+            glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f, delta_time);
             f.Move(newMoveDir, delta_time);
 
             renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
