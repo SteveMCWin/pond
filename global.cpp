@@ -28,7 +28,7 @@ float Global::angleBetweenVectors(glm::vec2 v1, glm::vec2 v2){
     return angle;
 }
 
-glm::vec2 Global::rotateVector(glm::vec2& vector, float angle){   // TODO: make this a global func
+glm::vec2 Global::rotateVector(glm::vec2& vector, float angle){
 
     angle = Global::DegToRad(angle);
 

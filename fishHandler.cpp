@@ -50,6 +50,12 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
     if(separationCounter){
         // separationVec = separationVec/(float)separationCounter;
 
+        float separationNum = glm::length(separationVec/(float)separationCounter);
+
+        separationNum = 1.0f - separationNum/(0.4f * fish.sightRange);
+
+        separationNum = powf(separationNum, 0.01f);
+
         float rotationDir;
 
         if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(separationVec, 0.0f)).z > 0)
@@ -57,10 +63,9 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
         else
             rotationDir = -1.0f;
 
-        resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(separationVec) * separationIntensity * delta_time);
-
-
+        resultDir = Global::rotateVector(resultDir, rotationDir * separationNum * separationIntensity * delta_time);
     }
+
     if(counter){
         alignmentVec  = alignmentVec/(float)counter;
         cohesionVec   = cohesionVec/(float)counter;
@@ -72,14 +77,14 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
         else
             rotationDir = -1.0f;
 
-        resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(alignmentVec) * alignmentIntensity * delta_time);
+        // resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(alignmentVec) * alignmentIntensity * delta_time);
 
         if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(cohesionVec, 0.0f)).z > 0)
             rotationDir =  1.0f;
         else
             rotationDir = -1.0f;
 
-        resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(cohesionVec) * cohesionIntensity * delta_time);
+        // resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(cohesionVec) * cohesionIntensity * delta_time);
 
     }
 

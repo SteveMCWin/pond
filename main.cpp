@@ -111,7 +111,7 @@ int main(int, char**){
     // centers[0] = glm::vec2(-20.0f, -12.0f);
     // fishHandler.addFish(12, centers, distances, radii, 12);
 
-    for(int i = 0; i < 15; i++){
+    for(int i = 0; i < 10; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
         fishHandler.addFish(12, centers, distances, radii, i, 12);
     }
