@@ -18,14 +18,19 @@ class FishRenderer{
 public:
      FishRenderer();    // responsible for creating the VBOs and VAOs needed to render the fish
     ~FishRenderer();
+
+    void renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
+                    glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale);
+
+private:
+
+    void renderScreenQuad(Shader& screenShader);
+
     void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
     void renderFishBackFin(const Fish& fish, Shader& finShader);
     void renderFishTailFin(const Fish& fish, Shader& finShader);
     void renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader);
     void renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader);
-    BezierCurve fin_bezier; // bezier curve class object used for rendering fins
-
-private:
 
     void renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color, float r);
 
@@ -39,8 +44,27 @@ private:
         -1.0,  1.0
     };
 
+    float screenQuadVertices[24] = {
+        // positions   // texCoords
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
+    };
+
+    BezierCurve fin_bezier; // bezier curve class object used for rendering fins
+
     unsigned int circleVBO, circleVAO;
     unsigned int outlineVBO, outlineVAO;
+    unsigned int screenQuadVBO, screenQuadVAO;
+
+    unsigned int framebuffer;
+    unsigned int screenQuadTexture;
+
+
 
 };
 

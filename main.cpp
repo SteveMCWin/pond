@@ -74,8 +74,10 @@ int main(int, char**){
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
     Shader outlineShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_solid.glsl",
                                   "/home/stevica/openGL_projects/pond/shaders/f_solid.glsl");
-    Shader bezier_shader = Shader("/home/stevica/openGL_projects/pond/shaders/v_bezier.glsl",
+    Shader bezierShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_bezier.glsl",
                                   "/home/stevica/openGL_projects/pond/shaders/f_bezier.glsl");
+    Shader screenShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_screen.glsl",
+                                 "/home/stevica/openGL_projects/pond/shaders/f_screen.glsl");
 
     circleShader.use();
 
@@ -134,23 +136,20 @@ int main(int, char**){
 
         processInput(window);
 
-        glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+        // glClear(GL_COLOR_BUFFER_BIT);
 
-        double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
+        // double xpos, ypos;
+        // glfwGetCursorPos(window, &xpos, &ypos);
         
         for(Fish& f : fishHandler.allFish){
 
             glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f, delta_time);
             f.Move(newMoveDir, delta_time);
 
-            renderer->renderFishSideFins(f, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), circleShader);
-            renderer->renderFishBody(f, circleShader, outlineShader);
-            renderer->renderFishEyes(f, glm::vec2(0.15f, 0.4f), circleShader);
-            renderer->renderFishTailFin(f, bezier_shader);
-            renderer->renderFishBackFin(f, bezier_shader);
         }
+
+        renderer->renderFish(fishHandler.allFish, circleShader, outlineShader, bezierShader, screenShader, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), glm::vec2(0.15f, 0.4f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -27,9 +27,35 @@ FishRenderer::FishRenderer(){
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);
 
+    glGenBuffers(1, &this->screenQuadVBO);
+    glGenVertexArrays(1, &this->screenQuadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, this->screenQuadVBO);
+    glBindVertexArray(this->screenQuadVAO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(this->screenQuadVertices), this->screenQuadVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)(2*sizeof(float)));
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    glGenFramebuffers(1, &this->framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+
+    glGenTextures(1, &this->screenQuadTexture);
+    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
@@ -42,6 +68,43 @@ FishRenderer::~FishRenderer(){
 
 glm::vec2 jointSidePoint(Joint& j){
     return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees
+}
+
+void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
+                              glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
+
+    // bind to custom framebuffer object
+    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+
+    glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // render the fish
+    for(Fish& fish : allFish){
+
+        this->renderFishSideFins(fish, frontFinScale, backFinScale, circleShader);
+        this->renderFishBody(fish, circleShader, outlineShader);
+        this->renderFishEyes(fish, eyeScale, circleShader);
+        this->renderFishTailFin(fish, finShader);
+        this->renderFishBackFin(fish, finShader);
+    }
+        
+    // bind to default framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    glClearColor(1.0f, 0.8f, 0.8f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // render quad
+    this->renderScreenQuad(screenShader);
+
+}
+
+void FishRenderer::renderScreenQuad(Shader& screenShader){
+    screenShader.use();
+    glBindVertexArray(this->screenQuadVAO);
+    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    glad_glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
