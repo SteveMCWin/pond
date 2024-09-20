@@ -61,7 +61,9 @@ private:
     unsigned int outlineVBO, outlineVAO;
     unsigned int screenQuadVBO, screenQuadVAO;
 
+    unsigned int multisampledFBO;
     unsigned int framebuffer;
+    unsigned int multisampledTex;
     unsigned int screenQuadTexture;
 
 

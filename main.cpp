@@ -32,10 +32,10 @@ float last_frame = 0.0f;
 int main(int, char**){
 
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_SAMPLES, 8);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     // glfwSwapInterval(0);
     // vblank_mode=0 ./my_opengl_project 
@@ -119,6 +119,11 @@ int main(int, char**){
     }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    int* max_size;
+    // glGetIntegerv(GL_MAX_TEXTURE_SIZE, max_size);
+
+    // std::cout << "Max tex size: " << max_size << std::endl;
 
     int frameCounter = 60;
 

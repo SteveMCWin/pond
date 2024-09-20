@@ -47,10 +47,23 @@ FishRenderer::FishRenderer(){
 
     glGenTextures(1, &this->screenQuadTexture);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+
+    glGenFramebuffers(1, &this->multisampledFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
+
+    glGenTextures(1, &this->multisampledTex);
+    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, this->multisampledTex);
+    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGBA8, 1600, 900, GL_FALSE);
+    glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, this->multisampledTex, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
@@ -74,9 +87,9 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
                               glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
 
     // bind to custom framebuffer object
-    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // render the fish
@@ -88,12 +101,20 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
         this->renderFishTailFin(fish, finShader);
         this->renderFishBackFin(fish, finShader);
     }
+
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampledFBO);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    glBlitFramebuffer(0, 0, 1600, 900, 0, 0, 1600, 900, GL_COLOR_BUFFER_BIT, GL_LINEAR);
         
     // bind to default framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    glClearColor(1.0f, 0.8f, 0.8f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    // glClearColor(1.0f, 0.8f, 0.8f, 1.0f);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
+    // glClear(GL_COLOR_BUFFER_BIT);
+
+    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
 
     // render quad
     this->renderScreenQuad(screenShader);
@@ -103,7 +124,7 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
 void FishRenderer::renderScreenQuad(Shader& screenShader){
     screenShader.use();
     glBindVertexArray(this->screenQuadVAO);
-    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    glBindTexture(GL_TEXTURE_2D, this->multisampledTex);
     glad_glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
