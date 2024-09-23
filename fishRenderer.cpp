@@ -230,14 +230,14 @@ void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, gl
     glm::vec2 backOffset  = jointSidePoint(backFinsJoint);
 
     // rotates the fin corresponding the move direction of the joint it is attached to, then an offset it applied so the fin isn't sticking straigh out
-    float rightFinAngle = Global::angleBetweenVectors(frontFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 3.0f*Global::pi/4.0f;
+    float rightFinAngle = Global::angleOfVector(frontFinsJoint.moveDirection) - 3.0f*Global::pi/4.0f;
     // same angle between the find and move direction but the offset should be the opposite from the first fin
     float leftFinAngle  = rightFinAngle + 6.0f*Global::pi/4.0f;
 
     this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, frontScale, finShader);
     this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, frontScale, finShader);
 
-    rightFinAngle = Global::angleBetweenVectors(backFinsJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - 7.0f*Global::pi/8.0f;
+    rightFinAngle = Global::angleOfVector(backFinsJoint.moveDirection) - 7.0f*Global::pi/8.0f;
     leftFinAngle  = rightFinAngle + 14.0f*Global::pi/8.0f;
 
     this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, backScale, finShader);
@@ -252,8 +252,8 @@ void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& cir
 
     glm::vec2 offset = jointSidePoint(headJoint) * 0.85f;
 
-    float rightEyeAngle = Global::angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) - Global::pi/2.0f + Global::pi/20.0f;
-    float leftEyeAngle  = Global::angleBetweenVectors(headJoint.moveDirection, glm::vec2(1.0f, 0.0f)) + Global::pi/2.0f - Global::pi/20.0f;
+    float rightEyeAngle = Global::angleOfVector(headJoint.moveDirection) - Global::pi/2.0f + Global::pi/20.0f;
+    float leftEyeAngle  = Global::angleOfVector(headJoint.moveDirection) + Global::pi/2.0f - Global::pi/20.0f;
 
     // the only difference is that we're first rendering an oval of the same color as the fish body so it's not like the eye is sticking out or something
 

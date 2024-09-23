@@ -113,17 +113,12 @@ int main(int, char**){
     // centers[0] = glm::vec2(-20.0f, -12.0f);
     // fishHandler.addFish(12, centers, distances, radii, 12);
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 15; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
         fishHandler.addFish(12, centers, distances, radii, i, 12);
     }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    int* max_size;
-    // glGetIntegerv(GL_MAX_TEXTURE_SIZE, max_size);
-
-    // std::cout << "Max tex size: " << max_size << std::endl;
 
     int frameCounter = 60;
 
@@ -146,6 +141,9 @@ int main(int, char**){
 
         // double xpos, ypos;
         // glfwGetCursorPos(window, &xpos, &ypos);
+
+        screenShader.use();
+        screenShader.setFloat("iTime", delta_time);
         
         for(Fish& f : fishHandler.allFish){
 

@@ -23,9 +23,9 @@ public:
 
 private:
 
-    float cohesionIntensity = 0.3f;
-    float alignmentIntensity = 13.0f;
-    float separationIntensity = 130.0f;
+    float cohesionIntensity = 0.5f;
+    float alignmentIntensity = 180.0f;
+    float separationIntensity = 100.0f;
     float edgeEvasionIntensity = 50.0f;
 };
 

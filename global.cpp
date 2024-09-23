@@ -20,9 +20,9 @@ float Global::GetRandomFloat(){
     return (float)(rand())/(float)(RAND_MAX);
 }
 
-float Global::angleBetweenVectors(glm::vec2 v1, glm::vec2 v2){
-    float angle = std::acos(glm::dot(v1, v2));
-    if(v1.y < 0.0f){
+float Global::angleOfVector(glm::vec2 v){
+    float angle = std::acos(glm::dot(v, glm::vec2(1.0f, 0.0f)));  // acos returns the angle in radians
+    if(v.y < 0.0f){
         angle *= -1.0f;
     }
     return angle;

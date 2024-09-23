@@ -27,20 +27,17 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
     int counter = 0;
     int separationCounter = 0;
 
-    float separationSight = 0.3f * fish.sightRange;
-    float otherSight = 1.0f * fish.sightRange;
-
-    for(Fish& f : this->allFish){
+    for(Fish& f : allFish){
         if(fish.fishID != f.fishID){
 
-            if(glm::length(fish.joints[0].Center - f.joints[0].Center) < separationSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.8){
+            if(glm::length(fish.joints[0].Center - f.joints[0].Center) < 0.3 * fish.sightRange && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.8){
                 separationVec += fish.joints[0].Center - f.joints[0].Center;
                 alignmentVec  += f.joints[0].moveDirection;
                 cohesionVec   += f.joints[0].Center;
                 separationCounter++;
                 counter++;
             }
-            else if(glm::length(fish.joints[0].Center - f.joints[0].Center) < otherSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
+            else if(glm::length(fish.joints[0].Center - f.joints[0].Center) < 0.8 * fish.sightRange && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.8){
                 alignmentVec  += f.joints[0].moveDirection;
                 cohesionVec   += f.joints[0].Center;
                 counter++;
@@ -57,7 +54,7 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
 
             float separationNum = glm::length(separationVec/(float)separationCounter);
 
-            separationNum = 1.0f - separationNum/separationSight;
+            separationNum = 1.0f - separationNum/(0.4f * fish.sightRange);
 
             separationNum = powf(separationNum, 0.01f);
 
@@ -75,13 +72,14 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
             alignmentVec  = alignmentVec/(float)counter;
             cohesionVec   = cohesionVec/(float)counter;
 
-            float alignmentAngleDelta = Global::angleOfVector(alignmentVec) - Global::angleOfVector(resultDir);
-
-            float alignmentFactor = (float)counter / (float)(this->allFish.size() - 1);
-
-            resultDir = Global::rotateVector(resultDir, alignmentAngleDelta * alignmentFactor * alignmentIntensity * delta_time);
-
             float rotationDir;
+
+            if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(alignmentVec, 0.0f)).z > 0)
+                rotationDir =  1.0f;
+            else
+                rotationDir = -1.0f;
+
+            resultDir = Global::rotateVector(resultDir, rotationDir * glm::length(alignmentVec) * alignmentIntensity * delta_time);
 
             if(glm::cross(glm::vec3(resultDir, 0.0f), glm::vec3(cohesionVec, 0.0f)).z > 0)
                 rotationDir =  1.0f;
@@ -93,7 +91,7 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
         }
     }
 
-    resultDir = Global::rotateVector(resultDir, (float)std::sin((glfwGetTime() + fish.fishID * 7.0f) * 2.0f) * 50.0f * delta_time);
+    // resultDir = Global::rotateVector(resultDir, (float)std::sin((glfwGetTime() + fish.fishID * 7.0f) * 2.0f) * 50.0f * delta_time);
 
     return resultDir;
 }
