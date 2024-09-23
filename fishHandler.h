@@ -19,7 +19,7 @@ public:
     void addFish(Fish& fish);
     void addFish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks, float speed = 15.0f);
 
-    glm::vec2 calcFishMoveDir(Fish& fish, float delta_time);
+    glm::vec2 calcFishMoveDir(Fish& fish, float delta_time);    // responsible for boid-like behaviour of fish
 
 private:
 
