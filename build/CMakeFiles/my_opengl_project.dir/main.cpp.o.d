@@ -372,4 +372,6 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/local/include/glm/gtc/random.inl /usr/include/c++/11/ctime \
  /home/stevica/openGL_projects/pond/fishRenderer.h \
  /home/stevica/openGL_projects/pond/bezier_filled.h \
+ /home/stevica/openGL_projects/pond/texture.h \
+ /home/stevica/openGL_projects/pond/stb_image.h \
  /home/stevica/openGL_projects/pond/fishHandler.h

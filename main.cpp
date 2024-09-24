@@ -12,6 +12,7 @@
 #include "fish.h"
 #include "fishRenderer.h"
 #include "fishHandler.h"
+#include "texture.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -78,6 +79,9 @@ int main(int, char**){
                                   "/home/stevica/openGL_projects/pond/shaders/f_bezier.glsl");
     Shader screenShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_screen.glsl",
                                  "/home/stevica/openGL_projects/pond/shaders/f_screen.glsl");
+
+    Texture2D pondBackgroundTex;
+    pondBackgroundTex.Generate("/home/stevica/openGL_projects/pond/textures/background.png", false);
 
     circleShader.use();
 
@@ -152,7 +156,8 @@ int main(int, char**){
 
         }
 
-        renderer->renderFish(fishHandler.allFish, circleShader, outlineShader, bezierShader, screenShader, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), glm::vec2(0.15f, 0.4f));
+        renderer->renderFish(fishHandler.allFish, circleShader, outlineShader, bezierShader, screenShader,
+                             pondBackgroundTex.ID, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), glm::vec2(0.15f, 0.4f));
 
         glfwSwapBuffers(window);
         glfwPollEvents();

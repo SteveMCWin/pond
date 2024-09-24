@@ -12,6 +12,7 @@
 #include "fish.h"
 #include "shader.h"
 #include "bezier_filled.h"
+#include "texture.h"
 
 class FishRenderer{
 
@@ -20,7 +21,7 @@ public:
     ~FishRenderer();
 
     void renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
-                    glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale);
+                    unsigned int &pondBackgroundTexID, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale);
 
 private:
 
@@ -34,6 +35,8 @@ private:
 
     void renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color, float r);
 
+    void renderPond(Shader& shader, unsigned int pondBackgroundID);
+
     float vertices[12] = {  // quad vertices used for rendering ovals
         -1.0, -1.0,
          1.0, -1.0,
@@ -44,7 +47,7 @@ private:
         -1.0,  1.0
     };
 
-    float screenQuadVertices[24] = {
+    float screenQuadVertices[24] = {    // quad vertices used for rendering the fbo texture to the screen
         // positions   // texCoords
         -1.0f,  1.0f,  0.0f, 1.0f,
         -1.0f, -1.0f,  0.0f, 0.0f,

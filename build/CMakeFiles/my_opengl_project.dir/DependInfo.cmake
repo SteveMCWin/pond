@@ -15,6 +15,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/stevica/openGL_projects/pond/fishRenderer.cpp" "CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o.d"
   "/home/stevica/openGL_projects/pond/global.cpp" "CMakeFiles/my_opengl_project.dir/global.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/global.cpp.o.d"
   "/home/stevica/openGL_projects/pond/main.cpp" "CMakeFiles/my_opengl_project.dir/main.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/main.cpp.o.d"
+  "/home/stevica/openGL_projects/pond/stb_image.cpp" "CMakeFiles/my_opengl_project.dir/stb_image.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/stb_image.cpp.o.d"
+  "/home/stevica/openGL_projects/pond/texture.cpp" "CMakeFiles/my_opengl_project.dir/texture.cpp.o" "gcc" "CMakeFiles/my_opengl_project.dir/texture.cpp.o.d"
   )
 
 # Targets to which this target links.

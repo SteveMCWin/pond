@@ -20,7 +20,9 @@ add_executable(my_opengl_project
     fishRenderer.cpp
     bezier_filled.cpp
     global.cpp
-    fishHandler.cpp)
+    fishHandler.cpp
+    texture.cpp
+    stb_image.cpp)
 
 include_directories(/urs/include/freetype2 -I/usr/local/include/freetype2 -I/usr/include/libpng16)
 

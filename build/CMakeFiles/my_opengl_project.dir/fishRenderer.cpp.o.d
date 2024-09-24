@@ -374,4 +374,6 @@ CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/sstream \
  /usr/include/c++/11/bits/sstream.tcc \
- /home/stevica/openGL_projects/pond/bezier_filled.h
+ /home/stevica/openGL_projects/pond/bezier_filled.h \
+ /home/stevica/openGL_projects/pond/texture.h \
+ /home/stevica/openGL_projects/pond/stb_image.h

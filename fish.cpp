@@ -124,6 +124,7 @@ void Fish::updateHitChecks(){
         //         // std::cout << "hi" << std::endl;
         // }
 
+        // The if checks if the position of the hit check is outside a square with round corners, the exponent (4 in this case) determines the roundness (smaller exp -> rounder)
         if( powf(std::abs(hit_check_world_pos.x/Global::screenHalfSize), 4) +
             powf(std::abs(hit_check_world_pos.y/(Global::screenHalfSize*Global::aspectRatio)), 4) >= 1){
 

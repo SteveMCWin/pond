@@ -167,6 +167,34 @@ CMakeFiles/my_opengl_project.dir/fishHandler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/my_opengl_project.dir/fishHandler.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stevica/openGL_projects/pond/fishHandler.cpp -o CMakeFiles/my_opengl_project.dir/fishHandler.cpp.s
 
+CMakeFiles/my_opengl_project.dir/texture.cpp.o: CMakeFiles/my_opengl_project.dir/flags.make
+CMakeFiles/my_opengl_project.dir/texture.cpp.o: ../texture.cpp
+CMakeFiles/my_opengl_project.dir/texture.cpp.o: CMakeFiles/my_opengl_project.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stevica/openGL_projects/pond/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/my_opengl_project.dir/texture.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/my_opengl_project.dir/texture.cpp.o -MF CMakeFiles/my_opengl_project.dir/texture.cpp.o.d -o CMakeFiles/my_opengl_project.dir/texture.cpp.o -c /home/stevica/openGL_projects/pond/texture.cpp
+
+CMakeFiles/my_opengl_project.dir/texture.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/my_opengl_project.dir/texture.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stevica/openGL_projects/pond/texture.cpp > CMakeFiles/my_opengl_project.dir/texture.cpp.i
+
+CMakeFiles/my_opengl_project.dir/texture.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/my_opengl_project.dir/texture.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stevica/openGL_projects/pond/texture.cpp -o CMakeFiles/my_opengl_project.dir/texture.cpp.s
+
+CMakeFiles/my_opengl_project.dir/stb_image.cpp.o: CMakeFiles/my_opengl_project.dir/flags.make
+CMakeFiles/my_opengl_project.dir/stb_image.cpp.o: ../stb_image.cpp
+CMakeFiles/my_opengl_project.dir/stb_image.cpp.o: CMakeFiles/my_opengl_project.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stevica/openGL_projects/pond/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/my_opengl_project.dir/stb_image.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/my_opengl_project.dir/stb_image.cpp.o -MF CMakeFiles/my_opengl_project.dir/stb_image.cpp.o.d -o CMakeFiles/my_opengl_project.dir/stb_image.cpp.o -c /home/stevica/openGL_projects/pond/stb_image.cpp
+
+CMakeFiles/my_opengl_project.dir/stb_image.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/my_opengl_project.dir/stb_image.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stevica/openGL_projects/pond/stb_image.cpp > CMakeFiles/my_opengl_project.dir/stb_image.cpp.i
+
+CMakeFiles/my_opengl_project.dir/stb_image.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/my_opengl_project.dir/stb_image.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stevica/openGL_projects/pond/stb_image.cpp -o CMakeFiles/my_opengl_project.dir/stb_image.cpp.s
+
 # Object files for target my_opengl_project
 my_opengl_project_OBJECTS = \
 "CMakeFiles/my_opengl_project.dir/main.cpp.o" \
@@ -175,7 +203,9 @@ my_opengl_project_OBJECTS = \
 "CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o" \
 "CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o" \
 "CMakeFiles/my_opengl_project.dir/global.cpp.o" \
-"CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o"
+"CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o" \
+"CMakeFiles/my_opengl_project.dir/texture.cpp.o" \
+"CMakeFiles/my_opengl_project.dir/stb_image.cpp.o"
 
 # External object files for target my_opengl_project
 my_opengl_project_EXTERNAL_OBJECTS =
@@ -187,11 +217,13 @@ my_opengl_project: CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/bezier_filled.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/global.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o
+my_opengl_project: CMakeFiles/my_opengl_project.dir/texture.cpp.o
+my_opengl_project: CMakeFiles/my_opengl_project.dir/stb_image.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/build.make
 my_opengl_project: /usr/lib/x86_64-linux-gnu/libGLX.so
 my_opengl_project: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 my_opengl_project: CMakeFiles/my_opengl_project.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stevica/openGL_projects/pond/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable my_opengl_project"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stevica/openGL_projects/pond/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable my_opengl_project"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/my_opengl_project.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -84,13 +84,17 @@ glm::vec2 jointSidePoint(Joint& j){
 }
 
 void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
-                              glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
+                              unsigned int &pondBackgroundTexID, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
 
     // bind to custom framebuffer object
     glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    // render pond background
+
+    this->renderPond(screenShader, pondBackgroundTexID);
 
     // render the fish
     for(Fish& fish : allFish){
@@ -128,16 +132,20 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     glad_glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void FishRenderer::renderPond(Shader& shader, unsigned int pondBackgroundTexID){
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, pondBackgroundTexID);
+
+    shader.use();
+    glBindVertexArray(screenQuadVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
+}
+
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
 
     glm::mat4 projection = Global::projectionMatrix;
-
-    // this renders all of the circles
-
-    // for(Joint joint : fish.joints){
-    //     this->renderOvals(joint.Center, glm::vec2(0.0f), 0.0f, glm::vec2(joint.circleRadius),
-    //                       circleShader, fish.bodyColor, joint.circleRadius);
-    // }
 
     // this renders the first and last circle
     this->renderOvals(fish.joints[0].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[0].circleRadius),

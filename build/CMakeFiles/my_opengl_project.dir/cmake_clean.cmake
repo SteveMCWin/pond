@@ -13,6 +13,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/my_opengl_project.dir/global.cpp.o.d"
   "CMakeFiles/my_opengl_project.dir/main.cpp.o"
   "CMakeFiles/my_opengl_project.dir/main.cpp.o.d"
+  "CMakeFiles/my_opengl_project.dir/stb_image.cpp.o"
+  "CMakeFiles/my_opengl_project.dir/stb_image.cpp.o.d"
+  "CMakeFiles/my_opengl_project.dir/texture.cpp.o"
+  "CMakeFiles/my_opengl_project.dir/texture.cpp.o.d"
   "my_opengl_project"
   "my_opengl_project.pdb"
 )

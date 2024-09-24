@@ -375,4 +375,6 @@ CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o: \
  /usr/include/c++/11/bits/sstream.tcc \
  /home/stevica/openGL_projects/pond/fishRenderer.h /usr/include/GL/gl.h \
  /usr/include/GLFW/glfw3.h \
- /home/stevica/openGL_projects/pond/bezier_filled.h
+ /home/stevica/openGL_projects/pond/bezier_filled.h \
+ /home/stevica/openGL_projects/pond/texture.h \
+ /home/stevica/openGL_projects/pond/stb_image.h

@@ -297,6 +297,54 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+stb_image.o: stb_image.cpp.o
+.PHONY : stb_image.o
+
+# target to build an object file
+stb_image.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/stb_image.cpp.o
+.PHONY : stb_image.cpp.o
+
+stb_image.i: stb_image.cpp.i
+.PHONY : stb_image.i
+
+# target to preprocess a source file
+stb_image.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/stb_image.cpp.i
+.PHONY : stb_image.cpp.i
+
+stb_image.s: stb_image.cpp.s
+.PHONY : stb_image.s
+
+# target to generate assembly for a file
+stb_image.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/stb_image.cpp.s
+.PHONY : stb_image.cpp.s
+
+texture.o: texture.cpp.o
+.PHONY : texture.o
+
+# target to build an object file
+texture.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/texture.cpp.o
+.PHONY : texture.cpp.o
+
+texture.i: texture.cpp.i
+.PHONY : texture.i
+
+# target to preprocess a source file
+texture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/texture.cpp.i
+.PHONY : texture.cpp.i
+
+texture.s: texture.cpp.s
+.PHONY : texture.s
+
+# target to generate assembly for a file
+texture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_opengl_project.dir/build.make CMakeFiles/my_opengl_project.dir/texture.cpp.s
+.PHONY : texture.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -327,6 +375,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... stb_image.o"
+	@echo "... stb_image.i"
+	@echo "... stb_image.s"
+	@echo "... texture.o"
+	@echo "... texture.i"
+	@echo "... texture.s"
 .PHONY : help
 
 
