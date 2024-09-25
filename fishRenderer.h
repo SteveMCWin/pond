@@ -58,18 +58,30 @@ private:
          1.0f,  1.0f,  1.0f, 1.0f
     };
 
+    float wavesQuadVertices[24] = {
+        // positions   // texCoords
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
+    };
+
     BezierCurve fin_bezier; // bezier curve class object used for rendering fins
 
     unsigned int circleVBO, circleVAO;
     unsigned int outlineVBO, outlineVAO;
     unsigned int screenQuadVBO, screenQuadVAO;
+    unsigned int waveQuadVBO, waveQuadVAO;
 
     unsigned int multisampledFBO;
     unsigned int framebuffer;
     unsigned int multisampledTex;
     unsigned int screenQuadTexture;
 
-    Texture2D backgroundTexture;
+    Texture2D backgroundTex;
     Texture2D waterNoiseTex;
     Texture2D highlightNoiseTex;
 

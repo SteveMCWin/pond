@@ -25,7 +25,7 @@ private:
 
     float cohesionIntensity = 0.5f;
     float alignmentIntensity = 180.0f;
-    float separationIntensity = 130.0f;
+    float separationIntensity = 180.0f;
     float edgeEvasionIntensity = 80.0f;
 };
 

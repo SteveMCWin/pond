@@ -39,10 +39,22 @@ FishRenderer::FishRenderer(){
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)(2*sizeof(float)));
 
+    glGenBuffers(1, &this->waveQuadVBO);
+    glGenVertexArrays(1, &this->waveQuadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, this->waveQuadVBO);
+    glBindVertexArray(this->waveQuadVAO);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(this->wavesQuadVertices), this->wavesQuadVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)(2*sizeof(float)));
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    this->backgroundTexture.Generate("/home/stevica/openGL_projects/pond/textures/background.png", false);
+    this->backgroundTex.Generate("/home/stevica/openGL_projects/pond/textures/backgroundTexture.png", false);
     this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
     this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
 
@@ -151,13 +163,13 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
 void FishRenderer::renderPond(Shader& backgroundShader){
 
     glActiveTexture(GL_TEXTURE0);
-    backgroundTexture.Bind();
+    backgroundTex.Bind();
 
     backgroundShader.use();
 
     backgroundShader.setInt("backgroundTex", 0);
 
-    glBindVertexArray(screenQuadVAO);
+    glBindVertexArray(waveQuadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
