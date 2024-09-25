@@ -42,6 +42,10 @@ FishRenderer::FishRenderer(){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+    this->backgroundTexture.Generate("/home/stevica/openGL_projects/pond/textures/background.png", false);
+    this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
+    this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
+
     glGenFramebuffers(1, &this->framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
 
@@ -84,7 +88,7 @@ glm::vec2 jointSidePoint(Joint& j){
 }
 
 void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
-                              unsigned int &pondBackgroundTexID, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
+                              Shader& backgroundShader, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
 
     // bind to custom framebuffer object
     glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
@@ -94,7 +98,7 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
 
     // render pond background
 
-    this->renderPond(screenShader, pondBackgroundTexID);
+    this->renderPond(backgroundShader);
 
     // render the fish
     for(Fish& fish : allFish){
@@ -126,18 +130,33 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
 }
 
 void FishRenderer::renderScreenQuad(Shader& screenShader){
-    screenShader.use();
     glBindVertexArray(this->screenQuadVAO);
+
+    screenShader.use();
+
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->multisampledTex);
+    glActiveTexture(GL_TEXTURE1);
+    waterNoiseTex.Bind();
+    glActiveTexture(GL_TEXTURE2);
+    highlightNoiseTex.Bind();
+
+    screenShader.setInt("screenTexture", 0);
+    screenShader.setInt("waterNoiseTexture", 1);
+    screenShader.setInt("highlightNoiseTexture", 2);
+
     glad_glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void FishRenderer::renderPond(Shader& shader, unsigned int pondBackgroundTexID){
+void FishRenderer::renderPond(Shader& backgroundShader){
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, pondBackgroundTexID);
+    backgroundTexture.Bind();
 
-    shader.use();
+    backgroundShader.use();
+
+    backgroundShader.setInt("backgroundTex", 0);
+
     glBindVertexArray(screenQuadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);

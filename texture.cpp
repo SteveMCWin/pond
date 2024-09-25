@@ -9,15 +9,6 @@ Texture2D::Texture2D()
 
 void Texture2D::Generate(std::string path, bool alpha)
 {
-    // this->Width = width;
-    // this->Height = height;
-    // // create Texture
-    // glBindTexture(GL_TEXTURE_2D, this->ID);
-    // glTexImage2D(GL_TEXTURE_2D, 0, this->Internal_Format, width, height, 0, this->Image_Format, GL_UNSIGNED_BYTE, data);
-    // // set Texture wrap and filter modes
-    // // unbind texture
-    // glBindTexture(GL_TEXTURE_2D, 0);
-
     if(alpha){
         this->Internal_Format = GL_RGBA;
         this->Image_Format = GL_RGBA;
