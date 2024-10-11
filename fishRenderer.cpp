@@ -110,7 +110,7 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
 
     // render pond background
 
-    this->renderPond(backgroundShader);
+    // this->renderPond(backgroundShader);
 
     // render the fish
     for(Fish& fish : allFish){

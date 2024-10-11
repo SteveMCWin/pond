@@ -90,8 +90,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec4 highlights1 = texture(highlightNoiseTexture, scaledTexCoords + iTime*speed / vec2(-10.0, 100.0));
     vec4 highlights2 = texture(highlightNoiseTexture, scaledTexCoords + iTime*speed / vec2( 10.0, 100.0));
 
-    vec4 background = texture(screenTexture, TexCoords + avg(water1) * 0.05);
-    // vec4 background = texture(screenTexture, TexCoords);
+    // vec4 background = texture(screenTexture, TexCoords + avg(water1) * 0.05);
+    vec4 background = texture(screenTexture, TexCoords);
 
     water1.rgb = vec3(avg(water1));
     water2.rgb = vec3(avg(water2));
@@ -109,6 +109,6 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         alpha = 4.0 * opacity;
     }
 
-    FragColor = (water1 + water2) * alpha + background;
-    // FragColor = background;
+    // FragColor = (water1 + water2) * alpha + background;
+    FragColor = background;
 } 
