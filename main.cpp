@@ -36,7 +36,9 @@ int main(int, char**){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_SAMPLES, 4);
+    // glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
     // glfwSwapInterval(0);
     // vblank_mode=0 ./my_opengl_project 
@@ -61,15 +63,18 @@ int main(int, char**){
         return -1;
     }
 
-    if(glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER)){
-        std::cout << "The framebuffer is transparrent!" << std::endl;
-    }
+    // if(glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER)){
+    //     std::cout << "The framebuffer is transparrent!" << std::endl;
+    // }
+    int isTransparent = glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER);
+    std::cout << "Transparency supported: " << isTransparent << std::endl;
+
 
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glEnable(GL_MULTISAMPLE);
+    // glEnable(GL_MULTISAMPLE);
 
     Shader circleShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");

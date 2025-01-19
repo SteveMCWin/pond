@@ -103,14 +103,12 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
                               Shader& backgroundShader, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
 
     // bind to custom framebuffer object
-    glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
+    // glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // render pond background
-
-    // this->renderPond(backgroundShader);
 
     // render the fish
     for(Fish& fish : allFish){
@@ -122,22 +120,17 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
         this->renderFishBackFin(fish, finShader);
     }
 
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampledFBO);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-    glBlitFramebuffer(0, 0, 1600, 900, 0, 0, 1600, 900, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-        
-    // bind to default framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    // glClearColor(1.0f, 0.8f, 0.8f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
-    // glClear(GL_COLOR_BUFFER_BIT);
-
-    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
-
-    // render quad
-    this->renderScreenQuad(screenShader);
+    // glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampledFBO);
+    // glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
+    // glBlitFramebuffer(0, 0, 1600, 900, 0, 0, 1600, 900, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+    //     
+    // // bind to default framebuffer
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //
+    // glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    //
+    // // render quad
+    // this->renderScreenQuad(screenShader);
 
 }
 
