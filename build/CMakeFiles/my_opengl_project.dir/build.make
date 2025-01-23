@@ -220,6 +220,9 @@ my_opengl_project: CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/texture.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/stb_image.cpp.o
 my_opengl_project: CMakeFiles/my_opengl_project.dir/build.make
+my_opengl_project: /usr/local/lib/libglfw3.a
+my_opengl_project: /usr/lib/x86_64-linux-gnu/librt.a
+my_opengl_project: /usr/lib/x86_64-linux-gnu/libm.so
 my_opengl_project: /usr/lib/x86_64-linux-gnu/libGLX.so
 my_opengl_project: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 my_opengl_project: CMakeFiles/my_opengl_project.dir/link.txt

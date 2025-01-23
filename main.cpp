@@ -40,15 +40,17 @@ int main(int, char**){
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
     glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
-    // glfwSwapInterval(0);
     // vblank_mode=0 ./my_opengl_project 
 
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
-    // glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, true);
+    glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Stevica :D", NULL, NULL);
+    GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
+
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Stevica :D", primary_monitor, NULL);
     if(window == NULL){
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -63,18 +65,15 @@ int main(int, char**){
         return -1;
     }
 
-    // if(glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER)){
-    //     std::cout << "The framebuffer is transparrent!" << std::endl;
-    // }
-    int isTransparent = glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER);
-    std::cout << "Transparency supported: " << isTransparent << std::endl;
-
-
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    glfwSetWindowAttrib(window, GLFW_FLOATING, GLFW_TRUE);
+    glfwSwapInterval(0);
+
     // glEnable(GL_MULTISAMPLE);
+
 
     Shader circleShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
@@ -106,20 +105,9 @@ int main(int, char**){
         glm::vec2(-1.4f, -1.9f),
     };
 
-    // std::cout << "Size of distances " << sizeof(distances)/sizeof(float) << std::endl;
-    // std::cout << "Size of radii " << sizeof(radii)/sizeof(float) << std::endl;
-    // std::cout << "Size of centers " << sizeof(centers)/sizeof(glm::vec2) << std::endl;
-
     FishRenderer* renderer = new FishRenderer();
 
     FishHandler fishHandler;
-
-    // fishHandler.addFish(12, centers, distances, radii, 12);
-    // Fish fishy = Fish(12, centers, distances, radii, 7);
-    // fishHandler.addFish(fishy);
-
-    // centers[0] = glm::vec2(-20.0f, -12.0f);
-    // fishHandler.addFish(12, centers, distances, radii, 12);
 
     for(int i = 0; i < 15; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
@@ -136,8 +124,8 @@ int main(int, char**){
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        if(frameCounter > 50){
-            // std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
+        if(frameCounter > 500){
+            std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
             frameCounter = -1;
         }
         frameCounter++;

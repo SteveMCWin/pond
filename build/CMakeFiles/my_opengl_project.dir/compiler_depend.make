@@ -1255,7 +1255,7 @@ CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o: ../fishHandler.cpp \
   /usr/include/c++/11/bits/sstream.tcc \
   ../fishRenderer.h \
   /usr/include/GL/gl.h \
-  /usr/include/GLFW/glfw3.h \
+  /usr/local/include/GLFW/glfw3.h \
   ../bezier_filled.h \
   ../texture.h \
   ../stb_image.h
@@ -1560,7 +1560,7 @@ CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o: ../fishRenderer.cpp \
   /usr/local/include/glm/gtc/constants.inl \
   /usr/local/include/glm/gtc/matrix_transform.inl \
   /usr/include/GL/gl.h \
-  /usr/include/GLFW/glfw3.h \
+  /usr/local/include/GLFW/glfw3.h \
   ../fish.h \
   ../global.h \
   /usr/local/include/glm/gtc/random.hpp \
@@ -2076,7 +2076,7 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: ../main.cpp \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
   /usr/include/GL/gl.h \
-  /usr/include/GLFW/glfw3.h \
+  /usr/local/include/GLFW/glfw3.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
   /usr/local/include/glm/detail/type_vec.hpp \
   /usr/local/include/glm/detail/precision.hpp \
@@ -3213,8 +3213,6 @@ CMakeFiles/my_opengl_project.dir/texture.cpp.o: ../texture.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/adxintrin.h:
 
-/usr/include/GLFW/glfw3.h:
-
 /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
@@ -3510,6 +3508,8 @@ CMakeFiles/my_opengl_project.dir/texture.cpp.o: ../texture.cpp \
 /usr/local/include/glm/mat3x2.hpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vp2intersectintrin.h:
+
+/usr/local/include/GLFW/glfw3.h:
 
 /usr/local/include/glm/detail/type_mat3x2.hpp:
 

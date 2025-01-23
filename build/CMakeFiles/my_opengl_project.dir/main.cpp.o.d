@@ -16,7 +16,7 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h /usr/include/GL/gl.h \
- /usr/include/GLFW/glfw3.h \
+ /usr/local/include/GLFW/glfw3.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
  /usr/local/include/glm/detail/type_vec.hpp \
  /usr/local/include/glm/detail/precision.hpp \

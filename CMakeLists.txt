@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenGL REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(glfw3 3.4 REQUIRED)
 
 # find_package(glm CONFIG REQUIRED)
 # target_link_libraries(main PRIVATE glm::glm-header-only)
@@ -26,4 +27,4 @@ add_executable(my_opengl_project
 
 include_directories(/urs/include/freetype2 -I/usr/local/include/freetype2 -I/usr/include/libpng16)
 
-target_link_libraries(my_opengl_project glfw OpenGL::GL freetype)
+target_link_libraries(my_opengl_project glfw OpenGL::GL freetype X11)
