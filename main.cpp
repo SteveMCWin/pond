@@ -22,10 +22,8 @@ unsigned int loadTexture(const char *path);
 unsigned int loadCubemap(std::vector<std::string> faces);
 void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color);
 
-// const unsigned int SCR_WIDTH    = 1920;
-// const unsigned int SCR_HEIGHT   = 1080;
-const unsigned int SCR_WIDTH    = 1600;
-const unsigned int SCR_HEIGHT   =  900;
+// const unsigned int WINDOW_WIDTH    = 1600;
+// const unsigned int WINDOW_HEIGHT   =  900;
 
 float delta_time = 0.0f;
 float last_frame = 0.0f;
@@ -36,11 +34,11 @@ int main(int, char**){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     // glfwWindowHint(GLFW_SAMPLES, 4);
+
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
     glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-
-    // vblank_mode=0 ./my_opengl_project 
 
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 
@@ -74,7 +72,6 @@ int main(int, char**){
 
     // glEnable(GL_MULTISAMPLE);
 
-
     Shader circleShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
                            "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
     Shader outlineShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_solid.glsl",
@@ -86,11 +83,11 @@ int main(int, char**){
     Shader backgroundShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_background.glsl",
                                      "/home/stevica/openGL_projects/pond/shaders/f_background.glsl");
 
-    circleShader.use();
+    const unsigned int number_of_joints = 12;
 
-    float distances[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-    float radii[]     = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};
-    glm::vec2 centers[] = {
+    float distances[number_of_joints]   = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};   // desired distances from one circle center to another
+    float radii[number_of_joints]       = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};   // radii of each visible circle
+    glm::vec2 centers[number_of_joints] = {     // position of each circle center, the values below are pretty much random, wouldn't make a big difference if they were all (0, 0)
         glm::vec2(1.0f, 1.0f),
         glm::vec2(-0.1f, -0.1f),
         glm::vec2(-0.1f, -1.5f),
@@ -109,14 +106,17 @@ int main(int, char**){
 
     FishHandler fishHandler;
 
-    for(int i = 0; i < 15; i++){
+    unsigned int number_of_fish = 15;
+    unsigned int fish_speed = 12;
+
+    for(int i = 0; i < number_of_fish; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
-        fishHandler.addFish(12, centers, distances, radii, i, 12);
+        fishHandler.addFish(number_of_joints, centers, distances, radii, i, fish_speed);
     }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    int frameCounter = 60;
+    int frameCounter = 0;
 
     while(!glfwWindowShouldClose(window)){
 
@@ -132,20 +132,12 @@ int main(int, char**){
 
         processInput(window);
 
-        // glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
-        // glClear(GL_COLOR_BUFFER_BIT);
-
-        // double xpos, ypos;
-        // glfwGetCursorPos(window, &xpos, &ypos);
-
         screenShader.use();
         screenShader.setFloat("iTime", current_frame);
         
         for(Fish& f : fishHandler.allFish){
-
             glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f, delta_time);
             f.Move(newMoveDir, delta_time);
-
         }
 
         renderer->renderFish(fishHandler.allFish, circleShader, outlineShader, bezierShader, screenShader,

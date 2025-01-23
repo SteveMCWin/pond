@@ -108,29 +108,12 @@ void Fish::updateHitChecks(){   // could move this to a compute shader
         
         glm::vec2 hit_check_world_pos = this->joints[0].Center + this->hit_checks[j] * hit_check_distance;
 
-        // if(  hit_check_world_pos.x > -Global::bottomLeftCorner.x ||
-        //      hit_check_world_pos.x <  Global::bottomLeftCorner.x ||
-        //     -hit_check_world_pos.y >  Global::bottomLeftCorner.y ||
-        //     -hit_check_world_pos.y < -Global::bottomLeftCorner.y){
-        //
-        //         hit_checks_result += (i < 0) ? -1 : 1;
-        //         // std::cout << "hi" << std::endl;
-        // }
-
-        // if( hit_check_world_pos.x*hit_check_world_pos.x/(Global::bottomLeftCorner.x*Global::bottomLeftCorner.x) +
-        //     hit_check_world_pos.y*hit_check_world_pos.y/(Global::bottomLeftCorner.y*Global::bottomLeftCorner.y) >= 1){
-        //
-        //         hit_checks_result += (i < 0) ? -1 : 1;
-        //         // std::cout << "hi" << std::endl;
-        // }
-
         // The if checks if the position of the hit check is outside a square with round corners, the exponent (4 in this case) determines the roundness (smaller exp -> rounder)
         // the result of 1.0 is just on the edge of the window, less than is inside, more than is on the outside
         if( powf(std::abs(hit_check_world_pos.x/Global::screenHalfSize), 4) +
             powf(std::abs(hit_check_world_pos.y/(Global::screenHalfSize*Global::aspectRatio)), 4) >= 1.0){
 
                 hit_checks_result += (i < 0) ? -1 : 1;
-                // std::cout << "hi" << std::endl;
         }
 
 
