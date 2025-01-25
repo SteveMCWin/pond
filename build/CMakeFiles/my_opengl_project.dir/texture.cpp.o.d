@@ -151,5 +151,5 @@ CMakeFiles/my_opengl_project.dir/texture.cpp.o: \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc \
  /home/stevica/openGL_projects/pond/stb_image.h \
- /usr/include/c++/11/stdlib.h /home/stevica/openGL_projects/pond/glad.h \
+ /usr/include/c++/11/stdlib.h /usr/include/glad/glad.h \
  /usr/include/KHR/khrplatform.h

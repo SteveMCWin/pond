@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include "glad.h"
+#include <glad/glad.h>
 #include <glm/detail/type_vec.hpp>
 #include <glm/glm.hpp>
 #include <glm/detail/type_mat.hpp>
@@ -9,6 +9,7 @@
 
 class Global{
 public:
+    static const int numberOfFish = 15;
     static float aspectRatio;
     static float screenHalfSize;
     static float pi;

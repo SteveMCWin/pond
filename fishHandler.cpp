@@ -4,16 +4,31 @@
 #include <glm/detail/func_geometric.hpp>
 #include <iostream>
 
-FishHandler::FishHandler(){}
+FishHandler::FishHandler(){
+    glGenBuffers(1, &this->ssbo);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, Global::numberOfFish * sizeof(hit_check_struct), NULL, GL_DYNAMIC_COPY);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, this->ssbo);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+}
 
 void FishHandler::addFish(Fish& fish){
 
     this->allFish.push_back(fish);
 }
 
-void FishHandler::addFish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks, float speed){
+void FishHandler::addFish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, float speed){
 
-    this->allFish.push_back(Fish(numOfJoints, centers, distances, radii, id, numOfHitChecks, speed));
+    this->allFish.push_back(Fish(numOfJoints, centers, distances, radii, id, speed));
+}
+
+void FishHandler::calcFishHitChecks(){
+    hit_check_struct hit_check_data[Global::numberOfFish];
+    for(int i = 0; i < Global::numberOfFish; i++){
+        // hit_check_data = {this->allFish[i].joints[0].moveDirection, this->allFish[i].joints[0].Center, };
+    }
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(hit_check_data), hit_check_data);
 }
 
 glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
@@ -32,7 +47,7 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
 
     for(Fish& f : this->allFish){
         if(fish.fishID != f.fishID){
-            // note that in the following if another condition is that the fish is not right behind the one we are currently observing
+            // note that in the following statement another condition is that the fish is not right behind the one we are currently observing
             if(glm::length(fish.joints[0].Center - f.joints[0].Center) < separationSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
                 separationVec += fish.joints[0].Center - f.joints[0].Center;
                 alignmentVec  += f.joints[0].moveDirection;

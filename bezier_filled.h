@@ -1,6 +1,6 @@
 #ifndef BEZIER_FILLED_H
 #define BEZIER_FILLED_H
-#include "glad.h"
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>

@@ -1,6 +1,6 @@
 CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /home/stevica/openGL_projects/pond/main.cpp /usr/include/stdc-predef.h \
- /home/stevica/openGL_projects/pond/glad.h /usr/include/KHR/khrplatform.h \
+ /usr/include/glad/glad.h /usr/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -367,6 +367,7 @@ CMakeFiles/my_opengl_project.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/sstream \
  /usr/include/c++/11/bits/sstream.tcc /usr/include/c++/11/iostream \
+ /home/stevica/openGL_projects/pond/compute_shader.h \
  /home/stevica/openGL_projects/pond/fish.h \
  /usr/local/include/glm/gtc/random.hpp \
  /usr/local/include/glm/gtc/random.inl /usr/include/c++/11/ctime \

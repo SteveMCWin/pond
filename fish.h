@@ -1,7 +1,7 @@
 #ifndef FISH_H
 #define FISH_H
 
-#include "glad.h"
+#include <glad/glad.h>
 #include "global.h"
 #include <cstdlib>
 #include <glm/detail/type_vec.hpp>
@@ -33,6 +33,7 @@ public:
     unsigned int numOfJoints;
     float moveSpeed;
 
+    unsigned int num_of_hit_checks = 13;
     int hit_checks_result;
     float sightRange;
     int fishID;
@@ -44,7 +45,7 @@ public:
     // float* outline_vertices;
     std::vector<float> outline_vertices;
 
-     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks = 3, float speed = 20.0f, float sRange = 25.0f,
+     Fish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = 25.0f,
           glm::vec3 bColor = glm::vec3(0.2f, 0.5f, 0.7f), glm::vec3 fColor = glm::vec3(0.1f, 0.9f, 0.3f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 

@@ -1,4 +1,4 @@
-#include "glad.h"
+#include <glad/glad.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/detail/type_vec.hpp>
@@ -9,6 +9,7 @@
 
 #include "global.h"
 #include "shader.h"
+#include "compute_shader.h"
 #include "fish.h"
 #include "fishRenderer.h"
 #include "fishHandler.h"
@@ -32,7 +33,7 @@ int main(int, char**){
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // glfwWindowHint(GLFW_SAMPLES, 4);
@@ -106,13 +107,30 @@ int main(int, char**){
 
     FishHandler fishHandler;
 
-    unsigned int number_of_fish = 15;
-    unsigned int fish_speed = 12;
-
-    for(int i = 0; i < number_of_fish; i++){
+    for(int i = 0; i < Global::numberOfFish; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
-        fishHandler.addFish(number_of_joints, centers, distances, radii, i, fish_speed);
+        fishHandler.addFish(number_of_joints, centers, distances, radii, i);
     }
+
+    ComputeShader compute_shader = ComputeShader("/home/stevica/openGL_projects/pond/shaders/c_test.glsl");
+    compute_shader.use();
+
+    float nums[10] = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90};
+
+    unsigned int ssbo;
+    glGenBuffers(1, &ssbo);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(nums), nums, GL_DYNAMIC_COPY);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo);
+
+    glDispatchCompute(sizeof(nums)/sizeof(float), 1, 1);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+    float* modified_nums = (float*) glMapNamedBuffer(ssbo, GL_READ_WRITE);
+
+    // for(int i = 0; i < 10; i++){
+    //     std::cout << modified_nums[i] << std::endl;
+    // }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

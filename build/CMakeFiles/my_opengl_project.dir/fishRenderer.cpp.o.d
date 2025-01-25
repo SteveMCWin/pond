@@ -2,7 +2,7 @@ CMakeFiles/my_opengl_project.dir/fishRenderer.cpp.o: \
  /home/stevica/openGL_projects/pond/fishRenderer.cpp \
  /usr/include/stdc-predef.h \
  /home/stevica/openGL_projects/pond/fishRenderer.h \
- /home/stevica/openGL_projects/pond/glad.h /usr/include/KHR/khrplatform.h \
+ /usr/include/glad/glad.h /usr/include/KHR/khrplatform.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \

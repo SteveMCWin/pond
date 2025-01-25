@@ -3,7 +3,7 @@
 #include <glm/detail/func_geometric.hpp>
 #include <ostream>
 
-Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int id, int numOfHitChecks, float speed, float sRange,
+Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int id, float speed, float sRange,
            glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
 
     this->numOfJoints = jointNum;
@@ -24,9 +24,7 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     this->sightRange = sRange;
     this->hit_checks_result = 0;
 
-    numOfHitChecks += (numOfHitChecks % 2) ? 0 : 1;
-
-    this->hit_checks.resize(numOfHitChecks);
+    this->hit_checks.resize(this->num_of_hit_checks);
     this->hit_check_distance = 7.0f * radii[0];
     this->updateHitChecks();
 
@@ -98,9 +96,18 @@ void Fish::updateJoints(){
 
 void Fish::updateHitChecks(){   // could move this to a compute shader
 
+    // num_of_hit_checks
+    // degreeChange
+    // function for rotating a 2d vector
+    // joints[0].moveDirection
+    // joints[0].Center
+    // hit_check_distance
+    // Global::screenHalfSize
+    // result
+
     hit_checks_result = 0;
 
-    float degreeChange = hit_check_angle/(this->hit_checks.size()-1);
+    float degreeChange = this->hit_check_angle/(this->hit_checks.size()-1);
 
     for(int i = -(this->hit_checks.size()/2), j = 0; j < this->hit_checks.size(); j++, i++){
 

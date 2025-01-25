@@ -1,7 +1,7 @@
 #ifndef FISH_RENDERER_H
 #define FISH_RENDERER_H
 
-#include "glad.h"
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/detail/type_vec.hpp>
 #include <glm/glm.hpp>

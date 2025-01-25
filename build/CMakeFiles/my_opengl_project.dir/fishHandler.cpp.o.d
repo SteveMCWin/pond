@@ -152,8 +152,8 @@ CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc \
- /home/stevica/openGL_projects/pond/fish.h \
- /home/stevica/openGL_projects/pond/glad.h /usr/include/KHR/khrplatform.h \
+ /home/stevica/openGL_projects/pond/fish.h /usr/include/glad/glad.h \
+ /usr/include/KHR/khrplatform.h \
  /home/stevica/openGL_projects/pond/global.h \
  /usr/local/include/glm/detail/type_vec.hpp \
  /usr/local/include/glm/detail/precision.hpp \
@@ -373,6 +373,7 @@ CMakeFiles/my_opengl_project.dir/fishHandler.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
  /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/sstream \
  /usr/include/c++/11/bits/sstream.tcc \
+ /home/stevica/openGL_projects/pond/compute_shader.h \
  /home/stevica/openGL_projects/pond/fishRenderer.h /usr/include/GL/gl.h \
  /usr/local/include/GLFW/glfw3.h \
  /home/stevica/openGL_projects/pond/bezier_filled.h \
