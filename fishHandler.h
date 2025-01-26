@@ -12,7 +12,7 @@
 typedef struct {
     glm::vec2 move_dir;
     glm::vec2 cetner;
-    int results[13];    // HARD CODED FOR NOW, WILL TRY TO MAKE THE COMPUTE SHADER SUM UP THE RESULTS
+    int result;
 } hit_check_struct;
 
 class FishHandler{
@@ -30,8 +30,11 @@ public:
     glm::vec2 calcFishMoveDir(Fish& fish, float delta_time);    // responsible for boid-like behaviour of fish
 
 private:
-
+    
+    ComputeShader fishComputeShader;
     unsigned int ssbo;
+    hit_check_struct hit_check_data[Global::numberOfFish];
+    hit_check_struct* hit_check_result;
     float cohesionIntensity = 0.5f;
     float alignmentIntensity = 180.0f;
     float separationIntensity = 180.0f;

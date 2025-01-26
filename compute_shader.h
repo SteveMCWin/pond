@@ -15,6 +15,7 @@ public:
     unsigned int ID;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
+    ComputeShader() {}
     ComputeShader(const char* computePath)
     {
         // 1. retrieve the vertex/fragment source code from filePath

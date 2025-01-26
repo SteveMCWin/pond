@@ -55,7 +55,7 @@ void Fish::Move(glm::vec2 direction, float delta_time){
     this->outline_vertices[3] = point.y * this->joints[0].circleRadius;
 
     this->updateJoints();
-    this->updateHitChecks();
+    // this->updateHitChecks();
 }
 
 void Fish::updateJoints(){

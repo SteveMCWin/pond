@@ -7,9 +7,19 @@
 FishHandler::FishHandler(){
     glGenBuffers(1, &this->ssbo);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, Global::numberOfFish * sizeof(hit_check_struct), NULL, GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, Global::numberOfFish * sizeof(hit_check_struct), NULL, GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, this->ssbo);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+    this->hit_check_result = (hit_check_struct*) glMapNamedBuffer(this->ssbo, GL_READ_ONLY);
+
+    fishComputeShader = ComputeShader("/home/stevica/openGL_projects/pond/shaders/c_fish.glsl");
+    fishComputeShader.use();
+
+    fishComputeShader.setFloat("screen_half_size", Global::screenHalfSize);
+    fishComputeShader.setFloat("aspect_ratio", Global::aspectRatio);
+    fishComputeShader.setFloat("hit_check_distance", 1.2f*7.0f);    // hard coded, did this just to test if stuff works, should be changed so that hit_check_distance isn't uniform
+    fishComputeShader.setFloat("degree_change", Global::DegToRad(120.0f/12.0f));    // hard coded, did this just to test if stuff works, should be changed so that hit_check_distance isn't uniform
 }
 
 void FishHandler::addFish(Fish& fish){
@@ -23,12 +33,12 @@ void FishHandler::addFish(int numOfJoints, glm::vec2* centers, float* distances,
 }
 
 void FishHandler::calcFishHitChecks(){
-    hit_check_struct hit_check_data[Global::numberOfFish];
     for(int i = 0; i < Global::numberOfFish; i++){
-        // hit_check_data = {this->allFish[i].joints[0].moveDirection, this->allFish[i].joints[0].Center, };
+        hit_check_data[i] = {this->allFish[i].joints[0].moveDirection, this->allFish[i].joints[0].Center, 0};
     }
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
     glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(hit_check_data), hit_check_data);
+    glDispatchCompute(Global::numberOfFish, 1, 1);
 }
 
 glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
@@ -63,7 +73,10 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
         }
     }
 
-    resultDir = Global::rotateVector(resultDir, fish.hit_checks_result * edgeEvasionIntensity * delta_time);    // try not to go off-screen
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    resultDir = Global::rotateVector(resultDir, hit_check_result[fish.fishID].result * edgeEvasionIntensity * delta_time);
+    // std::cout << hit_check_result[fish.fishID].result << std::endl;
+    // resultDir = Global::rotateVector(resultDir, fish.hit_checks_result * edgeEvasionIntensity * delta_time);    // try not to go off-screen
 
     if(separationCounter){
 
