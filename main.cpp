@@ -122,22 +122,20 @@ int main(int, char**){
         // std::cout << nums[i] << std::endl;
     }
 
-    int res = 0;
+    int res[10] = {0};
 
     unsigned int ssbo;
     glGenBuffers(1, &ssbo);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(res), &res, GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(res), res, GL_DYNAMIC_COPY);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo);
 
-    // glDispatchCompute(1, 1, 1);
+    glDispatchCompute(10, 1, 1);
 
     int* modified_nums = (int*) glMapNamedBuffer(ssbo, GL_READ_WRITE);
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    std::cout << modified_nums[0] << std::endl;
-
-    for(int i = 0; i < nums_size; i++){
+    for(int i = 0; i < 10; i++){
         // std::cout << modified_nums[i] << std::endl;
     }
 
