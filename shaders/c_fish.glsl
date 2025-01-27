@@ -17,7 +17,7 @@ struct FishData {
 
 layout(std430, binding=0) buffer HitCheckBuffer {
     FishData data[];
-} hit_check_buff;
+}hit_check_buff;
 
 vec2 rotate(vec2 v, float angle) {
     // Create the 2D rotation matrix
@@ -30,6 +30,8 @@ vec2 rotate(vec2 v, float angle) {
     return rotationMatrix * v;
 }
 
+shared int res = 0;
+
 void main(){
 
     int i = -int((gl_LocalInvocationID.x/2));
@@ -37,7 +39,7 @@ void main(){
     vec2 hit_check_local_pos = rotate(hit_check_buff.data[gl_WorkGroupID.x].move_dir, -degree_change*i);
     vec2 hit_check_world_pos = hit_check_buff.data[gl_WorkGroupID.x].center + hit_check_local_pos * hit_check_distance;
 
-    if(pow(abs(hit_check_world_pos.x/screen_half_size), 4) + pow(abs(hit_check_world_pos.y/(screen_half_size*aspect_ratio)), 4) >= 1.0){
+    if(pow(abs(hit_check_world_pos.x/screen_half_size), 4) + pow(abs(hit_check_world_pos.y/(screen_half_size*aspect_ratio)), 4) >= 0.8){
         if(i < 0){
             atomicAdd(hit_check_buff.data[gl_WorkGroupID.x].result, -1);
         }
@@ -46,6 +48,6 @@ void main(){
         }
     }
 
-    atomicAdd(hit_check_buff.data[gl_WorkGroupID.x].result,  10);
+    // atomicAdd(hit_check_buff.data[1].result,  10);
 
 }

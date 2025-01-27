@@ -13,6 +13,7 @@ typedef struct {
     glm::vec2 move_dir;
     glm::vec2 cetner;
     int result;
+    int padding;
 } hit_check_struct;
 
 class FishHandler{

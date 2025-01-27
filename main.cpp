@@ -1,3 +1,4 @@
+#include <cmath>
 #include <glad/glad.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
@@ -111,33 +112,6 @@ int main(int, char**){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
         fishHandler.addFish(number_of_joints, centers, distances, radii, i);
     }
-    ComputeShader compute_shader;
-    compute_shader = ComputeShader("/home/stevica/openGL_projects/pond/shaders/c_test.glsl");
-    compute_shader.use();
-
-    int nums_size = 10;
-    float* nums = (float*) malloc(nums_size*sizeof(float));
-    for(int i = 0; i < nums_size; i++){
-        nums[i] = i*10;
-        // std::cout << nums[i] << std::endl;
-    }
-
-    int res[10] = {0};
-
-    unsigned int ssbo;
-    glGenBuffers(1, &ssbo);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(res), res, GL_DYNAMIC_COPY);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo);
-
-    glDispatchCompute(10, 1, 1);
-
-    int* modified_nums = (int*) glMapNamedBuffer(ssbo, GL_READ_WRITE);
-
-    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    for(int i = 0; i < 10; i++){
-        // std::cout << modified_nums[i] << std::endl;
-    }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -150,7 +124,7 @@ int main(int, char**){
         last_frame = current_frame;
 
         if(frameCounter > 500){
-            // std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
+            std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
             frameCounter = -1;
         }
         frameCounter++;
