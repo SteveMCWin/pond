@@ -116,18 +116,21 @@ int main(int, char**){
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     int frameCounter = 0;
+    double fps_timer = 0;
 
     while(!glfwWindowShouldClose(window)){
 
         float current_frame = glfwGetTime();
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
-
-        if(frameCounter > 500){
-            std::cout << "\rFPS: " << 1.0f/delta_time << std::flush;
-            frameCounter = -1;
-        }
+        fps_timer += delta_time;
         frameCounter++;
+
+        if(fps_timer >= 1.0){
+            std::cout << "\rFPS: " << frameCounter/fps_timer << std::flush;
+            frameCounter = 0;
+            fps_timer = 0;
+        }
 
         processInput(window);
 
