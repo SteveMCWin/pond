@@ -78,15 +78,15 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
         }
     }
 
-    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    this->hit_check_result = (hit_check_struct*) glMapNamedBuffer(this->ssbo, GL_READ_ONLY);
-    resultDir = Global::rotateVector(resultDir, this->hit_check_result[fish.fishID].result * edgeEvasionIntensity * delta_time);
-    // std::cout << hit_check_result[fish.fishID].result << std::endl;
-    // if(this->hit_check_result[fish.fishID].result)
-        // std::cout << fish.fishID << std::endl;
-
-    glUnmapNamedBuffer(this->ssbo);
-    // resultDir = Global::rotateVector(resultDir, fish.hit_checks_result * edgeEvasionIntensity * delta_time);    // try not to go off-screen
+    // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+    // this->hit_check_result = (hit_check_struct*) glMapNamedBuffer(this->ssbo, GL_READ_ONLY);
+    // resultDir = Global::rotateVector(resultDir, this->hit_check_result[fish.fishID].result * edgeEvasionIntensity * delta_time);
+    // // std::cout << hit_check_result[fish.fishID].result << std::endl;
+    // // if(this->hit_check_result[fish.fishID].result)
+    //     // std::cout << fish.fishID << std::endl;
+    //
+    // glUnmapNamedBuffer(this->ssbo);
+    resultDir = Global::rotateVector(resultDir, fish.hit_checks_result * edgeEvasionIntensity * delta_time);    // try not to go off-screen
 
     if(separationCounter){
 

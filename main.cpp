@@ -137,7 +137,7 @@ int main(int, char**){
         screenShader.use();
         screenShader.setFloat("iTime", current_frame);
 
-        fishHandler.calcFishHitChecks();
+        // fishHandler.calcFishHitChecks();
         
         for(Fish& f : fishHandler.allFish){
             glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f, delta_time);
