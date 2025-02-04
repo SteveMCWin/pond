@@ -1,3 +1,0 @@
-/home/stevica/openGL_projects/pond/build/CMakeFiles/my_opengl_project.dir
-/home/stevica/openGL_projects/pond/build/CMakeFiles/edit_cache.dir
-/home/stevica/openGL_projects/pond/build/CMakeFiles/rebuild_cache.dir
