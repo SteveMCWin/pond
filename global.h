@@ -10,6 +10,7 @@
 class Global{
 public:
     static const int numberOfFish = 15;
+    static const int numberOfJoints = 12;
     static float aspectRatio;
     static float screenHalfSize;
     static float pi;

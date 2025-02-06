@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 precision highp float;
 
 in vec2 localCoords;

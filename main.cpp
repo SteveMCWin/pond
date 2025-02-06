@@ -85,11 +85,9 @@ int main(int, char**){
     Shader backgroundShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_background.glsl",
                                      "/home/stevica/openGL_projects/pond/shaders/f_background.glsl");
 
-    const unsigned int number_of_joints = 12;
-
-    float distances[number_of_joints]   = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};   // desired distances from one circle center to another
-    float radii[number_of_joints]       = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};   // radii of each visible circle
-    glm::vec2 centers[number_of_joints] = {     // position of each circle center, the values below are pretty much random, wouldn't make a big difference if they were all (0, 0)
+    float distances[Global::numberOfJoints]   = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};   // desired distances from one circle center to another
+    float radii[Global::numberOfJoints]       = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};   // radii of each visible circle
+    glm::vec2 centers[Global::numberOfJoints] = {     // position of each circle center, the values below are pretty much random, wouldn't make a big difference if they were all (0, 0)
         glm::vec2(1.0f, 1.0f),
         glm::vec2(-0.1f, -0.1f),
         glm::vec2(-0.1f, -1.5f),
@@ -110,7 +108,7 @@ int main(int, char**){
 
     for(int i = 0; i < Global::numberOfFish; i++){
         centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
-        fishHandler.addFish(number_of_joints, centers, distances, radii, i);
+        fishHandler.addFish(centers, distances, radii, i);
     }
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

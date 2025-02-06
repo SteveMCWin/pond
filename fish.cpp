@@ -3,18 +3,18 @@
 #include <glm/detail/func_geometric.hpp>
 #include <ostream>
 
-Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int id, float speed, float sRange,
+Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed, float sRange,
            glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
 
-    this->numOfJoints = jointNum;
-    this->outline_vertices.resize(4*jointNum);
+    this->numOfJoints = Global::numberOfJoints;
+    this->outline_vertices.resize(4*this->numOfJoints);
 
-    for(int i = 0; i < jointNum; i++){
+    for(int i = 0; i < this->numOfJoints; i++){
         Joint j = Joint(centers[i], distances[i], radii[i]);
         this->joints.push_back(j);
     }
 
-    this->tail_fin_joints[0] = this->joints[jointNum-1];
+    this->tail_fin_joints[0] = this->joints[this->numOfJoints-1];
     this->tail_fin_joints[0].desiredDistance = 1.5f;
     this->tail_fin_joints[1] = this->tail_fin_joints[0];
     this->tail_fin_joints[1].desiredDistance = 1.5f;
@@ -31,6 +31,13 @@ Fish::Fish(int jointNum, glm::vec2* centers, float* distances, float* radii, int
     this->bodyColor = bColor;
     this->finColor  = fColor;
     this->eyeColor  = eColor;
+
+    for(int i = 0; i < this->numOfJoints; i++){
+        this->tex_coords[i*4  ] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
+        this->tex_coords[i*4+1] = 0.1;
+        this->tex_coords[i*4+2] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
+        this->tex_coords[i*4+3] = 0.9;
+    }
 }
 
 Fish::~Fish(){
@@ -61,7 +68,6 @@ void Fish::Move(glm::vec2 direction, float delta_time){
 void Fish::updateJoints(){
 
     // used to update the position of all of the joints (except the first one, which is updated by the move function) and updates the outline vertices
-
     for(int i = 1; i < this->numOfJoints; i++){
         float distance_between_joints = glm::distance(this->joints[i-1].Center, this->joints[i].Center);
         float desired_distance = this->joints[i].desiredDistance;

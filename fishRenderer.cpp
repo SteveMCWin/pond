@@ -22,10 +22,12 @@ FishRenderer::FishRenderer(){
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
     glBindVertexArray(this->outlineVAO);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 48, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * Global::numberOfJoints * 2, NULL, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)(sizeof(float)*4*Global::numberOfJoints));
 
     glGenBuffers(1, &this->screenQuadVBO);
     glGenVertexArrays(1, &this->screenQuadVAO);
@@ -56,7 +58,8 @@ FishRenderer::FishRenderer(){
 
     this->backgroundTex.Generate("/home/stevica/openGL_projects/pond/textures/backgroundTexture.png", false);
     this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
-    this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
+    this->highlightNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
+    this->fishTexture.Generate("/home/stevica/openGL_projects/pond/textures/koi.jpg", false);
 
     glGenFramebuffers(1, &this->screenQuadFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
@@ -96,6 +99,7 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
     glClear(GL_COLOR_BUFFER_BIT);
 
     // render pond background
+    // this->renderPond(backgroundShader);
 
     // render the fish
     for(Fish& fish : allFish){
@@ -168,11 +172,16 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     glBindVertexArray(this->outlineVAO);
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, 4 * fish.numOfJoints * sizeof(float), fish.outline_vertices.data());
+    glBufferSubData(GL_ARRAY_BUFFER, 4 * fish.numOfJoints * sizeof(float), 4 * fish.numOfJoints * sizeof(float), fish.tex_coords);
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));
 
+    glActiveTexture(GL_TEXTURE0);
+    fishTexture.Bind();
+
     outlineShader.use();
+    outlineShader.setInt("fishTexture", 0);
     outlineShader.setMat4("projection", projection);
     outlineShader.setMat4("model", model);
 
@@ -251,14 +260,14 @@ void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, gl
     // same angle between the find and move direction but the offset should be the opposite from the first fin
     float leftFinAngle  = rightFinAngle + 6.0f*Global::pi/4.0f;
 
-    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, frontScale, finShader);
-    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, frontScale, finShader);
+    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, frontScale, finShader, fish.finColor);
+    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, frontScale, finShader, fish.finColor);
 
     rightFinAngle = Global::angleOfVector(backFinsJoint.moveDirection) - 7.0f*Global::pi/8.0f;
     leftFinAngle  = rightFinAngle + 14.0f*Global::pi/8.0f;
 
-    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, backScale, finShader);
-    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, backScale, finShader);
+    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, backScale, finShader, fish.finColor);
+    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, backScale, finShader, fish.finColor);
 }
 
 void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader){

@@ -83,6 +83,7 @@ private:
     Texture2D backgroundTex;
     Texture2D waterNoiseTex;
     Texture2D highlightNoiseTex;
+    Texture2D fishTexture;
 
 };
 

@@ -25,7 +25,7 @@ public:
     FishHandler();
 
     void addFish(Fish& fish);
-    void addFish(int numOfJoints, glm::vec2* centers, float* distances, float* radii, int id, float speed = 15.0f);
+    void addFish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 15.0f);
 
     void calcFishHitChecks();
     glm::vec2 calcFishMoveDir(Fish& fish, float delta_time);    // responsible for boid-like behaviour of fish
