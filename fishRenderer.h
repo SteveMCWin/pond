@@ -76,8 +76,7 @@ private:
     unsigned int screenQuadVBO, screenQuadVAO;
     unsigned int waveQuadVBO, waveQuadVAO;
 
-    unsigned int multisampledFBO;
-    unsigned int framebuffer;
+    unsigned int screenQuadFBO;
     unsigned int multisampledTex;
     unsigned int screenQuadTexture;
 

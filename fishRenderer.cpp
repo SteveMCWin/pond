@@ -58,8 +58,8 @@ FishRenderer::FishRenderer(){
     this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
     this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
 
-    glGenFramebuffers(1, &this->framebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+    glGenFramebuffers(1, &this->screenQuadFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
 
     glGenTextures(1, &this->screenQuadTexture);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
@@ -67,19 +67,6 @@ FishRenderer::FishRenderer(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture, 0);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-
-    glGenFramebuffers(1, &this->multisampledFBO);
-    glBindFramebuffer(GL_FRAMEBUFFER, this->multisampledFBO);
-
-    glGenTextures(1, &this->multisampledTex);
-    glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, this->multisampledTex);
-    glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGBA8, 1600, 900, GL_FALSE);
-    glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, this->multisampledTex, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
@@ -103,7 +90,7 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
                               Shader& backgroundShader, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
 
     // bind to custom framebuffer object
-    glBindFramebuffer(GL_FRAMEBUFFER, this->framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -120,10 +107,6 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
         this->renderFishBackFin(fish, finShader);
     }
 
-    // glBindFramebuffer(GL_READ_FRAMEBUFFER, multisampledFBO);
-    // glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer);
-    // glBlitFramebuffer(0, 0, 1600, 900, 0, 0, 1600, 900, GL_COLOR_BUFFER_BIT, GL_LINEAR);
-    //     
     // // bind to default framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
@@ -142,7 +125,7 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     screenShader.use();
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->multisampledTex);
+    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
     glActiveTexture(GL_TEXTURE1);
     waterNoiseTex.Bind();
     glActiveTexture(GL_TEXTURE2);
