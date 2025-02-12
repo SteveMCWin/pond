@@ -77,7 +77,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 */
 
     // float speed = 1.0;
-    // vec2 scale = 0.8 * vec2(1, 9.0/16.0);
+    // float scale = 0.2;
     // float opacity = 0.1;
     //
     // vec2 scaledTexCoords = TexCoords * scale;

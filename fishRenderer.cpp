@@ -22,12 +22,16 @@ FishRenderer::FishRenderer(){
     glBindBuffer(GL_ARRAY_BUFFER, this->outlineVBO);
     glBindVertexArray(this->outlineVAO);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * Global::numberOfJoints * 2, NULL, GL_DYNAMIC_DRAW);
+    // the first '*2' is because each joint has two sides (left and right), the other '*2' is because vec2 has 2 float values
+    int number_of_vert_positions = (Global::numberOfJoints + 2) * 2 * 2;
+    int number_of_vert_texel = (Global::numberOfJoints + 2) * 2 * 2;
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (number_of_vert_positions + number_of_vert_texel), NULL, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)(sizeof(float)*4*Global::numberOfJoints));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)(sizeof(float)*number_of_vert_positions));
 
     glGenBuffers(1, &this->screenQuadVBO);
     glGenVertexArrays(1, &this->screenQuadVAO);
@@ -161,8 +165,8 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     glm::mat4 projection = Global::projectionMatrix;
 
     // this renders the first and last circle
-    this->renderOvals(fish.joints[0].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[0].circleRadius),
-                      circleShader, fish.bodyColor, fish.joints[0].circleRadius);
+    // this->renderOvals(fish.joints[0].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[0].circleRadius),
+    //                   circleShader, fish.bodyColor, fish.joints[0].circleRadius);
 
     this->renderOvals(fish.joints[fish.numOfJoints-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[fish.numOfJoints-1].circleRadius), 
                       circleShader, fish.bodyColor, fish.joints[0].circleRadius);
@@ -185,7 +189,7 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     outlineShader.setMat4("projection", projection);
     outlineShader.setMat4("model", model);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * fish.numOfJoints);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * (fish.numOfJoints + 2));
 
     glBindVertexArray(0);
 
@@ -225,7 +229,7 @@ void FishRenderer::renderFishTailFin(const Fish& fish, Shader& finShader){
 }
 
 void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader,
-                               glm::vec3 color = glm::vec3(0.1f, 0.9f, 0.3f), float r = 0.5f){
+                               glm::vec3 color, float r = 0.5f){
 
     glBindVertexArray(this->circleVAO);
 
@@ -283,11 +287,11 @@ void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& cir
 
     // the only difference is that we're first rendering an oval of the same color as the fish body so it's not like the eye is sticking out or something
 
-    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);   // right eye
-    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale, circleShader, fish.eyeColor);   // right eye
+    // this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);     // right eye
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale, circleShader, fish.eyeColor);             // right eye
 
-    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);   // left eye
-    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale, circleShader, fish.eyeColor);   // left  eye
+    // this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);     // left eye
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale, circleShader, fish.eyeColor);             // left  eye
 }
 
 

@@ -7,7 +7,7 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float spe
            glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
 
     this->numOfJoints = Global::numberOfJoints;
-    this->outline_vertices.resize(4*this->numOfJoints);
+    this->outline_vertices.resize(4*(this->numOfJoints+2));
 
     for(int i = 0; i < this->numOfJoints; i++){
         Joint j = Joint(centers[i], distances[i], radii[i]);
@@ -32,7 +32,7 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float spe
     this->finColor  = fColor;
     this->eyeColor  = eColor;
 
-    for(int i = 0; i < this->numOfJoints; i++){
+    for(int i = 0; i < this->numOfJoints + 2; i++){
         this->tex_coords[i*4  ] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
         this->tex_coords[i*4+1] = 0.1;
         this->tex_coords[i*4+2] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
@@ -52,17 +52,36 @@ void Fish::Move(glm::vec2 direction, float delta_time){
     this->joints[0].moveDirection = glm::normalize(direction);
     this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed * delta_time;
 
+    glm::vec2 head_point;
+    head_point = Global::rotateVector(this->joints[0].moveDirection, -10);
+    this->outline_vertices[0] = head_point.x * this->joints[0].circleRadius;
+    this->outline_vertices[1] = head_point.y * this->joints[0].circleRadius;
+
+    head_point = Global::rotateVector(this->joints[0].moveDirection,  10);
+    this->outline_vertices[2] = head_point.x * this->joints[0].circleRadius;
+    this->outline_vertices[3] = head_point.y * this->joints[0].circleRadius;
+
+    head_point = Global::rotateVector(this->joints[0].moveDirection, -50);
+    this->outline_vertices[4] = head_point.x * this->joints[0].circleRadius;
+    this->outline_vertices[5] = head_point.y * this->joints[0].circleRadius;
+
+    head_point = Global::rotateVector(this->joints[0].moveDirection,  50);
+    this->outline_vertices[6] = head_point.x * this->joints[0].circleRadius;
+    this->outline_vertices[7] = head_point.y * this->joints[0].circleRadius;
+
     // also calculates the vertices of the outline
     glm::vec2 point = Global::CalculateNormal(this->joints[0].moveDirection);
-    this->outline_vertices[0] = point.x * this->joints[0].circleRadius;
-    this->outline_vertices[1] = point.y * this->joints[0].circleRadius;
+    this->outline_vertices[8] = point.x * this->joints[0].circleRadius;
+    this->outline_vertices[9] = point.y * this->joints[0].circleRadius;
 
     point = -point;
-    this->outline_vertices[2] = point.x * this->joints[0].circleRadius;
-    this->outline_vertices[3] = point.y * this->joints[0].circleRadius;
+    this->outline_vertices[10] = point.x * this->joints[0].circleRadius;
+    this->outline_vertices[11] = point.y * this->joints[0].circleRadius;
 
     this->updateJoints();
     this->updateHitChecks();
+
+    // print_outline_data();
 }
 
 void Fish::updateJoints(){
@@ -80,12 +99,12 @@ void Fish::updateJoints(){
 
         glm::vec2 pointOnCircle = Global::CalculateNormal(this->joints[i].moveDirection);
         glm::vec2 relativePosition = this->joints[i].Center - this->joints[0].Center;
-        this->outline_vertices[4*i]   = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
-        this->outline_vertices[4*i+1] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
+        this->outline_vertices[4*i+8] = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
+        this->outline_vertices[4*i+9] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
 
         pointOnCircle = -pointOnCircle;
-        this->outline_vertices[4*i+2] = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
-        this->outline_vertices[4*i+3] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
+        this->outline_vertices[4*i+10] = relativePosition.x + pointOnCircle.x * this->joints[i].circleRadius;
+        this->outline_vertices[4*i+11] = relativePosition.y + pointOnCircle.y * this->joints[i].circleRadius;
        
     }
 
@@ -100,18 +119,9 @@ void Fish::updateJoints(){
     }
 }
 
-void Fish::updateHitChecks(){   // could move this to a compute shader
+void Fish::updateHitChecks(){
 
-    // num_of_hit_checks
-    // degreeChange
-    // function for rotating a 2d vector
-    // joints[0].moveDirection
-    // joints[0].Center
-    // hit_check_distance
-    // Global::screenHalfSize
-    // result
-
-    hit_checks_result = 0;
+    this->hit_checks_result = 0;
 
     float degreeChange = this->hit_check_angle/(this->hit_checks.size()-1);
 
@@ -126,10 +136,19 @@ void Fish::updateHitChecks(){   // could move this to a compute shader
         if( powf(std::abs(hit_check_world_pos.x/Global::screenHalfSize), 4) +
             powf(std::abs(hit_check_world_pos.y/(Global::screenHalfSize*Global::aspectRatio)), 4) >= 1.0){
 
-                hit_checks_result += (i < 0) ? -1 : 1;
+                this->hit_checks_result += (i < 0) ? -1 : 1;
         }
 
 
     }
+}
+
+void Fish::print_outline_data(){
+    int n = 0;
+    for(float f : this->outline_vertices){
+        std::cout << f << '\t';
+        if(n++ % 2) std::cout << std::endl;
+    }
+    std::cout << "\n\n\n";
 }
 

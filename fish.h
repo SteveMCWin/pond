@@ -42,9 +42,8 @@ public:
     glm::vec3 finColor;
     glm::vec3 eyeColor;
 
-    // float* outline_vertices;
     std::vector<float> outline_vertices;
-    float tex_coords[Global::numberOfJoints * 2 * 2];
+    float tex_coords[(Global::numberOfJoints + 2) * 2 * 2];
 
      Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = 25.0f,
           glm::vec3 bColor = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 fColor = glm::vec3(0.96f, 0.43f, 0.23f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
@@ -59,6 +58,7 @@ private:
 
     void updateJoints();
     void updateHitChecks();
+    void print_outline_data();
 };
 
 
