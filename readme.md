@@ -6,6 +6,7 @@ Pond is a modified boids simulation with procedural animation.
 
 ## Features
 - Transparent background
+- Fishies are always there to keep you company :D (fish always visible on screen, to close the simulation focus the window and press Esc)
 
 ![Example](github_stuff/screenshot.png?raw=true)
 
