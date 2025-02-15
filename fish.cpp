@@ -1,5 +1,6 @@
 #include "fish.h"
 #include "global.h"
+#include <algorithm>
 #include <glm/detail/func_geometric.hpp>
 #include <ostream>
 
@@ -34,9 +35,11 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float spe
 
     for(int i = 0; i < this->numOfJoints + 2; i++){
         this->tex_coords[i*4  ] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
-        this->tex_coords[i*4+1] = 0.1;
+        // this->tex_coords[i*4+1] = 0.1;
+        this->tex_coords[i*4+1] = 0.1 + 0.1 * std::clamp(i-10, 0, 4);
         this->tex_coords[i*4+2] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
-        this->tex_coords[i*4+3] = 0.9;
+        // this->tex_coords[i*4+3] = 0.9;
+        this->tex_coords[i*4+3] = 0.9 - 0.1 * std::clamp(i-10, 0, 4);
     }
 }
 
@@ -53,21 +56,21 @@ void Fish::Move(glm::vec2 direction, float delta_time){
     this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed * delta_time;
 
     glm::vec2 head_point;
-    head_point = Global::rotateVector(this->joints[0].moveDirection, -10);
-    this->outline_vertices[0] = head_point.x * this->joints[0].circleRadius;
-    this->outline_vertices[1] = head_point.y * this->joints[0].circleRadius;
+    head_point = Global::rotateVector(this->joints[0].moveDirection, -20) * this->joints[0].circleRadius * 1.3f;
+    this->outline_vertices[0] = head_point.x;
+    this->outline_vertices[1] = head_point.y;
 
-    head_point = Global::rotateVector(this->joints[0].moveDirection,  10);
-    this->outline_vertices[2] = head_point.x * this->joints[0].circleRadius;
-    this->outline_vertices[3] = head_point.y * this->joints[0].circleRadius;
+    head_point = Global::rotateVector(this->joints[0].moveDirection,  20) * this->joints[0].circleRadius * 1.3f;
+    this->outline_vertices[2] = head_point.x;
+    this->outline_vertices[3] = head_point.y;
 
-    head_point = Global::rotateVector(this->joints[0].moveDirection, -50);
-    this->outline_vertices[4] = head_point.x * this->joints[0].circleRadius;
-    this->outline_vertices[5] = head_point.y * this->joints[0].circleRadius;
+    head_point = Global::rotateVector(this->joints[0].moveDirection, -50) * this->joints[0].circleRadius;
+    this->outline_vertices[4] = head_point.x;
+    this->outline_vertices[5] = head_point.y;
 
-    head_point = Global::rotateVector(this->joints[0].moveDirection,  50);
-    this->outline_vertices[6] = head_point.x * this->joints[0].circleRadius;
-    this->outline_vertices[7] = head_point.y * this->joints[0].circleRadius;
+    head_point = Global::rotateVector(this->joints[0].moveDirection,  50) * this->joints[0].circleRadius;
+    this->outline_vertices[6] = head_point.x;
+    this->outline_vertices[7] = head_point.y;
 
     // also calculates the vertices of the outline
     glm::vec2 point = Global::CalculateNormal(this->joints[0].moveDirection);
