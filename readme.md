@@ -14,7 +14,6 @@ Pond is a modified boids simulation with procedural animation.
 ### Ubuntu based
 Clone the repo and make a build folder in which you will compile and run the project with cmake:
 ```
-git init
 git clone https://github.com/SteveMCWin/pond.git
 cd pond
 mkdir build && cd build
