@@ -10,8 +10,16 @@ Pond is a modified boids simulation with procedural animation.
 
 ![Example](github_stuff/screenshot.png?raw=true)
 
+## Dependencies
+Make sure you have the following installed before compiling:
+- CMake 3.0.0 or higher
+- OpenGL 4.5 or higher
+- GLFW 3.4 or higher
+- glad
+- glm
+
 ## Installation
-### Ubuntu based
+### Ubuntu based systems
 Clone the repo and make a build folder in which you will compile and run the project with cmake:
 ```
 git clone https://github.com/SteveMCWin/pond.git
