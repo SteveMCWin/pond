@@ -15,7 +15,6 @@ Make sure you have the following installed before compiling:
 - CMake 3.0.0 or higher
 - OpenGL 4.5 or higher
 - GLFW 3.4 or higher
-- glad
 - glm
 
 ## Installation
