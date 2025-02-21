@@ -71,6 +71,8 @@ int main(int, char**){
     glfwSetWindowAttrib(window, GLFW_FLOATING, GLFW_TRUE);
     glfwSwapInterval(0);
 
+    glLineWidth(3.0f);
+
     // glEnable(GL_MULTISAMPLE);
 
     Shader circleShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",

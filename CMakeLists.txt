@@ -16,6 +16,7 @@ if(NOT GLFW_FOUND)
         message(FATAL_ERROR "GLFW not found! Install it via package manager or vcpkg.")
     endif()
 endif()
+
 # find_package(glm REQUIRED)
 find_path(GLM_INCLUDE_DIR glm/glm.hpp)
 if(NOT GLM_INCLUDE_DIR)
@@ -30,11 +31,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glad)
 
-include_directories(-I/usr/include/libpng16 ${GLM_INCLUDE_DIR})
+include_directories(${GLM_INCLUDE_DIR})
 
 add_executable(my_opengl_project 
     main.cpp
-    # glad.c
     fish.cpp
     fishRenderer.cpp
     bezier_filled.cpp

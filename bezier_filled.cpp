@@ -89,9 +89,12 @@ void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, 
     numOfPoints = std::min(numOfPoints, max_crescent_vertices);
 
     this->crescent_vertices.resize(0);
+    this->crescent_line_vertices.resize(0);
 
     this->crescent_vertices.push_back(p1.x);
     this->crescent_vertices.push_back(p1.y);
+    this->crescent_line_vertices.push_back(p1.x);
+    this->crescent_line_vertices.push_back(p1.y);
 
     glm::vec2 first_moveable  = controlPoint - p1;
     glm::vec2 second_moveable = p2 - controlPoint;
@@ -114,6 +117,8 @@ void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, 
 
         this->crescent_vertices.push_back(final_vector.x);
         this->crescent_vertices.push_back(final_vector.y);
+        this->crescent_line_vertices.push_back(final_vector.x);
+        this->crescent_line_vertices.push_back(final_vector.y);
 
         move_from_start = (1.0f/(numOfPoints-1)) * static_cast<float>(i) * first_moveable2;
         move_to_end = (1.0f/(numOfPoints-1)) * static_cast<float>(i) * second_moveable2;
@@ -128,6 +133,8 @@ void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, 
 
     this->crescent_vertices.push_back(p2.x);
     this->crescent_vertices.push_back(p2.y);
+    this->crescent_line_vertices.push_back(p2.x);
+    this->crescent_line_vertices.push_back(p2.y);
 
 
     glBindBuffer(GL_ARRAY_BUFFER, this->crescentVBO);
@@ -140,6 +147,9 @@ void BezierCurve::DrawCrescentBezierFilled(int numOfPoints, glm::vec2 worldPos, 
 
     glBindVertexArray(this->crescentVAO);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, this->crescent_vertices.size()/2);
+
+    glBufferSubData(GL_ARRAY_BUFFER, 0, this->crescent_line_vertices.size() * sizeof(float), this->crescent_line_vertices.data());
+    glDrawArrays(GL_LINE_STRIP, 0, this->crescent_line_vertices.size()/2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

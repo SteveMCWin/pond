@@ -27,6 +27,7 @@ private:
 
     float triangle_vertices[6];
     std::vector<float> crescent_vertices;
+    std::vector<float> crescent_line_vertices;
 
     int max_crescent_vertices = 20;
 
