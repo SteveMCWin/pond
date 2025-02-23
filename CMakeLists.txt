@@ -6,6 +6,7 @@ cmake_policy(SET CMP0072 NEW)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenGL REQUIRED)
+# find_package(imgui REQUIRED)
 
 find_package(glfw3 3.4 QUIET)
 if(NOT GLFW_FOUND)
@@ -23,6 +24,7 @@ if(NOT GLM_INCLUDE_DIR)
     message(FATAL_ELRROR "GLM not found. Install it via package manager or vcpkg.")
 endif()
 
+
 include(FetchContent)
 FetchContent_Declare(
     glad
@@ -30,8 +32,6 @@ FetchContent_Declare(
     GIT_TAG v0.1.36
 )
 FetchContent_MakeAvailable(glad)
-
-include_directories(${GLM_INCLUDE_DIR})
 
 add_executable(my_opengl_project 
     main.cpp
@@ -41,6 +41,13 @@ add_executable(my_opengl_project
     global.cpp
     fishHandler.cpp
     texture.cpp
-    stb_image.cpp)
+    stb_image.cpp
+    imgui/imgui.cpp
+    imgui/imgui_draw.cpp
+    imgui/imgui_tables.cpp
+    imgui/imgui_widgets.cpp
+    imgui/backends/imgui_impl_glfw.cpp
+    imgui/backends/imgui_impl_opengl3.cpp)
 
 target_link_libraries(my_opengl_project glfw OpenGL::GL glad)
+target_include_directories(my_opengl_project PRIVATE imgui imgui/backends)
