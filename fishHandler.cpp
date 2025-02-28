@@ -35,9 +35,9 @@ void FishHandler::calcFishHitChecks(){
         this->hit_check_data[i] = {this->allFish[i].joints[0].moveDirection, this->allFish[i].joints[0].Center, 0};
     }
 
-    for(int i = 0; i < Global::numberOfFish; i++){
+    // for(int i = 0; i < Global::numberOfFish; i++){
         // std::cout << this->hit_check_data[i].result << std::endl;
-    }
+    // }
 
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
     glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(hit_check_data), hit_check_data);
@@ -47,6 +47,10 @@ void FishHandler::calcFishHitChecks(){
 }
 
 glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
+
+    // if(!fish.fishID){
+    //     std::cout << "Current pos: " << fish.joints[0].Center.x << ", " << fish.joints[0].Center.y << std::endl;
+    // }
 
     glm::vec2 resultDir = fish.joints[0].moveDirection; // the final direction that will be passed to the fish's Move function
 

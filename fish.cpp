@@ -26,7 +26,7 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float spe
     this->hit_checks_result = 0;
 
     this->hit_checks.resize(this->num_of_hit_checks);
-    this->hit_check_distance = 7.0f * radii[0];
+    this->hit_check_distance = 8.0f * radii[0];
     this->updateHitChecks();
 
     this->bodyColor = bColor;

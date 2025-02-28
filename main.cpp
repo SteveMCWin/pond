@@ -144,14 +144,6 @@ int main(int, char**){
 
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
-        fps_timer += delta_time;
-        frameCounter++;
-
-        if(fps_timer >= 1.0){
-            std::cout << "\rFPS: " << frameCounter/fps_timer << std::flush;
-            frameCounter = 0;
-            fps_timer = 0;
-        }
 
         processInput(window);
 
