@@ -49,10 +49,14 @@ Fish::~Fish(){
     this->outline_vertices.shrink_to_fit();
 }
 
-void Fish::Move(glm::vec2 direction, float delta_time){
+void Fish::updateMoveDir(glm::vec2 new_move_dir){
+    this->next_move_dir = new_move_dir;
+}
+
+void Fish::Move(float delta_time){
 
     // moves the head of the fish in the direction passed into the function, then updates the position of the rest of the joints
-    this->joints[0].moveDirection = glm::normalize(direction);
+    this->joints[0].moveDirection = glm::normalize(next_move_dir);
     this->joints[0].Center += this->joints[0].moveDirection * this->moveSpeed * delta_time;
 
     glm::vec2 head_point;

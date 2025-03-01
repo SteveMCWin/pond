@@ -9,6 +9,7 @@
 
 class Global{
 public:
+    static constexpr float fishSightRange = 25.0;
     static const int numberOfFish = 15;
     static const int numberOfJoints = 12;
     static float aspectRatio;

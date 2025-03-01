@@ -1,6 +1,8 @@
 #include "fishHandler.h"
 #include "global.h"
 #include <GLFW/glfw3.h>
+#include <algorithm>
+#include <cstdlib>
 #include <glm/detail/func_geometric.hpp>
 #include <iostream>
 
@@ -18,6 +20,38 @@ FishHandler::FishHandler(){
     this->fishComputeShader.setFloat("aspect_ratio", Global::aspectRatio);
     this->fishComputeShader.setFloat("hit_check_distance", 1.2f*7.0f);    // hard coded, did this just to test if stuff works, should be changed so that hit_check_distance isn't uniform
     this->fishComputeShader.setFloat("degree_change", Global::DegToRad(120.0f/12.0f));    // hard coded, did this just to test if stuff works, should be changed so that hit_check_distance isn't uniform
+
+    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
+    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+
+    this->boxes = new box_struct*[boxes_rows];
+    for(int i = 0; i < boxes_rows; i++){
+        this->boxes[i] = new box_struct[boxes_cols];
+    }
+
+    for(int i = 0; i < boxes_rows; i++){
+        for(int j = 0; j < boxes_cols; j++){
+            this->boxes[i][j].fish_indexes = new int[Global::numberOfFish];
+            this->boxes[i][j].num_of_boxed_fish = 0;
+        }
+    }
+
+}
+
+FishHandler::~FishHandler(){
+    
+    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
+    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+
+    for(int i = 0; i < boxes_rows; i++){
+        for(int j = 0; j < boxes_cols; j++){
+            delete this->boxes[i][j].fish_indexes;
+        }
+        delete[] this->boxes[i];
+    }
+
+    delete[] this->boxes;
+
 }
 
 void FishHandler::addFish(Fish& fish){
@@ -46,6 +80,39 @@ void FishHandler::calcFishHitChecks(){
     glDispatchCompute(Global::numberOfFish, 1, 1);
 }
 
+void FishHandler::boxTheFish(){
+
+    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
+    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+
+    // int box_row_index = std::clamp(fish.joints[0].Center.x/fish.sightRange + 1, 1, boxes_rows - 1);
+    for(Fish& fish : this->allFish){
+        int box_row_index = fish.joints[0].Center.x/fish.sightRange + 1;
+        if(box_row_index < 1) box_row_index = 1;
+        else if(box_row_index > boxes_rows - 2) box_row_index = boxes_rows - 2;
+        int box_col_index = fish.joints[0].Center.x/fish.sightRange + 1;
+        if(box_col_index < 1) box_col_index = 1;
+        else if(box_col_index > boxes_rows - 2) box_col_index = boxes_rows - 2;
+        this->boxes[box_row_index][box_col_index].fish_indexes[this->boxes[box_row_index][box_col_index].num_of_boxed_fish++] = fish.fishID;
+        fish.box_coords.x = box_row_index;
+        fish.box_coords.y = box_col_index;
+
+    }
+}
+
+void FishHandler::resetBoxSizes(){
+
+    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
+    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+    
+    for(int i = 0; i < boxes_rows; i++){
+        for(int j = 0; j < boxes_rows; j++){
+            this->boxes[i][j].num_of_boxed_fish = 0;
+        }
+    }
+
+}
+
 glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
 
     // if(!fish.fishID){
@@ -64,23 +131,46 @@ glm::vec2 FishHandler::calcFishMoveDir(Fish& fish, float delta_time){
     float separationSight = 0.3f * fish.sightRange; // other fish inside this 'sight' field will be accounted for in the separation part of the boid simulation
     float otherSight = 1.0f * fish.sightRange;  // other fish inside this 'sight' field will be accounted for in the alignment and cohesion part of the boid simulation
 
-    for(Fish& f : this->allFish){
-        if(fish.fishID != f.fishID){
-            // note that in the following statement another condition is that the fish is not right behind the one we are currently observing
-            if(glm::length(fish.joints[0].Center - f.joints[0].Center) < separationSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
-                separationVec += fish.joints[0].Center - f.joints[0].Center;
-                alignmentVec  += f.joints[0].moveDirection;
-                cohesionVec   += f.joints[0].Center;
-                separationCounter++;
-                counter++;
+    // for(Fish& f : this->allFish){
+    //     if(fish.fishID != f.fishID){
+    //         // note that in the following statement another condition is that the fish is not right behind the one we are currently observing
+    //         if(glm::length(fish.joints[0].Center - f.joints[0].Center) < separationSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
+    //             separationVec += fish.joints[0].Center - f.joints[0].Center;
+    //             alignmentVec  += f.joints[0].moveDirection;
+    //             cohesionVec   += f.joints[0].Center;
+    //             separationCounter++;
+    //             counter++;
+    //         }
+    //         else if(glm::length(fish.joints[0].Center - f.joints[0].Center) < otherSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
+    //             alignmentVec  += f.joints[0].moveDirection;
+    //             cohesionVec   += f.joints[0].Center;
+    //             counter++;
+    //         }
+    //     }
+    // }
+
+    for(int i = -1; i <= 1; i++){
+        for(int j = -1; j <= 1; j++){
+            for(int k = 0; k < this->boxes[fish.box_coords.x+i][fish.box_coords.y+j].num_of_boxed_fish; k++){
+                const Fish& f = this->allFish.at(this->boxes[fish.box_coords.x+i][fish.box_coords.y+j].fish_indexes[k]);
+                if(fish.fishID != f.fishID){
+                    if(glm::length(fish.joints[0].Center - f.joints[0].Center) < separationSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
+                        separationVec += fish.joints[0].Center - f.joints[0].Center;
+                        alignmentVec  += f.joints[0].moveDirection;
+                        cohesionVec   += f.joints[0].Center;
+                        separationCounter++;
+                        counter++;
+                    }
+                    else if(glm::length(fish.joints[0].Center - f.joints[0].Center) < otherSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
+                        alignmentVec  += f.joints[0].moveDirection;
+                        cohesionVec   += f.joints[0].Center;
+                        counter++;
+                    }
+                }
             }
-            else if(glm::length(fish.joints[0].Center - f.joints[0].Center) < otherSight && glm::dot(resultDir, f.joints[0].Center - fish.joints[0].Center) > -0.7){
-                alignmentVec  += f.joints[0].moveDirection;
-                cohesionVec   += f.joints[0].Center;
-                counter++;
-            }
+
         }
-    }
+    }   
 
     // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     // this->hit_check_result = (hit_check_struct*) glMapNamedBuffer(this->ssbo, GL_READ_ONLY);

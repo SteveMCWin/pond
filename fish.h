@@ -32,11 +32,15 @@ public:
     Joint tail_fin_joints[2];
     unsigned int numOfJoints;
     float moveSpeed;
+    // should add a reference to the center of the head joint so you don't have to type fish.joints[0].Center
+    // glm::vec2& position = this->joints[0].Center;
 
     unsigned int num_of_hit_checks = 13;
     int hit_checks_result;
     float sightRange;
     int fishID;
+
+    glm::ivec2 box_coords;
 
     glm::vec3 bodyColor;
     glm::vec3 finColor;
@@ -45,16 +49,18 @@ public:
     std::vector<float> outline_vertices;
     float tex_coords[(Global::numberOfJoints + 2) * 2 * 2];
 
-     Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = 25.0f,
+     Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = Global::fishSightRange,
           glm::vec3 bColor = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 fColor = glm::vec3(0.96f, 0.43f, 0.23f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 
-    void Move(glm::vec2 direction, float delta_time);
+    void updateMoveDir(glm::vec2 new_move_dir);
+    void Move(float delta_time);
 
 private:
     const float aspect_ratio = Global::aspectRatio;
     const float hit_check_angle = 120;
     float hit_check_distance;
+    glm::vec2 next_move_dir;
 
     void updateJoints();
     void updateHitChecks();

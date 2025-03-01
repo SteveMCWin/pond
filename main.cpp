@@ -151,11 +151,18 @@ int main(int, char**){
         screenShader.setFloat("iTime", current_frame);
 
         // fishHandler.calcFishHitChecks();
+        fishHandler.boxTheFish();
         
         for(Fish& f : fishHandler.allFish){
             glm::vec2 newMoveDir = fishHandler.calcFishMoveDir(f, delta_time);
-            f.Move(newMoveDir, delta_time);
+            f.updateMoveDir(newMoveDir);
         }
+
+        for(Fish& f : fishHandler.allFish){
+            f.Move(delta_time);
+        }
+
+        fishHandler.resetBoxSizes();
 
         renderer->renderFish(fishHandler.allFish, circleShader, outlineShader, bezierShader, screenShader,
                              backgroundShader, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), glm::vec2(0.15f, 0.4f));
