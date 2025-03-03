@@ -6,7 +6,6 @@ cmake_policy(SET CMP0072 NEW)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenGL REQUIRED)
-# find_package(imgui REQUIRED)
 
 find_package(glfw3 3.4 QUIET)
 if(NOT GLFW_FOUND)
@@ -18,7 +17,6 @@ if(NOT GLFW_FOUND)
     endif()
 endif()
 
-# find_package(glm REQUIRED)
 find_path(GLM_INCLUDE_DIR glm/glm.hpp)
 if(NOT GLM_INCLUDE_DIR)
     message(FATAL_ELRROR "GLM not found. Install it via package manager or vcpkg.")
@@ -32,16 +30,6 @@ FetchContent_Declare(
     GIT_TAG v0.1.36
 )
 FetchContent_MakeAvailable(glad)
-
-# FetchContent_Declare(
-#     tracy
-#     GIT_REPOSITORY https://github.com/wolfpld/tracy.git
-#     GIT_TAG master
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE
-# )
-# FetchContent_MakeAvailable(tracy)
-# add_subdirectory(tracy)
 
 add_executable(my_opengl_project 
     main.cpp
@@ -58,15 +46,7 @@ add_executable(my_opengl_project
     imgui/imgui_widgets.cpp
     imgui/backends/imgui_impl_glfw.cpp
     imgui/backends/imgui_impl_opengl3.cpp)
-    # tracy/public/TracyClient.cpp)
 
-# target_include_directories(my_opengl_project PRIVATE imgui imgui/backends tracy/public)
 target_include_directories(my_opengl_project PRIVATE imgui imgui/backends)
-# option (TRACY_ENABLE "" ON)
-# add_subdirectory(tracy)
 
-# target_link_libraries(my_opengl_project glfw OpenGL::GL glad TracyClient)
-# target_link_libraries(my_opengl_project glfw OpenGL::GL glad Tracy::TracyClient)
 target_link_libraries(my_opengl_project glfw OpenGL::GL glad)
-# target_compile_definitions(my_opengl_project PRIVATE TRACY_ENABLE)
-# target_include_directories(my_opengl_project PRIVATE imgui imgui/backends ${tracy_SOURCE_DIR}/public)
