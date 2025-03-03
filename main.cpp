@@ -213,8 +213,6 @@ int main(int, char**){
 
     }
 
-    std::cout << std::endl;
-
     glfwTerminate();
 
     ImGui_ImplOpenGL3_Shutdown();

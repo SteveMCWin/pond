@@ -33,14 +33,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glad)
 
-FetchContent_Declare(
-    tracy
-    GIT_REPOSITORY https://github.com/wolfpld/tracy.git
-    GIT_TAG master
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(tracy)
+# FetchContent_Declare(
+#     tracy
+#     GIT_REPOSITORY https://github.com/wolfpld/tracy.git
+#     GIT_TAG master
+#     GIT_SHALLOW TRUE
+#     GIT_PROGRESS TRUE
+# )
+# FetchContent_MakeAvailable(tracy)
+# add_subdirectory(tracy)
 
 add_executable(my_opengl_project 
     main.cpp
@@ -56,8 +57,14 @@ add_executable(my_opengl_project
     imgui/imgui_tables.cpp
     imgui/imgui_widgets.cpp
     imgui/backends/imgui_impl_glfw.cpp
-    imgui/backends/imgui_impl_opengl3.cpp)
+    imgui/backends/imgui_impl_opengl3.cpp
+    tracy/public/TracyClient.cpp)
 
-target_link_libraries(my_opengl_project glfw OpenGL::GL glad TracyClient)
-target_compile_definitions(my_opengl_project PRIVATE TRACY_ENABLE)
-target_include_directories(my_opengl_project PRIVATE imgui imgui/backends ${tracy_SOURCE_DIR}/public)
+target_include_directories(my_opengl_project PRIVATE imgui imgui/backends tracy/public)
+option (TRACY_ENABLE "" ON)
+add_subdirectory(tracy)
+
+# target_link_libraries(my_opengl_project glfw OpenGL::GL glad TracyClient)
+target_link_libraries(my_opengl_project glfw OpenGL::GL glad Tracy::TracyClient)
+# target_compile_definitions(my_opengl_project PRIVATE TRACY_ENABLE)
+# target_include_directories(my_opengl_project PRIVATE imgui imgui/backends ${tracy_SOURCE_DIR}/public)
