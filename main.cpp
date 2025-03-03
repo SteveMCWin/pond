@@ -20,6 +20,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include "tracy/Tracy.hpp"
+
 
 // void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -140,6 +142,7 @@ int main(int, char**){
 
     while(!glfwWindowShouldClose(window)){
 
+
         float current_frame = glfwGetTime();
 
         delta_time = current_frame - last_frame;
@@ -151,6 +154,9 @@ int main(int, char**){
         screenShader.setFloat("iTime", current_frame);
 
         // fishHandler.calcFishHitChecks();
+
+        FrameMarkStart("Boxing");
+
         fishHandler.boxTheFish();
         
         for(Fish& f : fishHandler.allFish){
@@ -163,6 +169,8 @@ int main(int, char**){
         }
 
         fishHandler.resetBoxSizes();
+
+        FrameMarkEnd("Boxing");
 
         renderer->renderFish(fishHandler.allFish, circleShader, outlineShader, bezierShader, screenShader,
                              backgroundShader, glm::vec2(1.5f, 0.5f), glm::vec2(1.0f, 0.3f), glm::vec2(0.15f, 0.4f));

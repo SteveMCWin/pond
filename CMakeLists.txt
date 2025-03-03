@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.11.0)
 
 project(my_opengl_project VERSION 0.1.0)
 cmake_policy(SET CMP0072 NEW)
@@ -33,6 +33,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glad)
 
+FetchContent_Declare(
+    tracy
+    GIT_REPOSITORY https://github.com/wolfpld/tracy.git
+    GIT_TAG master
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(tracy)
+
 add_executable(my_opengl_project 
     main.cpp
     fish.cpp
@@ -49,5 +58,6 @@ add_executable(my_opengl_project
     imgui/backends/imgui_impl_glfw.cpp
     imgui/backends/imgui_impl_opengl3.cpp)
 
-target_link_libraries(my_opengl_project glfw OpenGL::GL glad)
-target_include_directories(my_opengl_project PRIVATE imgui imgui/backends)
+target_link_libraries(my_opengl_project glfw OpenGL::GL glad TracyClient)
+target_compile_definitions(my_opengl_project PRIVATE TRACY_ENABLE)
+target_include_directories(my_opengl_project PRIVATE imgui imgui/backends ${tracy_SOURCE_DIR}/public)
