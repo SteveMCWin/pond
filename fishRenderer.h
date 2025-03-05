@@ -4,15 +4,20 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/detail/type_vec.hpp>
-#include <glm/glm.hpp>
+#include <glm/detail/type_mat.hpp>
+#include <glm/detail/func_geometric.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
+
+#include <filesystem>
+#include <cmath>
 
 #include "fish.h"
 #include "shader.h"
 #include "bezier_filled.h"
 #include "texture.h"
+#include "global.h"
 
 class FishRenderer{
 
@@ -21,7 +26,7 @@ public:
     ~FishRenderer();
 
     void renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
-                    Shader& backgroundShader, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale);
+                    glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale);
 
 private:
 
@@ -80,10 +85,13 @@ private:
     unsigned int multisampledTex;
     unsigned int screenQuadTexture;
 
-    Texture2D backgroundTex;
-    Texture2D waterNoiseTex;
-    Texture2D highlightNoiseTex;
     Texture2D fishTexture;
+
+    Shader circleShader;
+    Shader bodyShader;
+    Shader finShader;
+    Shader screenShader;
+
 
 };
 

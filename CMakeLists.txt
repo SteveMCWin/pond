@@ -5,6 +5,9 @@ cmake_policy(SET CMP0072 NEW)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+add_compile_definitions(SHADERS_PATH="${CMAKE_SOURCE_DIR}/shaders")
+add_compile_definitions(TEXTURES_PATH="${CMAKE_SOURCE_DIR}/textures")
+
 find_package(OpenGL REQUIRED)
 
 find_package(glfw3 3.4 QUIET)
@@ -33,6 +36,7 @@ FetchContent_MakeAvailable(glad)
 
 add_executable(my_opengl_project 
     main.cpp
+    setup.cpp
     fish.cpp
     fishRenderer.cpp
     bezier_filled.cpp

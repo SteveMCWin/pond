@@ -1,10 +1,4 @@
 #include "fishRenderer.h"
-#include "global.h"
-#include <GLFW/glfw3.h>
-#include <cmath>
-#include <glm/detail/func_geometric.hpp>
-#include <glm/detail/type_mat.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 FishRenderer::FishRenderer(){
     glGenBuffers(1, &this->circleVBO);
@@ -60,17 +54,45 @@ FishRenderer::FishRenderer(){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    this->backgroundTex.Generate("/home/stevica/openGL_projects/pond/textures/backgroundTexture.png", false);
-    this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
-    this->highlightNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
-    this->fishTexture.Generate("/home/stevica/openGL_projects/pond/textures/koi.jpg", false);
+
+    std::filesystem::path shaders_path = SHADERS_PATH;
+    std::filesystem::path v_circle_shader_path = shaders_path / "v_circle.glsl";
+    std::filesystem::path f_circle_shader_path = shaders_path / "f_circle.glsl";
+    std::filesystem::path v_body_shader_path = shaders_path / "v_body.glsl";
+    std::filesystem::path f_body_shader_path = shaders_path / "f_body.glsl";
+    std::filesystem::path v_fin_shader_path = shaders_path / "v_fin.glsl";
+    std::filesystem::path f_fin_shader_path = shaders_path / "f_fin.glsl";
+    std::filesystem::path v_screen_shader_path = shaders_path / "v_screen.glsl";
+    std::filesystem::path f_screen_shader_path = shaders_path / "f_screen.glsl";
+
+    std::filesystem::path textures_path = TEXTURES_PATH;
+    std::filesystem::path fish_texture_path = textures_path / "koi.jpg";
+
+    
+    this->fishTexture.Generate(fish_texture_path, false);
+
+    this->screenShader = Shader(v_screen_shader_path.c_str(),
+                                f_screen_shader_path.c_str());
+
+    this->circleShader = Shader(v_circle_shader_path.c_str(),
+                                f_circle_shader_path.c_str());
+    
+    this->bodyShader = Shader(v_body_shader_path.c_str(),
+                              f_body_shader_path.c_str());
+
+    this->finShader = Shader(v_fin_shader_path.c_str(),
+                             f_fin_shader_path.c_str());
+
+
+    GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
 
     glGenFramebuffers(1, &this->screenQuadFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
 
     glGenTextures(1, &this->screenQuadTexture);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mode->width, mode->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture, 0);
@@ -94,7 +116,7 @@ glm::vec2 jointSidePoint(Joint& j){
 }
 
 void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, Shader& outlineShader, Shader& finShader, Shader& screenShader,
-                              Shader& backgroundShader, glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
+                               glm::vec2 frontFinScale, glm::vec2 backFinScale, glm::vec2 eyeScale){
 
     // bind to custom framebuffer object
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
@@ -135,9 +157,9 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
     glActiveTexture(GL_TEXTURE1);
-    waterNoiseTex.Bind();
+    // waterNoiseTex.Bind();
     glActiveTexture(GL_TEXTURE2);
-    highlightNoiseTex.Bind();
+    // highlightNoiseTex.Bind();
 
     screenShader.setInt("screenTexture", 0);
     screenShader.setInt("waterNoiseTexture", 1);
@@ -149,7 +171,7 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
 void FishRenderer::renderPond(Shader& backgroundShader){
 
     glActiveTexture(GL_TEXTURE0);
-    backgroundTex.Bind();
+    // backgroundTex.Bind();
 
     backgroundShader.use();
 
