@@ -2,6 +2,7 @@
 #include "global.h"
 #include <GLFW/glfw3.h>
 #include <cmath>
+#include <filesystem>
 #include <glm/detail/func_geometric.hpp>
 #include <glm/detail/type_mat.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -60,10 +61,13 @@ FishRenderer::FishRenderer(){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    this->backgroundTex.Generate("/home/stevica/openGL_projects/pond/textures/backgroundTexture.png", false);
-    this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
-    this->highlightNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
-    this->fishTexture.Generate("/home/stevica/openGL_projects/pond/textures/koi.jpg", false);
+    std::filesystem::path textures_path = TEXTURES_PATH;
+    std::filesystem::path fish_texture_path = textures_path / "koi.jpg";
+
+    // this->backgroundTex.Generate("/home/stevica/openGL_projects/pond/textures/backgroundTexture.png", false);
+    // this->waterNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/waterTexture.png", true);
+    // this->highlightNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
+    this->fishTexture.Generate(fish_texture_path.c_str(), false);
 
     GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
@@ -138,9 +142,9 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
     glActiveTexture(GL_TEXTURE1);
-    waterNoiseTex.Bind();
+    // waterNoiseTex.Bind();
     glActiveTexture(GL_TEXTURE2);
-    highlightNoiseTex.Bind();
+    // highlightNoiseTex.Bind();
 
     screenShader.setInt("screenTexture", 0);
     screenShader.setInt("waterNoiseTexture", 1);
@@ -152,7 +156,7 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
 void FishRenderer::renderPond(Shader& backgroundShader){
 
     glActiveTexture(GL_TEXTURE0);
-    backgroundTex.Bind();
+    // backgroundTex.Bind();
 
     backgroundShader.use();
 

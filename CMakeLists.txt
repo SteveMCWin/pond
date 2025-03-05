@@ -6,6 +6,7 @@ cmake_policy(SET CMP0072 NEW)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_compile_definitions(SHADERS_PATH="${CMAKE_SOURCE_DIR}/shaders")
+add_compile_definitions(TEXTURES_PATH="${CMAKE_SOURCE_DIR}/textures")
 
 find_package(OpenGL REQUIRED)
 
