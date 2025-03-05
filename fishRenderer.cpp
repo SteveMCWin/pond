@@ -65,12 +65,15 @@ FishRenderer::FishRenderer(){
     this->highlightNoiseTex.Generate("/home/stevica/openGL_projects/pond/textures/highlightTexture.png", true);
     this->fishTexture.Generate("/home/stevica/openGL_projects/pond/textures/koi.jpg", false);
 
+    GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
+
     glGenFramebuffers(1, &this->screenQuadFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
 
     glGenTextures(1, &this->screenQuadTexture);
     glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mode->width, mode->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture, 0);
@@ -109,7 +112,7 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
     for(Fish& fish : allFish){
 
         this->renderFishSideFins(fish, frontFinScale, backFinScale, circleShader);
-        this->renderFishBody(fish, circleShader, outlineShader);
+        this->renderFishBody(fish, outlineShader);
         this->renderFishEyes(fish, eyeScale, circleShader);
         this->renderFishTailFin(fish, finShader);
         this->renderFishBackFin(fish, finShader);
@@ -160,16 +163,9 @@ void FishRenderer::renderPond(Shader& backgroundShader){
     glBindVertexArray(0);
 }
 
-void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
+void FishRenderer::renderFishBody(const Fish& fish, Shader& outlineShader){
 
     glm::mat4 projection = Global::projectionMatrix;
-
-    // this renders the first and last circle
-    // this->renderOvals(fish.joints[0].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[0].circleRadius),
-    //                   circleShader, fish.bodyColor, fish.joints[0].circleRadius);
-
-    this->renderOvals(fish.joints[fish.numOfJoints-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[fish.numOfJoints-1].circleRadius), 
-                      circleShader, fish.bodyColor, fish.joints[0].circleRadius);
 
     // render the outline
 

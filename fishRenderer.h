@@ -27,7 +27,7 @@ private:
 
     void renderScreenQuad(Shader& screenShader);
 
-    void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
+    void renderFishBody(const Fish& fish, Shader& outlineShader);
     void renderFishBackFin(const Fish& fish, Shader& finShader);
     void renderFishTailFin(const Fish& fish, Shader& finShader);
     void renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader);

@@ -1,4 +1,5 @@
 #include <cmath>
+#include <filesystem>
 #include <glad/glad.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
@@ -6,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <unistd.h>
 #include <vector>
 
 #include "global.h"
@@ -79,16 +81,28 @@ int main(int, char**){
 
     // glEnable(GL_MULTISAMPLE);
 
-    Shader circleShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_shader.glsl",
-                           "/home/stevica/openGL_projects/pond/shaders/f_shader.glsl");
-    Shader outlineShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_solid.glsl",
-                                  "/home/stevica/openGL_projects/pond/shaders/f_solid.glsl");
-    Shader bezierShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_bezier.glsl",
-                                  "/home/stevica/openGL_projects/pond/shaders/f_bezier.glsl");
-    Shader screenShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_screen.glsl",
-                                 "/home/stevica/openGL_projects/pond/shaders/f_screen.glsl");
-    Shader backgroundShader = Shader("/home/stevica/openGL_projects/pond/shaders/v_background.glsl",
-                                     "/home/stevica/openGL_projects/pond/shaders/f_background.glsl");
+    std::filesystem::path shaders_path = SHADERS_PATH;
+    std::filesystem::path v_circle_shader_path = shaders_path / "v_shader.glsl";
+    std::filesystem::path f_circle_shader_path = shaders_path / "f_shader.glsl";
+    std::filesystem::path v_outline_shader_path = shaders_path / "v_solid.glsl";
+    std::filesystem::path f_outline_shader_path = shaders_path / "f_solid.glsl";
+    std::filesystem::path v_bezier_shader_path = shaders_path / "v_bezier.glsl";
+    std::filesystem::path f_bezier_shader_path = shaders_path / "f_bezier.glsl";
+    std::filesystem::path v_screen_shader_path = shaders_path / "v_screen.glsl";
+    std::filesystem::path f_screen_shader_path = shaders_path / "f_screen.glsl";
+    std::filesystem::path v_background_shader_path = shaders_path / "v_background.glsl";
+    std::filesystem::path f_background_shader_path = shaders_path / "f_background.glsl";
+
+    Shader circleShader = Shader(v_circle_shader_path.c_str(),
+                               f_circle_shader_path.c_str());
+    Shader outlineShader = Shader(v_outline_shader_path.c_str(),
+                                  f_outline_shader_path.c_str());
+    Shader bezierShader = Shader(v_bezier_shader_path.c_str(),
+                                  f_bezier_shader_path.c_str());
+    Shader screenShader = Shader(v_screen_shader_path.c_str(),
+                                 f_screen_shader_path.c_str());
+    Shader backgroundShader = Shader(v_background_shader_path.c_str(),
+                                     f_background_shader_path.c_str());
 
     float distances[Global::numberOfJoints]   = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};   // desired distances from one circle center to another
     float radii[Global::numberOfJoints]       = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};   // radii of each visible circle

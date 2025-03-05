@@ -23,9 +23,9 @@ vec4 return_normal(){
 void main()
 {
 
-    FragColor = return_pixelated(256.0);
+    // FragColor = return_pixelated(256.0);
 
 
-    // FragColor = return_normal();
+    FragColor = return_normal();
 }
 
