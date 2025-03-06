@@ -47,9 +47,9 @@ public:
     glm::vec3 eyeColor;
 
     std::vector<float> outline_vertices;
-    float tex_coords[(Global::numberOfJoints + 2) * 2 * 2];
+    float tex_coords[(NUM_OF_JOINTS + 2) * 2 * 2];
 
-     Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = Global::fishSightRange,
+     Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = FISH_SIGHT_RANGE,
           glm::vec3 bColor = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 fColor = glm::vec3(0.96f, 0.43f, 0.23f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 
@@ -57,7 +57,7 @@ public:
     void Move(float delta_time);
 
 private:
-    const float aspect_ratio = Global::aspectRatio;
+    const float aspect_ratio = Global::aspect_ratio;
     const float hit_check_angle = 120;
     float hit_check_distance;
     glm::vec2 next_move_dir;

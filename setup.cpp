@@ -1,6 +1,6 @@
 #include "setup.h"
 
-GLFWwindow* init(){
+GLFWwindow* setup::init(){
 
     // GLFW window setup
     glfwInit();
@@ -19,6 +19,8 @@ GLFWwindow* init(){
 
     GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
+
+    Global::aspect_ratio = (float)mode->height / (float)mode->width;
 
     GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Stevica :D", NULL, NULL);
     if(window == NULL){
@@ -44,5 +46,4 @@ GLFWwindow* init(){
     glLineWidth(3.0f);
 
     return window;
-    
 }

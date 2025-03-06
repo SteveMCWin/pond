@@ -8,9 +8,14 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-#include "defs.h"
 #include "fishRenderer.h"
+#include "global.h"
 
-GLFWwindow* init();
+namespace setup {
+
+    GLFWwindow* init();
+
+}
+
 
 #endif // !SETUP

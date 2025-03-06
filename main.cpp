@@ -19,7 +19,7 @@ void process_input(GLFWwindow* window);
 
 int main(int, char**){
 
-    GLFWwindow* window = init();
+    GLFWwindow* window = setup::init();
 
     return 0;
 }

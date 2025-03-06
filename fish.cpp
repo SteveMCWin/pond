@@ -7,15 +7,15 @@
 Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed, float sRange,
            glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
 
-    this->numOfJoints = Global::numberOfJoints;
-    this->outline_vertices.resize(4*(this->numOfJoints+2));
+    // NUM_OF_JOINTS = NUM_OF_JOINTS;
+    this->outline_vertices.resize(4*(NUM_OF_JOINTS+2));
 
-    for(int i = 0; i < this->numOfJoints; i++){
+    for(int i = 0; i < NUM_OF_JOINTS; i++){
         Joint j = Joint(centers[i], distances[i], radii[i]);
         this->joints.push_back(j);
     }
 
-    this->tail_fin_joints[0] = this->joints[this->numOfJoints-1];
+    this->tail_fin_joints[0] = this->joints[NUM_OF_JOINTS-1];
     this->tail_fin_joints[0].desiredDistance = 1.5f;
     this->tail_fin_joints[1] = this->tail_fin_joints[0];
     this->tail_fin_joints[1].desiredDistance = 1.5f;
@@ -33,11 +33,11 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float spe
     this->finColor  = fColor;
     this->eyeColor  = eColor;
 
-    for(int i = 0; i < this->numOfJoints + 2; i++){
-        this->tex_coords[i*4  ] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
+    for(int i = 0; i < NUM_OF_JOINTS + 2; i++){
+        this->tex_coords[i*4  ] = static_cast<float>(i)/static_cast<float>(NUM_OF_JOINTS);
         // this->tex_coords[i*4+1] = 0.1;
         this->tex_coords[i*4+1] = 0.1 + 0.1 * std::clamp(i-10, 0, 4);
-        this->tex_coords[i*4+2] = static_cast<float>(i)/static_cast<float>(this->numOfJoints);
+        this->tex_coords[i*4+2] = static_cast<float>(i)/static_cast<float>(NUM_OF_JOINTS);
         // this->tex_coords[i*4+3] = 0.9;
         this->tex_coords[i*4+3] = 0.9 - 0.1 * std::clamp(i-10, 0, 4);
     }
@@ -94,7 +94,7 @@ void Fish::Move(float delta_time){
 void Fish::updateJoints(){
 
     // used to update the position of all of the joints (except the first one, which is updated by the move function) and updates the outline vertices
-    for(int i = 1; i < this->numOfJoints; i++){
+    for(int i = 1; i < NUM_OF_JOINTS; i++){
         float distance_between_joints = glm::distance(this->joints[i-1].Center, this->joints[i].Center);
         float desired_distance = this->joints[i].desiredDistance;
         this->joints[i].moveDirection = glm::normalize(this->joints[i-1].Center - this->joints[i].Center);
@@ -115,7 +115,7 @@ void Fish::updateJoints(){
        
     }
 
-    if(this->tail_fin_joints[0].desiredDistance - glm::distance(this->tail_fin_joints[0].Center, this->joints[this->numOfJoints-1].Center) < 1e-2){
+    if(this->tail_fin_joints[0].desiredDistance - glm::distance(this->tail_fin_joints[0].Center, this->joints[NUM_OF_JOINTS-1].Center) < 1e-2){
         tail_fin_joints[0].moveDirection = glm::normalize(joints[numOfJoints-1].Center - tail_fin_joints[0].Center);
         tail_fin_joints[0].Center += tail_fin_joints[0].moveDirection * (glm::distance(tail_fin_joints[0].Center, joints[numOfJoints-1].Center) - tail_fin_joints[0].desiredDistance);
     }
@@ -140,8 +140,8 @@ void Fish::updateHitChecks(){
 
         // The if checks if the position of the hit check is outside a square with round corners, the exponent (4 in this case) determines the roundness (smaller exp -> rounder)
         // the result of 1.0 is just on the edge of the window, less than is inside, more than is on the outside
-        if( powf(std::abs(hit_check_world_pos.x/Global::screenHalfSize), 4) +
-            powf(std::abs(hit_check_world_pos.y/(Global::screenHalfSize*Global::aspectRatio)), 4) >= 1.0){
+        if( powf(std::abs(hit_check_world_pos.x/FRUSTUM_HALF_WIDTH), 4) +
+            powf(std::abs(hit_check_world_pos.y/(FRUSTUM_HALF_WIDTH*Global::aspect_ratio)), 4) >= 1.0){
 
                 this->hit_checks_result += (i < 0) ? -1 : 1;
         }

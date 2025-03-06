@@ -7,22 +7,9 @@
 #include <iostream>
 
 FishHandler::FishHandler(){
-    glGenBuffers(1, &this->ssbo);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(this->hit_check_data), NULL, GL_DYNAMIC_DRAW);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, this->ssbo);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-    this->fishComputeShader = ComputeShader("/home/stevica/openGL_projects/pond/shaders/c_fish.glsl");
-    this->fishComputeShader.use();
-
-    this->fishComputeShader.setFloat("screen_half_size", Global::screenHalfSize);
-    this->fishComputeShader.setFloat("aspect_ratio", Global::aspectRatio);
-    this->fishComputeShader.setFloat("hit_check_distance", 1.2f*7.0f);    // hard coded, did this just to test if stuff works, should be changed so that hit_check_distance isn't uniform
-    this->fishComputeShader.setFloat("degree_change", Global::DegToRad(120.0f/12.0f));    // hard coded, did this just to test if stuff works, should be changed so that hit_check_distance isn't uniform
-
-    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
-    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+    int boxes_rows = FRUSTUM_HALF_WIDTH*Global::aspect_ratio/FISH_SIGHT_RANGE + 2;
+    int boxes_cols = FRUSTUM_HALF_WIDTH/FISH_SIGHT_RANGE + 2;
 
     this->boxes = new box_struct*[boxes_rows];
     for(int i = 0; i < boxes_rows; i++){
@@ -31,7 +18,7 @@ FishHandler::FishHandler(){
 
     for(int i = 0; i < boxes_rows; i++){
         for(int j = 0; j < boxes_cols; j++){
-            this->boxes[i][j].fish_indexes = new int[Global::numberOfFish];
+            this->boxes[i][j].fish_indexes = new int[number_of_fish];
             this->boxes[i][j].num_of_boxed_fish = 0;
         }
     }
@@ -40,8 +27,8 @@ FishHandler::FishHandler(){
 
 FishHandler::~FishHandler(){
     
-    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
-    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+    int boxes_rows = FRUSTUM_HALF_WIDTH*Global::aspect_ratio/FISH_SIGHT_RANGE + 2;
+    int boxes_cols = FRUSTUM_HALF_WIDTH/FISH_SIGHT_RANGE + 2;
 
     for(int i = 0; i < boxes_rows; i++){
         for(int j = 0; j < boxes_cols; j++){
@@ -54,6 +41,31 @@ FishHandler::~FishHandler(){
 
 }
 
+void FishHandler::createFish(){
+
+    float distances[NUM_OF_JOINTS]   = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};   // desired distances from one circle center to another
+    float radii[NUM_OF_JOINTS]       = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};   // radii of each visible circle
+    glm::vec2 centers[NUM_OF_JOINTS] = {     // position of each circle center, the values get changed the moment the fish update joints func gets called so they can be 0.0
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+    };
+
+    for(int i = 0; i < NUM_OF_JOINTS; i++){
+        centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * Global::bottomLeftCorner;
+        this->addFish(centers, distances, radii, i);
+    }
+}
+
 void FishHandler::addFish(Fish& fish){
 
     this->allFish.push_back(fish);
@@ -64,26 +76,10 @@ void FishHandler::addFish(glm::vec2* centers, float* distances, float* radii, in
     this->allFish.push_back(Fish(centers, distances, radii, id, speed));
 }
 
-void FishHandler::calcFishHitChecks(){
-    for(int i = 0; i < Global::numberOfFish; i++){
-        this->hit_check_data[i] = {this->allFish[i].joints[0].moveDirection, this->allFish[i].joints[0].Center, 0};
-    }
-
-    // for(int i = 0; i < Global::numberOfFish; i++){
-        // std::cout << this->hit_check_data[i].result << std::endl;
-    // }
-
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssbo);
-    glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(hit_check_data), hit_check_data);
-    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-    this->fishComputeShader.use();
-    glDispatchCompute(Global::numberOfFish, 1, 1);
-}
-
 void FishHandler::boxTheFish(){
 
-    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
-    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+    int boxes_rows = FRUSTUM_HALF_WIDTH*Global::aspect_ratio/FISH_SIGHT_RANGE + 2;
+    int boxes_cols = FRUSTUM_HALF_WIDTH/FISH_SIGHT_RANGE + 2;
 
     // int box_row_index = std::clamp(fish.joints[0].Center.x/fish.sightRange + 1, 1, boxes_rows - 1);
     for(Fish& fish : this->allFish){
@@ -102,8 +98,8 @@ void FishHandler::boxTheFish(){
 
 void FishHandler::resetBoxSizes(){
 
-    int boxes_rows = Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange + 2;
-    int boxes_cols = Global::screenHalfSize/Global::fishSightRange + 2;
+    int boxes_rows = FRUSTUM_HALF_WIDTH*Global::aspect_ratio/FISH_SIGHT_RANGE + 2;
+    int boxes_cols = FRUSTUM_HALF_WIDTH/FISH_SIGHT_RANGE + 2;
     
     for(int i = 0; i < boxes_rows; i++){
         for(int j = 0; j < boxes_rows; j++){
