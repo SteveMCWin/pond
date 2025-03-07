@@ -78,7 +78,7 @@ private:
 
     unsigned int screenQuadFBO;
     unsigned int multisampledTex;
-    unsigned int screenQuadTexture;
+    Texture2D screenQuadTexture;
 
     // Texture2D backgroundTex;
     // Texture2D waterNoiseTex;

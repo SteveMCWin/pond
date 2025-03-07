@@ -107,18 +107,18 @@ int main(int, char**){
     float distances[Global::numberOfJoints]   = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};   // desired distances from one circle center to another
     float radii[Global::numberOfJoints]       = {1.2f, 1.3f, 1.4f, 1.4f, 1.3f, 1.2f, 1.0f, 0.8f, 0.6f, 0.5f, 0.3f, 0.2f};   // radii of each visible circle
     glm::vec2 centers[Global::numberOfJoints] = {     // position of each circle center, the values below are pretty much random, wouldn't make a big difference if they were all (0, 0)
-        glm::vec2(1.0f, 1.0f),
-        glm::vec2(-0.1f, -0.1f),
-        glm::vec2(-0.1f, -1.5f),
-        glm::vec2(-0.1f, -1.7f),
-        glm::vec2(-1.0f, -1.9f),
-        glm::vec2(-1.0f, -1.8f),
-        glm::vec2(-1.0f, -1.7f),
-        glm::vec2(-1.0f, -1.6f),
-        glm::vec2(-1.1f, -1.9f),
-        glm::vec2(-1.2f, -1.9f),
-        glm::vec2(-1.3f, -1.9f),
-        glm::vec2(-1.4f, -1.9f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
+        glm::vec2(0.0f, 0.0f),
     };
 
     FishRenderer* renderer = new FishRenderer();

@@ -41,8 +41,6 @@ public:
 
 private:
     
-    // box_struct boxes[static_cast<unsigned int>(Global::screenHalfSize*Global::aspectRatio)]
-    //                 [static_cast<unsigned int>(Global::screenHalfSize*Global::aspectRatio/Global::fishSightRange)];
     box_struct** boxes;
     ComputeShader fishComputeShader;
     unsigned int ssbo;

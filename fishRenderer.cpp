@@ -75,12 +75,13 @@ FishRenderer::FishRenderer(){
     glGenFramebuffers(1, &this->screenQuadFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
 
-    glGenTextures(1, &this->screenQuadTexture);
-    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mode->width, mode->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);   // WARNING: HARDCODED WINDOW SIZE
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture, 0);
+    // glGenTextures(1, &this->screenQuadTexture);
+    // glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mode->width, mode->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    this->screenQuadTexture.Reserve(mode->width, mode->height);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture.ID, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
@@ -124,7 +125,8 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish, Shader& circleShader, 
 
     // // bind to default framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    // glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    this->screenQuadTexture.Bind();
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -140,7 +142,8 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     screenShader.use();
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
+    // glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture.);
+    this->screenQuadTexture.Bind();
     glActiveTexture(GL_TEXTURE1);
     // waterNoiseTex.Bind();
     glActiveTexture(GL_TEXTURE2);

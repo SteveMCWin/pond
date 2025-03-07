@@ -25,7 +25,6 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id, float spe
     this->sightRange = sRange;
     this->hit_checks_result = 0;
 
-    this->hit_checks.resize(this->num_of_hit_checks);
     this->hit_check_distance = 8.0f * radii[0];
     this->updateHitChecks();
 
@@ -130,9 +129,9 @@ void Fish::updateHitChecks(){
 
     this->hit_checks_result = 0;
 
-    float degreeChange = this->hit_check_angle/(this->hit_checks.size()-1);
+    float degreeChange = this->hit_check_angle/(this->num_of_hit_checks-1);
 
-    for(int i = -(this->hit_checks.size()/2), j = 0; j < this->hit_checks.size(); j++, i++){
+    for(int i = -(this->num_of_hit_checks/2), j = 0; j < this->num_of_hit_checks; j++, i++){
 
         this->hit_checks[j] = Global::rotateVector(this->joints[0].moveDirection, -degreeChange * i);
         

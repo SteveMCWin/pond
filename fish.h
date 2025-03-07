@@ -27,7 +27,9 @@ struct Joint{
 
 class Fish{
 public:
-    std::vector<glm::vec2> hit_checks;
+    // std::vector<glm::vec2> hit_checks;
+    static const unsigned int num_of_hit_checks = 13;
+    glm::vec2 hit_checks[num_of_hit_checks];
     std::vector<Joint> joints;
     Joint tail_fin_joints[2];
     unsigned int numOfJoints;
@@ -35,7 +37,6 @@ public:
     // should add a reference to the center of the head joint so you don't have to type fish.joints[0].Center
     // glm::vec2& position = this->joints[0].Center;
 
-    unsigned int num_of_hit_checks = 13;
     int hit_checks_result;
     float sightRange;
     int fishID;
