@@ -16,7 +16,6 @@ struct Joint{
     float desiredDistance;
     float circleRadius;
     
-    // Joint* jointConnectedTo;
     Joint(glm::vec2 c = glm::vec2(0.0f), float d = 1.0f, float r = 1.0f, glm::vec2 m = glm::normalize(glm::circularRand(1.0f))){
         Center = c;
         desiredDistance = d;
@@ -25,19 +24,14 @@ struct Joint{
     }
 };
 
-class Fish{
+struct Fish{
 public:
-    std::vector<glm::vec2> hit_checks;
-    std::vector<Joint> joints;
-    Joint tail_fin_joints[2];
-    unsigned int numOfJoints;
-    float moveSpeed;
-    // should add a reference to the center of the head joint so you don't have to type fish.joints[0].Center
-    // glm::vec2& position = this->joints[0].Center;
+    glm::vec2 hit_checks[NUM_OF_HIT_CHECKS];
 
-    unsigned int num_of_hit_checks = 13;
+    Joint joints[NUM_OF_JOINTS];
+    Joint tail_fin_joints[2];
+
     int hit_checks_result;
-    float sightRange;
     int fishID;
 
     glm::ivec2 box_coords;
@@ -46,19 +40,18 @@ public:
     glm::vec3 finColor;
     glm::vec3 eyeColor;
 
-    std::vector<float> outline_vertices;
+    float outline_vertices[(NUM_OF_JOINTS + 2) * 2 * 2];
     float tex_coords[(NUM_OF_JOINTS + 2) * 2 * 2];
 
-     Fish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 20.0f, float sRange = FISH_SIGHT_RANGE,
-          glm::vec3 bColor = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 fColor = glm::vec3(0.96f, 0.43f, 0.23f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
+     Fish();
+     Fish(glm::vec2* centers, float* distances, float* radii, int id, glm::vec3 bColor = glm::vec3(1.0f, 1.0f, 1.0f),
+          glm::vec3 fColor = glm::vec3(0.96f, 0.43f, 0.23f), glm::vec3 eColor = glm::vec3(0.1f, 0.2f, 0.2f));
     ~Fish();
 
     void updateMoveDir(glm::vec2 new_move_dir);
     void Move(float delta_time);
 
 private:
-    const float aspect_ratio = Global::aspect_ratio;
-    const float hit_check_angle = 120;
     float hit_check_distance;
     glm::vec2 next_move_dir;
 

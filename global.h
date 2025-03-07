@@ -15,6 +15,12 @@
 #define FISH_SIGHT_RANGE 25.0f
 #define FRUSTUM_HALF_WIDTH 80.0f
 #define NUM_OF_FISH_OUTLINE_VERTS ((NUM_OF_JOINTS+2)*2)
+#define NUM_OF_HIT_CHECKS 13
+#define HIT_CHECK_ANGLE 120.0f
+#define FISH_SPEED 15.0f
+#define FRONT_FIN_SCALE glm::vec2(1.5f, 0.5f)
+#define BACK_FIN_SCALE glm::vec2(1.5f, 0.5f)
+#define EYE_SCALE glm::vec2(0.15f, 0.4f)
 
 #endif // !DEFS
 

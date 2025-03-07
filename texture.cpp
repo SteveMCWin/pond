@@ -40,6 +40,25 @@ void Texture2D::Generate(std::string path, bool alpha)
 
 }
 
+void Texture2D::Reserve(unsigned int width, unsigned int height, bool alpha){
+
+    if(alpha){
+        this->Internal_Format = GL_RGBA;
+        this->Image_Format = GL_RGBA;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, this->ID);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->Wrap_S);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->Wrap_T);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->Filter_Min);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->Filter_Max);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, this->Internal_Format, width, height, 0, this->Image_Format, GL_UNSIGNED_BYTE, NULL);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+}
+
 void Texture2D::Bind() const
 {
     glBindTexture(GL_TEXTURE_2D, this->ID);

@@ -33,4 +33,5 @@ To run the project, run `./my_opengl_project` in the build folder.
 ## Credits
 
 Project inspired by [this cool video](https://www.youtube.com/watch?v=qlfh_rv6khY&list=PL5UsWWvJwYu8X9gp48RIgwl9cWiGYbwXG&index=19).\
-[Background](https://wallpapercat.com/black-wallpapers) used in screenshot.
+[Background](https://wallpapercat.com/black-wallpapers) used in screenshot.\
+Shader and Texture2D class code from [learnopengl](https://learnopengl.com/)

@@ -25,19 +25,18 @@ class FishHandler{
 
 public:
 
-    std::vector<Fish> allFish;  // should make this just a pointer to an array
+    // std::vector<Fish> allFish;  // should make this just a pointer to an array
+    Fish* allFish;
 
     FishHandler();
     ~FishHandler();
 
     void createFish();
-    void addFish(Fish& fish);
-    void addFish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 15.0f);
 
     void boxTheFish();
     void resetBoxSizes();
     void calcFishHitChecks();
-    glm::vec2 calcFishMoveDir(Fish& fish, float delta_time);    // responsible for boid-like behaviour of fish
+    void handleFishMovement(float delta_time);    // responsible for boid-like behaviour of fish
     // should change the calcFushMoveDir to return void and at the end of the function just call the fish's updateMoveDir function
 
     unsigned int number_of_fish;
