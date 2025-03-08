@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <vector>
+#include <glm/detail/func_geometric.hpp>
+#include <iostream>
 
+#include "global.h"
 #include "fish.h"
 #include "shader.h"
 #include "compute_shader.h"
@@ -25,31 +28,29 @@ class FishHandler{
 
 public:
 
-    std::vector<Fish> allFish;
+    Fish* allFish;
 
-    FishHandler();
-    ~FishHandler();
+    unsigned int number_of_fish;
 
-    void addFish(Fish& fish);
-    void addFish(glm::vec2* centers, float* distances, float* radii, int id, float speed = 15.0f);
-
-    void boxTheFish();
-    void resetBoxSizes();
-    void calcFishHitChecks();
-    glm::vec2 calcFishMoveDir(Fish& fish, float delta_time);    // responsible for boid-like behaviour of fish
-    // should change the calcFushMoveDir to return void and at the end of the function just call the fish's updateMoveDir function
-
-private:
-    
-    box_struct** boxes;
-    ComputeShader fishComputeShader;
-    unsigned int ssbo;
-    hit_check_struct hit_check_data[Global::numberOfFish];
-    hit_check_struct* hit_check_result;
     float cohesionIntensity = 0.5f;
     float alignmentIntensity = 180.0f;
     float separationIntensity = 180.0f;
     float edgeEvasionIntensity = 80.0f;
+
+    FishHandler();
+    ~FishHandler();
+
+    void createFish();
+
+    void boxTheFish();
+    void resetBoxSizes();
+    void calcFishHitChecks();
+    void handleFishMovement(float delta_time);    // responsible for boid-like behaviour of fish
+
+private:
+
+    box_struct** boxes;
+
 };
 
 #endif // !FISH_HANDLER_H

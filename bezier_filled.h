@@ -23,8 +23,6 @@ private:
     unsigned int crescentVBO;
     unsigned int crescentVAO;
 
-    float aspect_ratio = 9.0f/16.0f;
-
     float triangle_vertices[6];
     std::vector<float> crescent_vertices;
     std::vector<float> crescent_line_vertices;

@@ -4,11 +4,6 @@ out vec4 FragColor;
 in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
-uniform sampler2D waterNoiseTexture;
-uniform sampler2D highlightNoiseTexture;
-
-uniform float iTime;
-
 
 vec4 return_pixelated(float pixels){
     float delta = 1.0f/pixels;
