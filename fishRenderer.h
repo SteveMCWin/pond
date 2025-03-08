@@ -25,7 +25,7 @@ public:
      FishRenderer();    // responsible for creating the VBOs and VAOs needed to render the fish
     ~FishRenderer();
 
-    void renderFish(std::vector<Fish>& allFish);
+    void renderFish(Fish* allFish, unsigned int number_of_fish);
 
 private:
 

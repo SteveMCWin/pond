@@ -29,6 +29,7 @@ FishHandler::FishHandler(){
 
 FishHandler::~FishHandler(){
 
+    delete[] this->allFish;
     
     int boxes_rows = FRUSTUM_HALF_WIDTH*Global::aspect_ratio/FISH_SIGHT_RANGE + 2;
     int boxes_cols = FRUSTUM_HALF_WIDTH/FISH_SIGHT_RANGE + 2;

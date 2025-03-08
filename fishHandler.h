@@ -25,8 +25,14 @@ class FishHandler{
 
 public:
 
-    // std::vector<Fish> allFish;  // should make this just a pointer to an array
     Fish* allFish;
+
+    unsigned int number_of_fish;
+
+    float cohesionIntensity = 0.5f;
+    float alignmentIntensity = 180.0f;
+    float separationIntensity = 180.0f;
+    float edgeEvasionIntensity = 80.0f;
 
     FishHandler();
     ~FishHandler();
@@ -37,14 +43,6 @@ public:
     void resetBoxSizes();
     void calcFishHitChecks();
     void handleFishMovement(float delta_time);    // responsible for boid-like behaviour of fish
-    // should change the calcFushMoveDir to return void and at the end of the function just call the fish's updateMoveDir function
-
-    unsigned int number_of_fish;
-
-    float cohesionIntensity = 0.5f;
-    float alignmentIntensity = 180.0f;
-    float separationIntensity = 180.0f;
-    float edgeEvasionIntensity = 80.0f;
 
 private:
     box_struct** boxes;

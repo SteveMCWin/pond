@@ -36,7 +36,7 @@ FetchContent_MakeAvailable(glad)
 
 add_executable(my_opengl_project 
     main.cpp
-    setup.cpp
+    app.cpp
     fish.cpp
     fishRenderer.cpp
     bezier_filled.cpp

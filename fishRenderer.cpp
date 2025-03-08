@@ -104,7 +104,7 @@ glm::vec2 jointSidePoint(Joint& j){
     return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees
 }
 
-void FishRenderer::renderFish(std::vector<Fish>& allFish){
+void FishRenderer::renderFish(Fish* allFish, unsigned int number_of_fish){
 
     // bind to custom framebuffer object
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
@@ -113,13 +113,13 @@ void FishRenderer::renderFish(std::vector<Fish>& allFish){
     glClear(GL_COLOR_BUFFER_BIT);
 
     // render the fish
-    for(Fish& fish : allFish){
+    for(int i = 0; i < number_of_fish; i++){
 
-        this->renderFishSideFins(fish, FRONT_FIN_SCALE, BACK_FIN_SCALE, this->circleShader);    // change this so it renders all fins 2 by 2
-        this->renderFishBody(fish, circleShader, this->bodyShader);
-        this->renderFishEyes(fish, EYE_SCALE, this->circleShader);
-        this->renderFishTailFin(fish, this->finShader);
-        this->renderFishBackFin(fish, this->finShader);
+        this->renderFishSideFins(allFish[i], FRONT_FIN_SCALE, BACK_FIN_SCALE, this->circleShader);    // change this so it renders all fins 2 by 2
+        this->renderFishBody(allFish[i], circleShader, this->bodyShader);
+        this->renderFishEyes(allFish[i], EYE_SCALE, this->circleShader);
+        this->renderFishTailFin(allFish[i], this->finShader);
+        this->renderFishBackFin(allFish[i], this->finShader);
     }
 
     // // bind to default framebuffer
