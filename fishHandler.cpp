@@ -1,12 +1,11 @@
 #include "fishHandler.h"
-#include "global.h"
-#include <GLFW/glfw3.h>
-#include <algorithm>
-#include <cstdlib>
+// #include <GLFW/glfw3.h>
 #include <glm/detail/func_geometric.hpp>
 #include <iostream>
 
 FishHandler::FishHandler(){
+
+    this->number_of_fish = 15; //CHANGE: gotta like read from a save file and determine how many fish there are that way
 
     this->allFish = nullptr;
 

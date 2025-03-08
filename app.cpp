@@ -77,9 +77,6 @@ App::App(){
     const char* glsl_version = "#version 450";
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-
 }
 
 App::~App(){
@@ -103,6 +100,9 @@ void App::Run(){
     this->renderer->renderFish(this->handler.allFish, this->handler.number_of_fish);
 
     this->handle_imgui();
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
 
 }
 

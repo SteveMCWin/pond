@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <vector>
+#include <glm/detail/func_geometric.hpp>
+#include <iostream>
 
+#include "global.h"
 #include "fish.h"
 #include "shader.h"
 #include "compute_shader.h"

@@ -1,9 +1,5 @@
 #include "global.h"
-#include <cstdlib>
 
-// float Global::pi = 3.14159f;
-// float Global::screenHalfSize = 80.0f;
-// glm::vec2 Global::bottomLeftCorner = glm::vec2(-screenHalfSize, screenHalfSize*aspectRatio);
 glm::mat4 Global::projectionMatrix = glm::ortho(-FRUSTUM_HALF_WIDTH, FRUSTUM_HALF_WIDTH, -FRUSTUM_HALF_WIDTH * aspect_ratio, FRUSTUM_HALF_WIDTH * aspect_ratio, -1.0f, 1.0f);
 float Global::aspect_ratio = 9.0f/16.0f;
 
