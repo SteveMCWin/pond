@@ -1,5 +1,6 @@
 #include "fishRenderer.h"
 
+
 FishRenderer::FishRenderer(){
     glGenBuffers(1, &this->circleVBO);
     glGenVertexArrays(1, &this->circleVAO);
@@ -71,7 +72,6 @@ FishRenderer::FishRenderer(){
     this->finShader = Shader(v_fin_shader_path.c_str(),
                              f_fin_shader_path.c_str());
 
-
     GLFWmonitor* primary_monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* mode = glfwGetVideoMode(primary_monitor);
 
@@ -124,6 +124,7 @@ void FishRenderer::renderFish(Fish* allFish, unsigned int number_of_fish){
 
     // // bind to default framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     this->screenQuadTexture.Bind();
 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -140,6 +141,7 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     screenShader.use();
 
     glActiveTexture(GL_TEXTURE0);
+
     this->screenQuadTexture.Bind();
 
     screenShader.setInt("screenTexture", 0);
@@ -147,14 +149,11 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     glad_glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
 
     glm::mat4 projection = Global::projectionMatrix;
-
-    // this renders the first and last circle
-    // this->renderOvals(fish.joints[0].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[0].circleRadius),
-    //                   circleShader, fish.bodyColor, fish.joints[0].circleRadius);
-
+    
     this->renderOvals(fish.joints[NUM_OF_JOINTS-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[NUM_OF_JOINTS-1].circleRadius), 
                       circleShader, fish.bodyColor, fish.joints[0].circleRadius);
 
