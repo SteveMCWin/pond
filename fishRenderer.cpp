@@ -18,9 +18,9 @@ FishRenderer::FishRenderer(){
 
     // the first '*2' is because vec2 has 2 float values
     int number_of_vert_positions = NUM_OF_FISH_OUTLINE_VERTS * 2;
-    int number_of_vert_texel = NUM_OF_FISH_OUTLINE_VERTS * 2;
+    int number_of_vert_texs = NUM_OF_FISH_OUTLINE_VERTS * 2;
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (number_of_vert_positions + number_of_vert_texel), NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (number_of_vert_positions + number_of_vert_texs), NULL, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);

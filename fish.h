@@ -40,9 +40,9 @@ public:
     glm::vec3 finColor;
     glm::vec3 eyeColor;
 
-    // the +2 is there for the head outline, *2 because one point on each side of the fish, another *2 because vec2 has 2 floats
-    float outline_vertices[(NUM_OF_JOINTS + 2) * 2 * 2];
-    float tex_coords[(NUM_OF_JOINTS + 2) * 2 * 2];
+    // *2 because vec2 has 2 floats
+    float outline_vertices[NUM_OF_FISH_OUTLINE_VERTS * 2];
+    float tex_coords[NUM_OF_FISH_OUTLINE_VERTS * 2];
 
      Fish();
      Fish(glm::vec2* centers, float* distances, float* radii, int id, glm::vec3 bColor = glm::vec3(1.0f, 1.0f, 1.0f),

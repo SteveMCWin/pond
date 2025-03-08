@@ -1,7 +1,4 @@
 #include "fishHandler.h"
-// #include <GLFW/glfw3.h>
-#include <glm/detail/func_geometric.hpp>
-#include <iostream>
 
 FishHandler::FishHandler(){
 

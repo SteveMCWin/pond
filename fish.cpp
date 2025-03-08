@@ -9,8 +9,6 @@ Fish::Fish() {}
 Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id,
            glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
 
-    // this->outline_vertices.resize(4*(NUM_OF_JOINTS+2));
-
     for(int i = 0; i < NUM_OF_JOINTS; i++){
         this->joints[i] = Joint(centers[i], distances[i], radii[i]);
     }
