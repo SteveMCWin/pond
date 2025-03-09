@@ -29,7 +29,7 @@ public:
 
 private:
 
-    void renderScreenQuad(Shader& screenShader);
+    void renderScreenQuad();
 
     void renderFishBody(const Fish& fish);
     void renderFishBackFin(const Fish& fish);

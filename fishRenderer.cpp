@@ -126,14 +126,14 @@ void FishRenderer::renderFish(Fish* allFish, unsigned int number_of_fish){
     glClear(GL_COLOR_BUFFER_BIT);
 
     // // render quad
-    this->renderScreenQuad(screenShader);
+    this->renderScreenQuad();
 
 }
 
-void FishRenderer::renderScreenQuad(Shader& screenShader){
+void FishRenderer::renderScreenQuad(){
     glBindVertexArray(this->screenQuadVAO);
 
-    screenShader.use();
+    this->screenShader.use();
 
     glActiveTexture(GL_TEXTURE0);
     this->screenQuadTexture.Bind();

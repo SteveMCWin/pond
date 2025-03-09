@@ -96,7 +96,6 @@ void App::Run(){
 
     this->handler.handleFishMovement(delta_time);
 
-    // this->renderer->storeFishOutlineVerts(this->handler.allFishOutlineVerts);
     this->renderer->renderFish(this->handler.allFish, this->handler.number_of_fish);
 
     this->handle_imgui();
