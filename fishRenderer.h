@@ -27,6 +27,10 @@ public:
 
     void renderFish(Fish* allFish, unsigned int number_of_fish);
 
+    glm::vec3 fishBodyColor;
+    glm::vec3 fishFinColor;
+    glm::vec3 fishEyeColor;
+
 private:
 
     void renderScreenQuad();

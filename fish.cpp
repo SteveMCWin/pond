@@ -6,8 +6,7 @@
 
 Fish::Fish() {}
 
-Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id,
-           glm::vec3 bColor, glm::vec3 fColor, glm::vec3 eColor){
+Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id){
 
     for(int i = 0; i < NUM_OF_JOINTS; i++){
         this->joints[i] = Joint(centers[i], distances[i], radii[i]);
@@ -23,10 +22,6 @@ Fish::Fish(glm::vec2* centers, float* distances, float* radii, int id,
 
     this->hit_check_distance = 8.0f * radii[0];
     this->updateHitChecks();
-
-    this->bodyColor = bColor;
-    this->finColor  = fColor;
-    this->eyeColor  = eColor;
 
     for(int i = 0; i < NUM_OF_JOINTS + 2; i++){
         this->tex_coords[i*4  ] = static_cast<float>(i)/static_cast<float>(NUM_OF_JOINTS);

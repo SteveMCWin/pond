@@ -87,6 +87,11 @@ FishRenderer::FishRenderer(){
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+    // if(nothing in the save file)
+    this->fishFinColor  = DEFAULT_FIN_COLOR;
+    this->fishEyeColor  = DEFAULT_EYE_COLOR;
+    this->fishBodyColor = DEFAULT_BODY_COLOR;
+
 }
 
 FishRenderer::~FishRenderer(){
@@ -148,8 +153,6 @@ void FishRenderer::renderScreenQuad(){
 void FishRenderer::renderFishBody(const Fish& fish){
 
     glm::mat4 projection = Global::projectionMatrix;
-    this->renderOvals(fish.joints[NUM_OF_JOINTS-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[NUM_OF_JOINTS-1].circleRadius), 
-                      fish.bodyColor, fish.joints[0].circleRadius);
 
     // render the outline
 
@@ -188,7 +191,7 @@ void FishRenderer::renderFishBackFin(const Fish& fish){
     glm::vec2 controlPoint2 = controlPoint + controlDirection;
 
     // Draw back fin
-    this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader, fish.finColor);
+    this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader, this->fishFinColor);
 }
 
 void FishRenderer::renderFishTailFin(const Fish& fish){
@@ -205,7 +208,7 @@ void FishRenderer::renderFishTailFin(const Fish& fish){
     glm::vec2 tail_fin_control2 = tail_fin_control1 + tail_fin_control_offset_dir * 5.0f;
 
     this->fin_bezier.DrawCrescentBezierFilled(8, tail_fin_start, glm::vec2(0.0f), tail_fin_end - tail_fin_start,
-                                              tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, this->finShader, fish.finColor);
+                                              tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, this->finShader, this->fishFinColor);
 }
 
 void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale,
@@ -245,14 +248,14 @@ void FishRenderer::renderFishSideFins(const Fish& fish){  // change this so it r
     // same angle between the find and move direction but the offset should be the opposite from the first fin
     float leftFinAngle  = rightFinAngle + 6.0f*PI/4.0f;
 
-    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, FRONT_FIN_SCALE, fish.finColor);
-    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, FRONT_FIN_SCALE, fish.finColor);
+    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, FRONT_FIN_SCALE, this->fishFinColor);
+    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, FRONT_FIN_SCALE, this->fishFinColor);
 
     rightFinAngle = Global::angleOfVector(backFinsJoint.moveDirection) - 7.0f*PI/8.0f;
     leftFinAngle  = rightFinAngle + 14.0f*PI/8.0f;
 
-    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, BACK_FIN_SCALE, fish.finColor);
-    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, BACK_FIN_SCALE, fish.finColor);
+    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, BACK_FIN_SCALE, this->fishFinColor);
+    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, BACK_FIN_SCALE, this->fishFinColor);
 }
 
 void FishRenderer::renderFishEyes(const Fish& fish){ // chagne this so it renders both eyes at once
@@ -264,9 +267,9 @@ void FishRenderer::renderFishEyes(const Fish& fish){ // chagne this so it render
     float rightEyeAngle = Global::angleOfVector(headJoint.moveDirection) - PI/2.0f + PI/20.0f;
     float leftEyeAngle  = Global::angleOfVector(headJoint.moveDirection) + PI/2.0f - PI/20.0f;
 
-    this->renderOvals(headJoint.Center, offset, rightEyeAngle, EYE_SCALE, fish.eyeColor);             // right eye
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, EYE_SCALE, this->fishEyeColor);             // right eye
 
-    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, EYE_SCALE, fish.eyeColor);             // left  eye
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, EYE_SCALE, this->fishEyeColor);             // left  eye
 }
 
 

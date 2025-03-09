@@ -23,6 +23,12 @@
 #define FRONT_FIN_SCALE glm::vec2(1.5f, 0.5f)
 #define BACK_FIN_SCALE glm::vec2(1.5f, 0.5f)
 #define EYE_SCALE glm::vec2(0.15f, 0.4f)
+// #define DEFAULT_EYE_COLOR glm::vec3(0.1f, 0.2f, 0.2f)
+// #define DEFAULT_FIN_COLOR glm::vec3(0.1f, 0.9f, 0.3f)
+// #define DEFAULT_BODY_COLOR glm::vec3(0.2f, 0.5f, 0.7f)
+#define DEFAULT_EYE_COLOR glm::vec3(0.1f, 0.2f, 0.2f)
+#define DEFAULT_FIN_COLOR glm::vec3(0.96f, 0.43f, 0.23f)
+#define DEFAULT_BODY_COLOR glm::vec3(1.0f, 1.0f, 1.0f)
 
 #endif // !DEFS
 
