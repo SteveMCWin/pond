@@ -40,6 +40,7 @@ public:
     void handleFishMovement(float delta_time);    // responsible for boid-like behaviour of fish
 
 private:
+
     box_struct** boxes;
 
 };

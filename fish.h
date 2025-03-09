@@ -26,9 +26,11 @@ struct Joint{
 
 struct Fish{
 public:
+
     glm::vec2 hit_checks[NUM_OF_HIT_CHECKS];
 
     Joint joints[NUM_OF_JOINTS];
+
     Joint tail_fin_joints[2];
 
     int hit_checks_result;

@@ -67,6 +67,7 @@ private:
     unsigned int screenQuadVBO, screenQuadVAO;
 
     unsigned int screenQuadFBO;
+
     Texture2D screenQuadTexture;
 
     Texture2D fishTexture;
