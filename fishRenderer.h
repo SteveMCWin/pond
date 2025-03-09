@@ -31,13 +31,13 @@ private:
 
     void renderScreenQuad(Shader& screenShader);
 
-    void renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader);
-    void renderFishBackFin(const Fish& fish, Shader& finShader);
-    void renderFishTailFin(const Fish& fish, Shader& finShader);
-    void renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader);
-    void renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader);
+    void renderFishBody(const Fish& fish);
+    void renderFishBackFin(const Fish& fish);
+    void renderFishTailFin(const Fish& fish);
+    void renderFishSideFins(const Fish& fish);
+    void renderFishEyes(const Fish& fish);
 
-    void renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader, glm::vec3 color, float r);
+    void renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, glm::vec3 color, float r);
 
     float circle_vertices[12] = {  // quad vertices used for rendering ovals
         -1.0, -1.0,

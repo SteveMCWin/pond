@@ -142,12 +142,3 @@ void Fish::updateHitChecks(){
     }
 }
 
-void Fish::print_outline_data(){
-    int n = 0;
-    for(float f : this->outline_vertices){
-        std::cout << f << '\t';
-        if(n++ % 2) std::cout << std::endl;
-    }
-    std::cout << "\n\n\n";
-}
-

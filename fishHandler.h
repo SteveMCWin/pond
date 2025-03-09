@@ -9,20 +9,12 @@
 #include "global.h"
 #include "fish.h"
 #include "shader.h"
-#include "compute_shader.h"
 #include "fishRenderer.h"
 
 typedef struct {
     int* fish_indexes;
     int  num_of_boxed_fish;
 } box_struct;
-
-typedef struct {
-    glm::vec2 move_dir;
-    glm::vec2 cetner;
-    int result;
-    int padding;
-} hit_check_struct;
 
 class FishHandler{
 

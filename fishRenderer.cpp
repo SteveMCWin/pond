@@ -1,4 +1,5 @@
 #include "fishRenderer.h"
+#include "global.h"
 
 FishRenderer::FishRenderer(){
     glGenBuffers(1, &this->circleVBO);
@@ -78,11 +79,6 @@ FishRenderer::FishRenderer(){
     glGenFramebuffers(1, &this->screenQuadFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, this->screenQuadFBO);
 
-    // glGenTextures(1, &this->screenQuadTexture);
-    // glBindTexture(GL_TEXTURE_2D, this->screenQuadTexture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mode->width, mode->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     this->screenQuadTexture.Reserve(mode->width, mode->height);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->screenQuadTexture.ID, 0);
 
@@ -115,11 +111,11 @@ void FishRenderer::renderFish(Fish* allFish, unsigned int number_of_fish){
     // render the fish
     for(int i = 0; i < number_of_fish; i++){
 
-        this->renderFishSideFins(allFish[i], FRONT_FIN_SCALE, BACK_FIN_SCALE, this->circleShader);    // change this so it renders all fins 2 by 2
-        this->renderFishBody(allFish[i], circleShader, this->bodyShader);
-        this->renderFishEyes(allFish[i], EYE_SCALE, this->circleShader);
-        this->renderFishTailFin(allFish[i], this->finShader);
-        this->renderFishBackFin(allFish[i], this->finShader);
+        this->renderFishSideFins(allFish[i]);
+        this->renderFishBody(allFish[i]);
+        this->renderFishEyes(allFish[i]);
+        this->renderFishTailFin(allFish[i]);
+        this->renderFishBackFin(allFish[i]);
     }
 
     // // bind to default framebuffer
@@ -147,12 +143,12 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
     glad_glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
+void FishRenderer::renderFishBody(const Fish& fish){
 
     glm::mat4 projection = Global::projectionMatrix;
 
     this->renderOvals(fish.joints[NUM_OF_JOINTS-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[NUM_OF_JOINTS-1].circleRadius), 
-                      circleShader, fish.bodyColor, fish.joints[0].circleRadius);
+                      fish.bodyColor, fish.joints[0].circleRadius);
 
     // render the outline
 
@@ -167,10 +163,10 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     glActiveTexture(GL_TEXTURE0);
     fishTexture.Bind();
 
-    outlineShader.use();
-    outlineShader.setInt("fishTexture", 0);
-    outlineShader.setMat4("projection", projection);
-    outlineShader.setMat4("model", model);
+    this->bodyShader.use();
+    this->bodyShader.setInt("fishTexture", 0);
+    this->bodyShader.setMat4("projection", projection);
+    this->bodyShader.setMat4("model", model);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, NUM_OF_FISH_OUTLINE_VERTS);
 
@@ -178,7 +174,7 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
 
 }
 
-void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){
+void FishRenderer::renderFishBackFin(const Fish& fish){
 
     Joint j1 = fish.joints[NUM_OF_JOINTS/4];     // joints at which the back fin starts and ends
     Joint j2 = fish.joints[NUM_OF_JOINTS/2 + 1];
@@ -194,7 +190,7 @@ void FishRenderer::renderFishBackFin(const Fish& fish, Shader& finShader){
     this->fin_bezier.DrawCrescentBezierFilled(8, j1.Center, glm::vec2(0.0f), j2.Center - j1.Center, controlPoint, controlPoint2, finShader, fish.finColor);
 }
 
-void FishRenderer::renderFishTailFin(const Fish& fish, Shader& finShader){
+void FishRenderer::renderFishTailFin(const Fish& fish){
 
     // Pretty much the same function as the renderFishBackFin
 
@@ -208,10 +204,10 @@ void FishRenderer::renderFishTailFin(const Fish& fish, Shader& finShader){
     glm::vec2 tail_fin_control2 = tail_fin_control1 + tail_fin_control_offset_dir * 5.0f;
 
     this->fin_bezier.DrawCrescentBezierFilled(8, tail_fin_start, glm::vec2(0.0f), tail_fin_end - tail_fin_start,
-                                              tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, finShader, fish.finColor);
+                                              tail_fin_control1 - tail_fin_start, tail_fin_control2 - tail_fin_start, this->finShader, fish.finColor);
 }
 
-void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale, Shader& shader,
+void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotationAngle, glm::vec2 scale,
                                glm::vec3 color, float r = 0.5f){
 
     glBindVertexArray(this->circleVAO);
@@ -223,18 +219,18 @@ void FishRenderer::renderOvals(glm::vec2 position, glm::vec2 offset, float rotat
     model = glm::rotate(model, rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::scale(model, glm::vec3(scale, 1.0f));
 
-    shader.use();
-    shader.setMat4("projection", projection);
-    shader.setMat4("model", model);
-    shader.setVec3("color", color);
-    shader.setFloat("r", r);
+    this->circleShader.use();
+    this->circleShader.setMat4("projection", projection);
+    this->circleShader.setMat4("model", model);
+    this->circleShader.setVec3("color", color);
+    this->circleShader.setFloat("r", r);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glBindVertexArray(0);
 }
 
-void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, glm::vec2 backScale, Shader& finShader){  // change this so it renders all fins at once,
+void FishRenderer::renderFishSideFins(const Fish& fish){  // change this so it renders all fins at once,
                                                                                                                         // and maybe the eyes as well
 
     Joint frontFinsJoint = fish.joints[NUM_OF_JOINTS/6];   
@@ -248,19 +244,17 @@ void FishRenderer::renderFishSideFins(const Fish& fish, glm::vec2 frontScale, gl
     // same angle between the find and move direction but the offset should be the opposite from the first fin
     float leftFinAngle  = rightFinAngle + 6.0f*PI/4.0f;
 
-    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, frontScale, finShader, fish.finColor);
-    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, frontScale, finShader, fish.finColor);
+    this->renderOvals(frontFinsJoint.Center, frontOffset, rightFinAngle, FRONT_FIN_SCALE, fish.finColor);
+    this->renderOvals(frontFinsJoint.Center, -frontOffset, leftFinAngle, FRONT_FIN_SCALE, fish.finColor);
 
     rightFinAngle = Global::angleOfVector(backFinsJoint.moveDirection) - 7.0f*PI/8.0f;
     leftFinAngle  = rightFinAngle + 14.0f*PI/8.0f;
 
-    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, backScale, finShader, fish.finColor);
-    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, backScale, finShader, fish.finColor);
+    this->renderOvals(backFinsJoint.Center, backOffset, rightFinAngle, BACK_FIN_SCALE, fish.finColor);
+    this->renderOvals(backFinsJoint.Center, -backOffset, leftFinAngle, BACK_FIN_SCALE, fish.finColor);
 }
 
-void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& circleShader){ // chagne this so it renders both eyes at once
-
-    // pretty much the same stuff as the side fins
+void FishRenderer::renderFishEyes(const Fish& fish){ // chagne this so it renders both eyes at once
 
     Joint headJoint = fish.joints[0];
 
@@ -269,13 +263,9 @@ void FishRenderer::renderFishEyes(const Fish& fish, glm::vec2 scale, Shader& cir
     float rightEyeAngle = Global::angleOfVector(headJoint.moveDirection) - PI/2.0f + PI/20.0f;
     float leftEyeAngle  = Global::angleOfVector(headJoint.moveDirection) + PI/2.0f - PI/20.0f;
 
-    // the only difference is that we're first rendering an oval of the same color as the fish body so it's not like the eye is sticking out or something
+    this->renderOvals(headJoint.Center, offset, rightEyeAngle, EYE_SCALE, fish.eyeColor);             // right eye
 
-    // this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);     // right eye
-    this->renderOvals(headJoint.Center, offset, rightEyeAngle, scale, circleShader, fish.eyeColor);             // right eye
-
-    // this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale * 1.4f, circleShader, fish.bodyColor);     // left eye
-    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, scale, circleShader, fish.eyeColor);             // left  eye
+    this->renderOvals(headJoint.Center, -offset, leftEyeAngle, EYE_SCALE, fish.eyeColor);             // left  eye
 }
 
 

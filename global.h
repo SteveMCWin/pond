@@ -28,10 +28,7 @@
 
 class Global{
 public:
-    // static const int number_of_fish = 15;
     static float aspect_ratio;
-    // static float pi;
-    static glm::vec2 bottomLeftCorner;
     static glm::mat4 projectionMatrix;
 
     static float DegToRad(float degrees);   // converts degrees to radians
