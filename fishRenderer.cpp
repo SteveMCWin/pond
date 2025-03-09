@@ -153,7 +153,11 @@ void FishRenderer::renderScreenQuad(Shader& screenShader){
 void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader& outlineShader){
 
     glm::mat4 projection = Global::projectionMatrix;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> rework
     this->renderOvals(fish.joints[NUM_OF_JOINTS-1].Center, glm::vec2(0.0f), 0.0f, glm::vec2(fish.joints[NUM_OF_JOINTS-1].circleRadius), 
                       circleShader, fish.bodyColor, fish.joints[0].circleRadius);
 
@@ -175,7 +179,7 @@ void FishRenderer::renderFishBody(const Fish& fish, Shader& circleShader, Shader
     outlineShader.setMat4("projection", projection);
     outlineShader.setMat4("model", model);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * (NUM_OF_JOINTS + 2));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, NUM_OF_FISH_OUTLINE_VERTS);
 
     glBindVertexArray(0);
 
