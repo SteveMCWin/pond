@@ -1,5 +1,4 @@
 #include "fishRenderer.h"
-#include "global.h"
 
 
 FishRenderer::FishRenderer(){

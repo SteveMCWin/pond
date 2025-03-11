@@ -1,5 +1,5 @@
 0.96 0.43 0.23
-0
-0 0
-2.8026e-45 -3.16641e+37 3.20239e-41 128
-112
+/home/stevica/openGL_projects/pond/textures/koi.jpg
+1 15
+0.5 180 180 80
+1

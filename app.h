@@ -11,8 +11,8 @@
 
 #include "fishHandler.h"
 #include "fishRenderer.h"
-#include "serializer.h"
 #include "global.h"
+#include "serializer.cpp"
 
 #include "imgui/imgui.h"
 #include "imgui_impl_glfw.h"
@@ -29,9 +29,8 @@ public:
 private:
 
     GLFWwindow* window;
-    FishHandler handler;
     FishRenderer* renderer;
-    Serializer serializer;
+    FishHandler handler;
 
     float last_frame;
 

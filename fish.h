@@ -4,11 +4,13 @@
 #include <glad/glad.h>
 #include "global.h"
 #include <cstdlib>
+#include <glm/detail/func_geometric.hpp>
 #include <glm/detail/type_vec.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 struct Joint{
     glm::vec2 Center;

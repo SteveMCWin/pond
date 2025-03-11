@@ -1,8 +1,4 @@
 #include "fish.h"
-#include "global.h"
-#include <algorithm>
-#include <glm/detail/func_geometric.hpp>
-#include <ostream>
 
 Fish::Fish() {}
 

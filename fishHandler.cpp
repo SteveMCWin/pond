@@ -65,7 +65,8 @@ void FishHandler::createFish(){
     };
 
     for(int i = 0; i < this->number_of_fish; i++){
-        centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) * glm::vec2(-FRUSTUM_HALF_WIDTH, FRUSTUM_HALF_WIDTH*Global::aspect_ratio);
+        centers[0] = glm::vec2((Global::GetRandomFloat()*2.0f - 1.0f), Global::GetRandomFloat()*2.0f - 1.0f) *  // place fish on a random location on screen
+                     glm::vec2(-FRUSTUM_HALF_WIDTH * 0.8f, FRUSTUM_HALF_WIDTH*Global::aspect_ratio * 0.8f);     // * 0.8f is practically 20% padding so fish dont go off-screen
         this->allFish[i] = Fish(centers, distances, radii, i);
     }
 }
