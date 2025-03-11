@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_compile_definitions(SHADERS_PATH="${CMAKE_SOURCE_DIR}/shaders")
 add_compile_definitions(TEXTURES_PATH="${CMAKE_SOURCE_DIR}/textures")
+add_compile_definitions(DATA_PATH="${CMAKE_SOURCE_DIR}/data/data.txt")
 
 find_package(OpenGL REQUIRED)
 
@@ -44,6 +45,7 @@ add_executable(my_opengl_project
     fishHandler.cpp
     texture.cpp
     stb_image.cpp
+    serializer.cpp
     imgui/imgui.cpp
     imgui/imgui_draw.cpp
     imgui/imgui_tables.cpp
