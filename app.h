@@ -12,7 +12,7 @@
 #include "fishHandler.h"
 #include "fishRenderer.h"
 #include "global.h"
-#include "serializer.cpp"
+#include "serializer.h"
 
 #include "imgui/imgui.h"
 #include "imgui_impl_glfw.h"

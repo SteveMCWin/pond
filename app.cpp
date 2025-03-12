@@ -52,7 +52,8 @@ App::App(){
     glPrimitiveRestartIndex(0xFFFF);
 
     glfwSetWindowAttrib(window, GLFW_FLOATING, GLFW_TRUE);
-    glfwSwapInterval(Serializer::limit_framerate ? 1 : 0);
+    // glfwSwapInterval(0);
+    glfwSwapInterval(Serializer::getIsFramerateLimited() ? 1 : 0);
 
     glLineWidth(3.0f);
 

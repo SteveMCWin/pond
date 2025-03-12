@@ -2,7 +2,6 @@
 #define FISH_H
 
 #include <glad/glad.h>
-#include "global.h"
 #include <cstdlib>
 #include <glm/detail/func_geometric.hpp>
 #include <glm/detail/type_vec.hpp>
@@ -11,6 +10,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+
+#include "global.h"
 
 struct Joint{
     glm::vec2 Center;
