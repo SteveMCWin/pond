@@ -24,10 +24,10 @@ public:
 
     unsigned int number_of_fish;
 
-    float cohesionIntensity = 0.5f;
-    float alignmentIntensity = 180.0f;
-    float separationIntensity = 180.0f;
-    float edgeEvasionIntensity = 80.0f;
+    float cohesionIntensity;
+    float alignmentIntensity;
+    float separationIntensity;
+    float edgeEvasionIntensity;
 
     FishHandler();
     ~FishHandler();

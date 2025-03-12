@@ -51,3 +51,4 @@ CMakeUserPresets.json
 
 .cache/
 build/
+data/data.txt

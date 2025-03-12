@@ -30,7 +30,7 @@ private:
 
     GLFWwindow* window;
     FishRenderer* renderer;
-    FishHandler handler;
+    FishHandler* handler;
 
     float last_frame;
 

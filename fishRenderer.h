@@ -18,6 +18,7 @@
 #include "bezier_filled.h"
 #include "texture.h"
 #include "global.h"
+#include "serializer.h"
 
 class FishRenderer{
 

@@ -54,9 +54,10 @@ FishRenderer::FishRenderer(){
     std::filesystem::path v_screen_shader_path = shaders_path / "v_screen.glsl";
     std::filesystem::path f_screen_shader_path = shaders_path / "f_screen.glsl";
 
-    std::filesystem::path fish_texture_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg";
+    // std::filesystem::path fish_texture_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg";
     
-    this->fishTexture.Generate(fish_texture_path, false);
+    // this->fishTexture.Generate(fish_texture_path, false);
+    this->fishTexture.Generate(Serializer::custom_tex_path.c_str(), false);
 
     this->screenShader = Shader(v_screen_shader_path.c_str(),
                                 f_screen_shader_path.c_str());

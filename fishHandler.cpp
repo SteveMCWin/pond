@@ -1,8 +1,13 @@
 #include "fishHandler.h"
+#include "serializer.h"
 
 FishHandler::FishHandler(){
 
-    this->number_of_fish = 15; //CHANGE: gotta like read from a save file and determine how many fish there are that way
+    this->number_of_fish = Serializer::number_of_fish;
+    this->cohesionIntensity = Serializer::cohesion_intensity;
+    this->alignmentIntensity = Serializer::alignment_intensity;
+    this->separationIntensity = Serializer::separation_intensity;
+    this->edgeEvasionIntensity = Serializer::edge_evasion_intensity;
 
     this->allFish = nullptr;
 

@@ -1,6 +1,9 @@
 #include "app.h"
+#include "serializer.h"
 
 App::App(){
+
+    Serializer::loadData();
 
     // GLFW window setup
     glfwInit();
@@ -52,14 +55,14 @@ App::App(){
     glPrimitiveRestartIndex(0xFFFF);
 
     glfwSetWindowAttrib(window, GLFW_FLOATING, GLFW_TRUE);
-    // glfwSwapInterval(0);
-    glfwSwapInterval(Serializer::getIsFramerateLimited() ? 1 : 0);
+    glfwSwapInterval(Serializer::is_framerate_limited ? 1 : 0);
 
     glLineWidth(3.0f);
 
     this->renderer = new FishRenderer();
 
-    this->handler.createFish();
+    this->handler = new FishHandler();
+    this->handler->createFish();
 
     this->last_frame = 0.0f;
 
@@ -81,6 +84,17 @@ App::App(){
 
 App::~App(){
 
+    Serializer::storeData();    // CHANGE: this is temporary, the idea is to have a button that will call storeData explicitly,
+                                // but maybe there should be an option to turn on SaveOnExit
+
+    delete this->handler;
+    delete this->renderer;
+
+    glfwTerminate();
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void App::Run(){
@@ -92,12 +106,12 @@ void App::Run(){
 
     this->process_input();
 
-    this->handler.resetBoxSizes();
-    this->handler.boxTheFish();
+    this->handler->resetBoxSizes();
+    this->handler->boxTheFish();
 
-    this->handler.handleFishMovement(delta_time);
+    this->handler->handleFishMovement(delta_time);
 
-    this->renderer->renderFish(this->handler.allFish, this->handler.number_of_fish);
+    this->renderer->renderFish(this->handler->allFish, this->handler->number_of_fish);
 
     this->handle_imgui();
 
@@ -114,7 +128,7 @@ void App::handle_imgui(){
         ImGui::NewFrame();
 
         {
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Hello, world!");
 
             ImGuiIO& io = ImGui::GetIO();
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
@@ -124,9 +138,10 @@ void App::handle_imgui(){
 
         // Check if mouse is interacting with ImGui windows
         bool mouseOverImGui = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGui::IsAnyItemHovered();
-
         // Enable/Disable mouse passthrough accordingly
         glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, mouseOverImGui ? GLFW_FALSE : GLFW_TRUE);
+
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
