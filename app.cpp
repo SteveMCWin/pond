@@ -1,6 +1,4 @@
 #include "app.h"
-#include "imgui.h"
-#include "serializer.h"
 
 App::App(){
 
@@ -85,8 +83,7 @@ App::App(){
 
 App::~App(){
 
-    // Serializer::storeData();    // CHANGE: this is temporary, the idea is to have a button that will call storeData explicitly,
-                                // but maybe there should be an option to turn on SaveOnExit
+    if(Serializer::store_on_exit) Serializer::storeData();
 
     delete this->handler;
     delete this->renderer;
@@ -128,12 +125,13 @@ void App::handle_imgui(){
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
+    if(Serializer::show_gui)
     {
         ImGui::Begin("Hello, world!", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
         int num_of_fish = static_cast<int>(Serializer::number_of_fish);
         if(ImGui::InputInt("Number of fish", &num_of_fish)){
-            Serializer::number_of_fish = std::max(1, num_of_fish);
+            Serializer::number_of_fish = std::min(std::max(1, num_of_fish), MAX_NUM_OF_FISH);
             this->handler->change_num_of_fish();
         }
 

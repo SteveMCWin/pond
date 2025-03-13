@@ -10,11 +10,14 @@ float Serializer::separation_intensity = DEFAULT_SEPARATION_INTENSITY;
 float Serializer::edge_evasion_intensity = DEFAULT_EDGE_EVASION_INTENSITY;
 bool Serializer::is_framerate_limited = true;
 bool Serializer::use_texture = true;    // CHANGE: haven't implemented this one yet
+bool Serializer::store_on_exit = true;  // CHANGE: haven't implemented this one yet
+bool Serializer::show_gui = true;
 
 void Serializer::loadData(){
     std::ifstream file(DATA_PATH);
     if (!file) {
         std::cout << "No data file found, using default values." << std::endl;
+        storeData();
         return;
     }
 
@@ -23,7 +26,7 @@ void Serializer::loadData(){
     file >> custom_tex_path;
     file >> number_of_fish;
     file >> cohesion_intensity >> alignment_intensity >> separation_intensity >> edge_evasion_intensity;
-    file >> is_framerate_limited >> use_texture;
+    file >> is_framerate_limited >> use_texture >> store_on_exit >> show_gui;
 
     file.close();   
 }
@@ -40,7 +43,7 @@ void Serializer::storeData(){
     file << custom_tex_path << "\n";
     file << number_of_fish << "\n";
     file << cohesion_intensity << " " << alignment_intensity << " " << separation_intensity << " " << edge_evasion_intensity << "\n";
-    file << is_framerate_limited << " " << use_texture << "\n";
+    file << is_framerate_limited << " " << use_texture << " " << store_on_exit << " " << show_gui << "\n";
 
     file.close();
 }
