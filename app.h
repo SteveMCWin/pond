@@ -33,9 +33,11 @@ private:
     FishHandler* handler;
 
     float last_frame;
+    bool o_first_touch;
 
     void process_input();
     void handle_imgui();
+    void update_limit_framerate();
 };
 
 

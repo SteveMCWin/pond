@@ -1,4 +1,7 @@
 #include "app.h"
+#include "imgui.h"
+#include "serializer.h"
+#include <GLFW/glfw3.h>
 
 App::App(){
 
@@ -54,7 +57,7 @@ App::App(){
     glPrimitiveRestartIndex(0xFFFF);
 
     glfwSetWindowAttrib(window, GLFW_FLOATING, GLFW_TRUE);
-    glfwSwapInterval(Serializer::is_framerate_limited ? 1 : 0);
+    this->update_limit_framerate();
 
     glLineWidth(3.0f);
 
@@ -64,6 +67,7 @@ App::App(){
     this->handler->createFish();
 
     this->last_frame = 0.0f;
+    this->o_first_touch = false;
 
 
     IMGUI_CHECKVERSION();
@@ -151,6 +155,13 @@ void App::handle_imgui(){
             this->handler->update_edge_evasion_intensity();
         }
 
+        ImGui::Checkbox("Use solid color", &Serializer::use_solid_color);
+        if(ImGui::Checkbox("Limit framerate", &Serializer::is_framerate_limited)){
+            this->update_limit_framerate();
+        }
+
+        ImGui::Checkbox("Store changes on exit", &Serializer::store_on_exit);
+
         if(ImGui::Button("Store changes")){
             Serializer::storeData();
         }
@@ -180,4 +191,17 @@ void App::process_input(){
     if(glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
+    if(glfwGetKey(this->window, GLFW_KEY_O) == GLFW_PRESS){
+        if(!o_first_touch){
+            o_first_touch = true;
+            Serializer::show_gui = !Serializer::show_gui;
+        }
+    }
+    if(glfwGetKey(this->window, GLFW_KEY_O) == GLFW_RELEASE){
+        o_first_touch = false;
+    }
+}
+
+void App::update_limit_framerate(){
+    glfwSwapInterval(Serializer::is_framerate_limited ? 1 : 0);
 }

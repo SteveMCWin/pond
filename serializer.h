@@ -29,7 +29,7 @@ public:
     static float separation_intensity;
     static float edge_evasion_intensity;
     static bool is_framerate_limited;
-    static bool use_texture;
+    static bool use_solid_color;
     static bool store_on_exit;
     static bool show_gui;
 
