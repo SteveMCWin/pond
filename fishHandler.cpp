@@ -46,6 +46,46 @@ FishHandler::~FishHandler(){
 
 }
 
+void FishHandler::change_num_of_fish(){
+
+    this->number_of_fish = Serializer::number_of_fish;
+
+    int boxes_rows = FRUSTUM_HALF_WIDTH*Global::aspect_ratio/FISH_SIGHT_RANGE + 2;
+    int boxes_cols = FRUSTUM_HALF_WIDTH/FISH_SIGHT_RANGE + 2;
+
+    for(int i = 0; i < boxes_rows; i++){
+        for(int j = 0; j < boxes_cols; j++){
+            delete this->boxes[i][j].fish_indexes;
+        }
+    }
+
+    for(int i = 0; i < boxes_rows; i++){
+        for(int j = 0; j < boxes_cols; j++){
+            this->boxes[i][j].fish_indexes = new int[this->number_of_fish];
+            this->boxes[i][j].num_of_boxed_fish = 0;
+        }
+    }
+
+    this->createFish();
+}
+
+
+void FishHandler::update_cohesion_intensity(){
+    this->cohesionIntensity = Serializer::cohesion_intensity;
+}
+
+void FishHandler::update_separation_intensity(){
+    this->separationIntensity = Serializer::separation_intensity;
+}
+
+void FishHandler::update_alignment_intensity(){
+    this->alignmentIntensity = Serializer::alignment_intensity;
+}
+
+void FishHandler::update_edge_evasion_intensity(){
+    this->edgeEvasionIntensity = Serializer::edge_evasion_intensity;
+}
+
 void FishHandler::createFish(){
 
     delete[] this->allFish;

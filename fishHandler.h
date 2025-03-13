@@ -39,6 +39,12 @@ public:
     void calcFishHitChecks();
     void handleFishMovement(float delta_time);    // responsible for boid-like behaviour of fish
 
+    void change_num_of_fish();
+    void update_cohesion_intensity();
+    void update_separation_intensity();
+    void update_alignment_intensity();
+    void update_edge_evasion_intensity();
+
 private:
 
     box_struct** boxes;

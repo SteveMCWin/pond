@@ -1,4 +1,5 @@
 #include "app.h"
+#include "imgui.h"
 #include "serializer.h"
 
 App::App(){
@@ -84,7 +85,7 @@ App::App(){
 
 App::~App(){
 
-    Serializer::storeData();    // CHANGE: this is temporary, the idea is to have a button that will call storeData explicitly,
+    // Serializer::storeData();    // CHANGE: this is temporary, the idea is to have a button that will call storeData explicitly,
                                 // but maybe there should be an option to turn on SaveOnExit
 
     delete this->handler;
@@ -122,28 +123,54 @@ void App::Run(){
 
 void App::handle_imgui(){
 
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
-        {
-            ImGui::Begin("Hello, world!");
+    {
+        ImGui::Begin("Hello, world!", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
-            ImGuiIO& io = ImGui::GetIO();
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-
-            ImGui::End();   
+        int num_of_fish = static_cast<int>(Serializer::number_of_fish);
+        if(ImGui::InputInt("Number of fish", &num_of_fish)){
+            Serializer::number_of_fish = std::max(1, num_of_fish);
+            this->handler->change_num_of_fish();
         }
 
-        // Check if mouse is interacting with ImGui windows
-        bool mouseOverImGui = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGui::IsAnyItemHovered();
-        // Enable/Disable mouse passthrough accordingly
-        glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, mouseOverImGui ? GLFW_FALSE : GLFW_TRUE);
+        if(ImGui::InputFloat("Cohesion Intensity", &Serializer::cohesion_intensity)){
+            this->handler->update_cohesion_intensity();
+        }
+
+        if(ImGui::InputFloat("Alignment Intensity", &Serializer::alignment_intensity)){
+            this->handler->update_alignment_intensity();
+        }
+
+        if(ImGui::InputFloat("Separation Intensity", &Serializer::separation_intensity)){
+            this->handler->update_separation_intensity();
+        }
+
+        if(ImGui::InputFloat("Edge Evasion Intensity", &Serializer::edge_evasion_intensity)){
+            this->handler->update_edge_evasion_intensity();
+        }
+
+        if(ImGui::Button("Store changes")){
+            Serializer::storeData();
+        }
+
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+
+        ImGui::End();   
+    }
+
+    // Check if mouse is interacting with ImGui windows
+    bool mouseOverImGui = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGui::IsAnyItemHovered();
+    // Enable/Disable mouse passthrough accordingly
+    glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, mouseOverImGui ? GLFW_FALSE : GLFW_TRUE);
 
 
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 }
 
