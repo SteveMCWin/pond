@@ -20,8 +20,9 @@ public:
     static void loadData();
     static void storeData();
 
-    static glm::vec3 fin_color;
-    static glm::vec3 body_color;
+    static glm::vec3 fish_eye_color;
+    static glm::vec3 fish_fin_color;
+    static glm::vec3 fish_body_color;
     static std::string custom_tex_path;
     static unsigned int number_of_fish;
     static float cohesion_intensity;

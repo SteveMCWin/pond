@@ -28,11 +28,13 @@ public:
 
     void renderFish(Fish* allFish, unsigned int number_of_fish);
 
-    glm::vec3 fishBodyColor;
-    glm::vec3 fishFinColor;
-    glm::vec3 fishEyeColor;
+    void update_fish_eye_color();
+    void update_fish_fin_color();
+    void update_fish_body_color();
+    void update_use_solid_color();
 
 private:
+    glm::vec2 jointSidePoint(Joint &j);
 
     void renderScreenQuad();
 
@@ -82,6 +84,11 @@ private:
     Shader finShader;
     Shader screenShader;
 
+    glm::vec3 fishEyeColor;
+    glm::vec3 fishFinColor;
+    glm::vec3 fishBodyColor;
+
+    bool useSolidColor;
 
 };
 

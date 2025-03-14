@@ -1,7 +1,8 @@
 #include "serializer.h"
 
-glm::vec3 Serializer::fin_color = DEFAULT_FIN_COLOR;    // CHANGE: haven't implemented this one yet
-glm::vec3 Serializer::body_color = DEFAULT_BODY_COLOR;  // CHANGE: haven't implemented this one yet
+glm::vec3 Serializer::fish_eye_color = DEFAULT_EYE_COLOR;
+glm::vec3 Serializer::fish_fin_color = DEFAULT_FIN_COLOR;
+glm::vec3 Serializer::fish_body_color = DEFAULT_BODY_COLOR;
 std::string Serializer::custom_tex_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg"; // CHANGE: haven't implemented this one yet
 unsigned int Serializer::number_of_fish = DEFAULT_NUM_OF_FISH;
 float Serializer::cohesion_intensity = DEFAULT_COHESION_INTENSITY;
@@ -9,7 +10,7 @@ float Serializer::alignment_intensity = DEFAULT_ALIGNMENT_INTENSITY;
 float Serializer::separation_intensity = DEFAULT_SEPARATION_INTENSITY;
 float Serializer::edge_evasion_intensity = DEFAULT_EDGE_EVASION_INTENSITY;
 bool Serializer::is_framerate_limited = true;
-bool Serializer::use_solid_color = false;    // CHANGE: haven't implemented this one yet
+bool Serializer::use_solid_color = false;
 bool Serializer::store_on_exit = true;
 bool Serializer::show_gui = true;
 
@@ -21,8 +22,9 @@ void Serializer::loadData(){
         return;
     }
 
-    file >> fin_color.r >> fin_color.g >> fin_color.b;
-    file >> body_color.r >> body_color.g >> body_color.b;
+    file >> fish_eye_color.r >> fish_eye_color.g >> fish_eye_color.b;
+    file >> fish_fin_color.r >> fish_fin_color.g >> fish_fin_color.b;
+    file >> fish_body_color.r >> fish_body_color.g >> fish_body_color.b;
     file >> custom_tex_path;
     file >> number_of_fish;
     file >> cohesion_intensity >> alignment_intensity >> separation_intensity >> edge_evasion_intensity;
@@ -38,8 +40,9 @@ void Serializer::storeData(){
         return;
     }
 
-    file << fin_color.r << " " << fin_color.g << " " << fin_color.b << "\n";
-    file << body_color.r << " " << body_color.g << " " << body_color.b << "\n";
+    file << fish_eye_color.r << " " << fish_eye_color.g << " " << fish_eye_color.b << "\n";
+    file << fish_fin_color.r << " " << fish_fin_color.g << " " << fish_fin_color.b << "\n";
+    file << fish_body_color.r << " " << fish_body_color.g << " " << fish_body_color.b << "\n";
     file << custom_tex_path << "\n";
     file << number_of_fish << "\n";
     file << cohesion_intensity << " " << alignment_intensity << " " << separation_intensity << " " << edge_evasion_intensity << "\n";

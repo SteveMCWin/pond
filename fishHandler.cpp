@@ -1,13 +1,6 @@
 #include "fishHandler.h"
-#include "serializer.h"
 
 FishHandler::FishHandler(){
-
-    this->number_of_fish = Serializer::number_of_fish;
-    this->cohesionIntensity = Serializer::cohesion_intensity;
-    this->alignmentIntensity = Serializer::alignment_intensity;
-    this->separationIntensity = Serializer::separation_intensity;
-    this->edgeEvasionIntensity = Serializer::edge_evasion_intensity;
 
     this->allFish = nullptr;
 
@@ -21,10 +14,16 @@ FishHandler::FishHandler(){
 
     for(int i = 0; i < boxes_rows; i++){
         for(int j = 0; j < boxes_cols; j++){
-            this->boxes[i][j].fish_indexes = new int[this->number_of_fish];
-            this->boxes[i][j].num_of_boxed_fish = 0;
+            this->boxes[i][j].fish_indexes = nullptr;
+            // this->boxes[i][j].num_of_boxed_fish = 0;
         }
     }
+
+    this->update_num_of_fish();
+    this->update_cohesion_intensity();
+    this->update_alignment_intensity();
+    this->update_separation_intensity();
+    this->update_edge_evasion_intensity();
 
 }
 
@@ -46,7 +45,7 @@ FishHandler::~FishHandler(){
 
 }
 
-void FishHandler::change_num_of_fish(){
+void FishHandler::update_num_of_fish(){
 
     this->number_of_fish = Serializer::number_of_fish;
 

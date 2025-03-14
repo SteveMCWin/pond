@@ -1,6 +1,5 @@
 #include "fishRenderer.h"
 
-
 FishRenderer::FishRenderer(){
     glGenBuffers(1, &this->circleVBO);
     glGenVertexArrays(1, &this->circleVAO);
@@ -85,11 +84,10 @@ FishRenderer::FishRenderer(){
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // if(nothing in the save file)
-    this->fishFinColor  = DEFAULT_FIN_COLOR;
-    this->fishEyeColor  = DEFAULT_EYE_COLOR;
-    this->fishBodyColor = DEFAULT_BODY_COLOR;
-
+    this->update_fish_eye_color();
+    this->update_fish_fin_color();
+    this->update_fish_body_color();
+    this->update_use_solid_color();
 }
 
 FishRenderer::~FishRenderer(){
@@ -97,10 +95,6 @@ FishRenderer::~FishRenderer(){
     glDeleteBuffers(1, &this->outlineVBO);
     glDeleteVertexArrays(1, &this->circleVAO);
     glDeleteVertexArrays(1, &this->outlineVAO);
-}
-
-glm::vec2 jointSidePoint(Joint& j){
-    return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees
 }
 
 void FishRenderer::renderFish(Fish* allFish, unsigned int number_of_fish){
@@ -132,6 +126,31 @@ void FishRenderer::renderFish(Fish* allFish, unsigned int number_of_fish){
     // // render quad
     this->renderScreenQuad();
 
+}
+
+
+void FishRenderer::update_fish_eye_color(){
+    this->fishEyeColor = Serializer::fish_eye_color;
+}
+
+void FishRenderer::update_fish_fin_color(){
+    this->fishFinColor = Serializer::fish_fin_color;
+}
+
+void FishRenderer::update_fish_body_color(){
+    this->fishBodyColor = Serializer::fish_body_color;
+    this->bodyShader.use();
+    this->bodyShader.setVec3("body_color", this->fishBodyColor);
+}
+
+void FishRenderer::update_use_solid_color(){
+    this->useSolidColor = Serializer::use_solid_color;
+    this->bodyShader.use();
+    this->bodyShader.setInt("use_solid_color", static_cast<int>(this->useSolidColor));
+}
+
+glm::vec2 FishRenderer::jointSidePoint(Joint& j){
+    return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees
 }
 
 void FishRenderer::renderScreenQuad(){

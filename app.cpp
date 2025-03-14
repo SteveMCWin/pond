@@ -136,26 +136,41 @@ void App::handle_imgui(){
         int num_of_fish = static_cast<int>(Serializer::number_of_fish);
         if(ImGui::InputInt("Number of fish", &num_of_fish)){
             Serializer::number_of_fish = std::min(std::max(1, num_of_fish), MAX_NUM_OF_FISH);
-            this->handler->change_num_of_fish();
+            this->handler->update_num_of_fish();
         }
 
-        if(ImGui::InputFloat("Cohesion Intensity", &Serializer::cohesion_intensity)){
+        if(ImGui::ColorEdit3("Fish eye color", &Serializer::fish_eye_color[0])){
+            this->renderer->update_fish_eye_color();
+        }
+
+        if(ImGui::ColorEdit3("Fish fin color", &Serializer::fish_fin_color[0])){
+            this->renderer->update_fish_fin_color();
+        }
+
+        if(ImGui::ColorEdit3("Fish body color", &Serializer::fish_body_color[0])){
+            this->renderer->update_fish_body_color();
+        }
+
+        if(ImGui::Checkbox("Use solid color", &Serializer::use_solid_color)){
+            this->renderer->update_use_solid_color();
+        }
+
+        if(ImGui::InputFloat("Cohesion intensity", &Serializer::cohesion_intensity)){
             this->handler->update_cohesion_intensity();
         }
 
-        if(ImGui::InputFloat("Alignment Intensity", &Serializer::alignment_intensity)){
+        if(ImGui::InputFloat("Alignment intensity", &Serializer::alignment_intensity)){
             this->handler->update_alignment_intensity();
         }
 
-        if(ImGui::InputFloat("Separation Intensity", &Serializer::separation_intensity)){
+        if(ImGui::InputFloat("Separation intensity", &Serializer::separation_intensity)){
             this->handler->update_separation_intensity();
         }
 
-        if(ImGui::InputFloat("Edge Evasion Intensity", &Serializer::edge_evasion_intensity)){
+        if(ImGui::InputFloat("Edge Evasion intensity", &Serializer::edge_evasion_intensity)){
             this->handler->update_edge_evasion_intensity();
         }
 
-        ImGui::Checkbox("Use solid color", &Serializer::use_solid_color);
         if(ImGui::Checkbox("Limit framerate", &Serializer::is_framerate_limited)){
             this->update_limit_framerate();
         }
@@ -173,7 +188,7 @@ void App::handle_imgui(){
     }
 
     // Check if mouse is interacting with ImGui windows
-    bool mouseOverImGui = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGui::IsAnyItemHovered();
+    bool mouseOverImGui = ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGui::IsPopupOpen(nullptr, ImGuiPopupFlags_AnyPopup);
     // Enable/Disable mouse passthrough accordingly
     glfwSetWindowAttrib(window, GLFW_MOUSE_PASSTHROUGH, mouseOverImGui ? GLFW_FALSE : GLFW_TRUE);
 
