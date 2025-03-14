@@ -133,7 +133,7 @@ void App::handle_imgui(){
 
     if(Serializer::show_gui)
     {
-        ImGui::Begin("Hello, world!", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+        ImGui::Begin("Options menu", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 
         int num_of_fish = static_cast<int>(Serializer::number_of_fish);
         if(ImGui::InputInt("Number of fish", &num_of_fish)){
@@ -224,6 +224,8 @@ void App::handle_imgui(){
         }
 
         ImGuiIO& io = ImGui::GetIO();
+        ImGui::Text("Toggle the options menu on and off with 'O' while the app is in focus");
+        ImGui::Text("Exit the application with Esc while the app is in focus");
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
         ImGui::End();   

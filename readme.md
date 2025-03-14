@@ -24,6 +24,7 @@ Clone the repo and make a build folder in which you will compile and run the pro
 ```
 git clone --recursive https://github.com/SteveMCWin/pond.git
 cd pond
+mkdir data
 mkdir build && cd build
 cmake ..
 cmake --build .
