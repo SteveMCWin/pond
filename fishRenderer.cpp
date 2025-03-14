@@ -1,4 +1,5 @@
 #include "fishRenderer.h"
+#include "serializer.h"
 
 FishRenderer::FishRenderer(){
     glGenBuffers(1, &this->circleVBO);
@@ -56,7 +57,7 @@ FishRenderer::FishRenderer(){
     // std::filesystem::path fish_texture_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg";
     
     // this->fishTexture.Generate(fish_texture_path, false);
-    this->fishTexture.Generate(Serializer::custom_tex_path.c_str(), false);
+    this->fishTexture.Generate(Serializer::fish_tex_path.c_str(), false);
 
     this->screenShader = Shader(v_screen_shader_path.c_str(),
                                 f_screen_shader_path.c_str());
@@ -149,6 +150,10 @@ void FishRenderer::update_use_solid_color(){
     this->bodyShader.setInt("use_solid_color", static_cast<int>(this->useSolidColor));
 }
 
+void FishRenderer::update_texture_path(){
+    this->fishTexture.Generate(Serializer::fish_tex_path.c_str(), false);
+}
+
 glm::vec2 FishRenderer::jointSidePoint(Joint& j){
     return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees
 }
@@ -182,7 +187,7 @@ void FishRenderer::renderFishBody(const Fish& fish){
     model = glm::translate(model, glm::vec3(fish.joints[0].Center, 0.0f));
 
     glActiveTexture(GL_TEXTURE0);
-    fishTexture.Bind();
+    this->fishTexture.Bind();
 
     this->bodyShader.use();
     this->bodyShader.setInt("fishTexture", 0);

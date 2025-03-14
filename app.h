@@ -34,6 +34,7 @@ private:
 
     float last_frame;
     bool o_first_touch;
+    bool inputing_text;
 
     void process_input();
     void handle_imgui();

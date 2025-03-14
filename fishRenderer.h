@@ -28,6 +28,7 @@ public:
 
     void renderFish(Fish* allFish, unsigned int number_of_fish);
 
+    void update_texture_path();
     void update_fish_eye_color();
     void update_fish_fin_color();
     void update_fish_body_color();

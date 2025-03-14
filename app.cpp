@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "serializer.h"
 #include <GLFW/glfw3.h>
+#include <cstring>
 
 App::App(){
 
@@ -68,6 +69,7 @@ App::App(){
 
     this->last_frame = 0.0f;
     this->o_first_touch = false;
+    this->inputing_text = false;
 
 
     IMGUI_CHECKVERSION();
@@ -155,6 +157,16 @@ void App::handle_imgui(){
             this->renderer->update_use_solid_color();
         }
 
+        char buffer[256];
+        std::strcpy(buffer, Serializer::fish_tex_path.c_str());
+        buffer[std::max((int)Serializer::fish_tex_path.size(), 256)] = '\0';
+        if(ImGui::InputText("Fish texture path", buffer, 256)){
+            Serializer::fish_tex_path.assign(buffer);
+            this->renderer->update_texture_path();
+        }
+
+        this->inputing_text = ImGui::IsItemActive();
+
         if(ImGui::InputFloat("Cohesion intensity", &Serializer::cohesion_intensity)){
             this->handler->update_cohesion_intensity();
         }
@@ -179,6 +191,36 @@ void App::handle_imgui(){
 
         if(ImGui::Button("Store changes")){
             Serializer::storeData();
+        }
+
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(250.0f);
+
+        if(ImGui::Button("Reset to default")){
+            Serializer::fish_eye_color = DEFAULT_EYE_COLOR;
+            Serializer::fish_fin_color = DEFAULT_FIN_COLOR;
+            Serializer::fish_body_color = DEFAULT_BODY_COLOR;
+            Serializer::fish_tex_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg"; // CHANGE: haven't implemented this one yet
+            Serializer::number_of_fish = DEFAULT_NUM_OF_FISH;
+            Serializer::cohesion_intensity = DEFAULT_COHESION_INTENSITY;
+            Serializer::alignment_intensity = DEFAULT_ALIGNMENT_INTENSITY;
+            Serializer::separation_intensity = DEFAULT_SEPARATION_INTENSITY;
+            Serializer::edge_evasion_intensity = DEFAULT_EDGE_EVASION_INTENSITY;
+            Serializer::is_framerate_limited = true;
+            Serializer::use_solid_color = false;
+            Serializer::store_on_exit = true;
+            Serializer::show_gui = true;
+            this->handler->update_num_of_fish();
+            this->renderer->update_fish_eye_color();
+            this->renderer->update_fish_fin_color();
+            this->renderer->update_fish_body_color();
+            this->renderer->update_use_solid_color();
+            this->renderer->update_texture_path();
+            this->handler->update_cohesion_intensity();
+            this->handler->update_alignment_intensity();
+            this->handler->update_separation_intensity();
+            this->handler->update_edge_evasion_intensity();
+            this->update_limit_framerate();
         }
 
         ImGuiIO& io = ImGui::GetIO();
@@ -206,15 +248,18 @@ void App::process_input(){
     if(glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
         glfwSetWindowShouldClose(window, true);
     }
-    if(glfwGetKey(this->window, GLFW_KEY_O) == GLFW_PRESS){
-        if(!o_first_touch){
-            o_first_touch = true;
-            Serializer::show_gui = !Serializer::show_gui;
+    if(!this->inputing_text){
+        if(glfwGetKey(this->window, GLFW_KEY_O) == GLFW_PRESS){
+            if(!o_first_touch){
+                o_first_touch = true;
+                Serializer::show_gui = !Serializer::show_gui;
+            }
+        }
+        if(glfwGetKey(this->window, GLFW_KEY_O) == GLFW_RELEASE){
+            o_first_touch = false;
         }
     }
-    if(glfwGetKey(this->window, GLFW_KEY_O) == GLFW_RELEASE){
-        o_first_touch = false;
-    }
+
 }
 
 void App::update_limit_framerate(){
