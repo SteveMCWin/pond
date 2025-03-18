@@ -157,6 +157,16 @@ void App::handle_imgui(){
             this->renderer->update_use_solid_color();
         }
 
+        if(ImGui::Checkbox("Use pixelation shader", &Serializer::use_pixelation)){
+            this->renderer->update_use_pixelation();
+        }
+
+        if(Serializer::use_pixelation){
+            if(ImGui::InputFloat("Pixelation amout", &Serializer::pixelation_amount)){
+                this->renderer->update_pixelation_amount();
+            }
+        }
+
         char buffer[256];
         std::strcpy(buffer, Serializer::fish_tex_path.c_str());
         buffer[std::max((int)Serializer::fish_tex_path.size(), 256)] = '\0';
@@ -197,19 +207,23 @@ void App::handle_imgui(){
         ImGui::SetCursorPosX(250.0f);
 
         if(ImGui::Button("Reset to default")){
+            
             Serializer::fish_eye_color = DEFAULT_EYE_COLOR;
             Serializer::fish_fin_color = DEFAULT_FIN_COLOR;
             Serializer::fish_body_color = DEFAULT_BODY_COLOR;
-            Serializer::fish_tex_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg"; // CHANGE: haven't implemented this one yet
+            Serializer::fish_tex_path = (std::filesystem::path)TEXTURES_PATH / "koi.jpg";
             Serializer::number_of_fish = DEFAULT_NUM_OF_FISH;
             Serializer::cohesion_intensity = DEFAULT_COHESION_INTENSITY;
             Serializer::alignment_intensity = DEFAULT_ALIGNMENT_INTENSITY;
             Serializer::separation_intensity = DEFAULT_SEPARATION_INTENSITY;
             Serializer::edge_evasion_intensity = DEFAULT_EDGE_EVASION_INTENSITY;
-            Serializer::is_framerate_limited = true;
-            Serializer::use_solid_color = false;
-            Serializer::store_on_exit = true;
-            Serializer::show_gui = true;
+            Serializer::pixelation_amount = DEFAULT_PIXELATION_AMOUNT;
+            Serializer::is_framerate_limited = DEFAULT_IS_FRAMERATE_LIMITED;
+            Serializer::use_solid_color = DEFAULT_USE_SOLID_COLOR;
+            Serializer::use_pixelation = DEFAULT_USE_PIXELATION;
+            Serializer::store_on_exit = DEFAULT_STORE_ON_EXIT;
+            // not updating show gui because if the button is clicked, the gui is already on
+
             this->handler->update_num_of_fish();
             this->renderer->update_fish_eye_color();
             this->renderer->update_fish_fin_color();
@@ -220,6 +234,8 @@ void App::handle_imgui(){
             this->handler->update_alignment_intensity();
             this->handler->update_separation_intensity();
             this->handler->update_edge_evasion_intensity();
+            this->renderer->update_pixelation_amount();
+            this->renderer->update_use_pixelation();
             this->update_limit_framerate();
         }
 

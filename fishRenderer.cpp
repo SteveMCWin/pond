@@ -89,6 +89,8 @@ FishRenderer::FishRenderer(){
     this->update_fish_fin_color();
     this->update_fish_body_color();
     this->update_use_solid_color();
+    this->update_use_pixelation();
+    this->update_pixelation_amount();
 }
 
 FishRenderer::~FishRenderer(){
@@ -153,6 +155,19 @@ void FishRenderer::update_use_solid_color(){
 void FishRenderer::update_texture_path(){
     this->fishTexture.Generate(Serializer::fish_tex_path.c_str(), false);
 }
+
+void FishRenderer::update_pixelation_amount(){
+    this->pixelationAmount = Serializer::pixelation_amount;
+    this->screenShader.use();
+    this->screenShader.setFloat("pixelation_amount", this->pixelationAmount);
+}
+
+void FishRenderer::update_use_pixelation(){
+    this->usePixelation = Serializer::use_pixelation;
+    this->screenShader.use();
+    this->screenShader.setInt("use_pixelation", static_cast<int>(this->usePixelation));
+}
+
 
 glm::vec2 FishRenderer::jointSidePoint(Joint& j){
     return Global::CalculateNormal(j.moveDirection) * j.circleRadius;   // returns a moveDirection vector of a joint turned -90 degrees

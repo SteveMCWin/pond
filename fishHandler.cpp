@@ -15,7 +15,6 @@ FishHandler::FishHandler(){
     for(int i = 0; i < boxes_rows; i++){
         for(int j = 0; j < boxes_cols; j++){
             this->boxes[i][j].fish_indexes = nullptr;
-            // this->boxes[i][j].num_of_boxed_fish = 0;
         }
     }
 

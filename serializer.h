@@ -29,8 +29,10 @@ public:
     static float alignment_intensity;
     static float separation_intensity;
     static float edge_evasion_intensity;
+    static float pixelation_amount;
     static bool is_framerate_limited;
     static bool use_solid_color;
+    static bool use_pixelation;
     static bool store_on_exit;
     static bool show_gui;
 

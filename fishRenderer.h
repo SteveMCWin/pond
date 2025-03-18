@@ -33,6 +33,8 @@ public:
     void update_fish_fin_color();
     void update_fish_body_color();
     void update_use_solid_color();
+    void update_use_pixelation();
+    void update_pixelation_amount();
 
 private:
     glm::vec2 jointSidePoint(Joint &j);
@@ -89,7 +91,10 @@ private:
     glm::vec3 fishFinColor;
     glm::vec3 fishBodyColor;
 
+    float pixelationAmount;
+
     bool useSolidColor;
+    bool usePixelation;
 
 };
 
