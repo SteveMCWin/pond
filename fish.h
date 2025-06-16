@@ -3,8 +3,9 @@
 
 #include <glad/glad.h>
 #include <cstdlib>
-#include <glm/detail/func_geometric.hpp>
-#include <glm/detail/type_vec.hpp>
+// #include <glm/detail/func_geometric.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 #include <glm/gtc/random.hpp>
 #include <glm/glm.hpp>
 #include <iostream>

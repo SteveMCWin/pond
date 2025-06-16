@@ -21,11 +21,7 @@ if(NOT GLFW_FOUND)
     endif()
 endif()
 
-find_path(GLM_INCLUDE_DIR glm/glm.hpp)
-if(NOT GLM_INCLUDE_DIR)
-    message(FATAL_ELRROR "GLM not found. Install it via package manager or vcpkg.")
-endif()
-
+find_package(glm REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -55,4 +51,4 @@ add_executable(my_opengl_project
 
 target_include_directories(my_opengl_project PRIVATE imgui imgui/backends)
 
-target_link_libraries(my_opengl_project glfw OpenGL::GL glad)
+target_link_libraries(my_opengl_project glm glfw OpenGL::GL glad)

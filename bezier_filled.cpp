@@ -1,6 +1,6 @@
 #include "bezier_filled.h"
 #include "global.h"
-#include <glm/detail/func_geometric.hpp>
+// #include <glm/detail/func_geometric.hpp>
 #include <iostream>
 
 BezierCurve::BezierCurve(){
