@@ -23,6 +23,7 @@ endif()
 
 find_package(glm REQUIRED)
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 include(FetchContent)
 FetchContent_Declare(
     glad
